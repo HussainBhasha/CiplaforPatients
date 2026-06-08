@@ -288,8 +288,8 @@ export default function Home() {
               )}
             >
               <div className="mt-6 font-display text-4xl sm:text-5xl font-semibold tracking-[-0.04em] text-slate-900">
-                Welcome to <span className="text-[#2f5fbf]">Neo</span> <span className="text-[#55c2c6]">Osteo Arthritis</span>
-              </div>
+                    Welcome to <span className="text-[#2f5fbf]">stem</span> <span className="text-[#55c2c6]">cell therapy</span>
+                  </div>
               <div className="mt-3 text-sm sm:text-base text-slate-600">
                 Choose your pathway
               </div>
