@@ -5,7 +5,6 @@ import Button from "@/components/ui/Button";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
 import oaComparisonImage from "@/assets/OA.png";
-import postInjectionImage from "@/assets/postinjection.png";
 import symptomsImage from "@/assets/symptoms.png";
 import gradeStage1Image from "@/assets/stage 1.png";
 import gradeStage2Image from "@/assets/stage 2.png";
