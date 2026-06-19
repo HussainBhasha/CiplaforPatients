@@ -33,6 +33,33 @@ const ScrollReveal = ({ children, className = '' }) => {
   );
 };
 
+const milestones = [
+  {
+    year: "2016",
+    title: "Clinical Trials Begin",
+    description: "Phase I trials in knee OA patients.",
+  },
+  {
+    year: "2018",
+    title: "Foundational Research",
+    description: "Early-stage cell biology work begins in Mumbai.",
+  },
+  {
+    year: "2020",
+    title: "Phase III Success",
+    description: "Pivotal trial demonstrates safety and efficacy.",
+  },
+  {
+    year: "2022",
+    title: "Regulatory Approval",
+    description: "DCGI approval for knee osteoarthritis.",
+  },
+  {
+    year: "2023",
+    title: "CiploStem Launch",
+    description: "Nationwide rollout to certified centers.",
+  },
+];
 // DNA Helix illustration background
 const DNAHelix = ({ className }: { className?: string }) => {
   const points = 18;
@@ -156,6 +183,7 @@ const MobileMilestoneItem = ({ year, title, description, icon }: { year: string;
 );
 
 export const RoadmapSection: React.FC = () => {
+   
   return (
     <section className="relative w-full pt-16 sm:pt-20 md:pt-24 pb-6 px-3 sm:px-4 overflow-x-hidden bg-sky-100">
       {/* Global Animations */}
@@ -498,95 +526,141 @@ export const RoadmapSection: React.FC = () => {
           </div>
         </div>
         
-        {/* ========== MOBILE: Vertical Stack (below 768px) ========== */}
-        <div className="md:hidden px-2 sm:px-4">
-          <div className="relative">
-            {/* Central vertical line */}
-            <div className="absolute left-5 sm:left-6 top-0 bottom-8 w-0.5 md:w-1 bg-gradient-to-b from-[#2F5FCF] via-[#34BCD4] to-[#0B1635] rounded-full opacity-95" />
-            
-            <div className="space-y-4 md:space-y-6 pt-2">
-              {/* 2016 */}
-              <div className="relative pl-14 sm:pl-16">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-1 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10 milestone-hover transition-all duration-300 cursor-pointer">
-                    <FlaskConical className="w-4 md:w-5 h-4 md:h-5 text-white" />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal>
-                  <div className="card-hover transition-all duration-300">
-                    <MilestoneCard year="2016" title="Clinical Trials Begin" description="Phase I trials in knee OA patients." />
-                  </div>
-                </ScrollReveal>
-              </div>
-              
-              {/* 2018 */}
-              <div className="relative pl-14 sm:pl-16">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-1 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10 milestone-hover transition-all duration-300 cursor-pointer">
-                    <Microscope className="w-4 md:w-5 h-4 md:h-5 text-white" />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal>
-                  <div className="card-hover transition-all duration-300">
-                    <MilestoneCard year="2018" title="Foundational Research" description="Early-stage cell biology work begins in Mumbai." />
-                  </div>
-                </ScrollReveal>
-              </div>
-              
-              {/* 2020 */}
-              <div className="relative pl-14 sm:pl-16">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-1 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10 milestone-hover transition-all duration-300 cursor-pointer">
-                    <TrendingUp className="w-4 md:w-5 h-4 md:h-5 text-white" />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal>
-                  <div className="card-hover transition-all duration-300">
-                    <MilestoneCard year="2020" title="Phase III Success" description="Pivotal trial demonstrates safety and efficacy." />
-                  </div>
-                </ScrollReveal>
-              </div>
-              
-              {/* 2022 */}
-              <div className="relative pl-14 sm:pl-16">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-1 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10 milestone-hover transition-all duration-300 cursor-pointer">
-                    <FileCheck className="w-4 md:w-5 h-4 md:h-5 text-white" />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal>
-                  <div className="card-hover transition-all duration-300">
-                    <MilestoneCard year="2022" title="Regulatory Approval" description="DCGI approval for knee osteoarthritis." />
-                  </div>
-                </ScrollReveal>
-              </div>
-              
-              {/* 2023 */}
-              <div className="relative pl-14 sm:pl-16">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-1 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10 milestone-hover transition-all duration-300 cursor-pointer">
-                    <Rocket className="w-4 md:w-5 h-4 md:h-5 text-white" />
-                  </div>
-                </ScrollReveal>
-                <ScrollReveal>
-                  <div className="card-hover transition-all duration-300">
-                    <MilestoneCard year="2023" title="CiploStem Launch" description="Nationwide rollout to certified centers." />
-                  </div>
-                </ScrollReveal>
-              </div>
-              
-              {/* Goal */}
-              <div className="relative pl-14 sm:pl-16 pt-2 md:pt-4">
-                <ScrollReveal>
-                  <div className="absolute -left-2 sm:-left-1.5 top-4 w-10 md:w-12 h-10 md:h-12 rounded-full bg-[#0B1635] border-2 border-[#34BCD4] flex items-center justify-center shadow-sm md:shadow-md z-10">
-                    <span className="text-white font-extrabold text-[6px] md:text-[8px] uppercase tracking-wider text-center">Goal</span>
-                  </div>
-                </ScrollReveal>
-              </div>
-            </div>
+        {/* MOBILE ROADMAP */}
+<div className="md:hidden max-w-sm mx-auto relative py-10 min-h-[1400px]">
+
+  {/* ROAD SVG */}
+  <svg
+    className="absolute left-0 top-0 w-full h-full"
+    viewBox="0 0 350 1400"
+    fill="none"
+  >
+    {/* Glow */}
+    <path
+      d="
+      M175 50
+C300 120 300 180 175 250
+C50 320 50 380 175 450
+C300 520 300 580 175 650
+C50 720 50 780 175 950
+C250 1080 250 1180 175 1280
+      "
+      stroke="#34BCD4"
+      strokeWidth="24"
+      opacity="0.15"
+      fill="none"
+    />
+
+    {/* Main Road */}
+    <path
+      d="
+     M175 50
+C300 120 300 180 175 250
+C50 320 50 380 175 450
+C300 520 300 580 175 650
+C50 720 50 780 175 950
+C250 1080 250 1180 175 1280
+      "
+      stroke="#2F5FCF"
+      strokeWidth="14"
+      fill="none"
+      strokeLinecap="round"
+    />
+
+    {/* Center Line */}
+    <path
+      d="
+      
+     M175 50
+C300 120 300 180 175 250
+C50 320 50 380 175 450
+C300 520 300 580 175 650
+C50 720 50 780 175 950
+C250 1080 250 1180 175 1280
+      "
+      stroke="white"
+      strokeWidth="2"
+      strokeDasharray="8 8"
+      fill="none"
+    />
+  </svg>
+
+  {/* Positions Container */}
+<div className="relative z-10 h-[1500px]">
+
+  {[
+    { top: "80px", side: "right" },
+    { top: "320px", side: "left" },
+    { top: "560px", side: "right" },
+    { top: "820px", side: "left" },
+    { top: "1250px", side: "right" },
+  ].map((pos, index) => {
+    const item = milestones[index];
+
+    return (
+      <div
+        key={item.year}
+        className={`absolute w-full flex ${
+          pos.side === "right"
+            ? "justify-end"
+            : "justify-start"
+        }`}
+        style={{
+          top: pos.top,
+        }}
+      >
+        <div className="relative w-[240px]">
+
+          {/* Road Dot */}
+          <div
+            className="
+              absolute
+              top-1/2
+              -translate-y-1/2
+              w-5
+              h-5
+              rounded-full
+              bg-[#34BCD4]
+              border-4
+              border-white
+              shadow-lg
+              z-20
+            "
+            style={{
+              left:
+                pos.side === "right"
+                  ? "-28px"
+                  : "calc(100% + 8px)",
+            }}
+          />
+
+          {/* Card */}
+          <div className="bg-white rounded-2xl p-4 shadow-lg transition-all duration-300 hover:scale-105">
+
+            <span className="text-[#34BCD4] font-bold text-sm">
+              {item.year}
+            </span>
+
+            <h4 className="font-bold text-[#0B1635] mt-1">
+              {item.title}
+            </h4>
+
+            <p className="text-xs text-slate-600 mt-2">
+              {item.description}
+            </p>
+
           </div>
+
         </div>
       </div>
+    );
+  })}
+
+</div>
+
+</div>
+    </div>
+             
     </section>
   );
 };
