@@ -94,7 +94,7 @@ export default function MarketingNavbar() {
               <img
                 src={ciplaLogo}
                 alt="Cipla"
-                className="h-10 sm:h-14 lg:h-16 w-auto object-contain"
+                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
                 decoding="async"
                 loading="eager"
               />
@@ -105,7 +105,7 @@ export default function MarketingNavbar() {
               <img
                 src={brandLogo}
                 alt="CiploStem"
-                className="h-10 sm:h-14 lg:h-16 w-auto object-contain"
+                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
                 decoding="async"
                 loading="eager"
               />

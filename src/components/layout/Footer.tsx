@@ -48,9 +48,13 @@ export default function Footer() {
             {/* Left: Logo */}
             <div className="hidden lg:flex justify-start">
               {portal === "patient" ? (
-                <img src={ciplaLogo} alt="Cipla" className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
+                <img src={ciplaLogo} alt="Cipla" className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125" />
               ) : (
-                <img src={brandLogo} alt="CiploStem" className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
+               <img
+  src={brandLogo}
+  alt="CiploStem"
+  className="h-14 sm:h-16 w-auto shrink-0 max-w-full"
+/>
               )}
             </div>
 
@@ -70,7 +74,7 @@ export default function Footer() {
             <div className="hidden lg:flex flex-col items-end gap-3 text-sm text-slate-600">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-sky-700" />
-                <div>info@ciplostem.com</div>
+                <div>info@cipla.com</div>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-sky-700" />
@@ -94,13 +98,17 @@ export default function Footer() {
               {portal === "patient" ? (
                 <img src={ciplaLogo} alt="Cipla" className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
               ) : (
-                <img src={brandLogo} alt="CiploStem" className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
+                <img
+  src={brandLogo}
+  alt="CiploStem"
+  className="h-20 lg:h-24 w-auto shrink-0"
+/>
               )}
             </div>
             <div className="flex flex-col items-center gap-3 text-sm text-slate-600">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-sky-700" />
-                <div>info@ciplostem.com</div>
+                <div>info@cipla.com</div>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-sky-700" />

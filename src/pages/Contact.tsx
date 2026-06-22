@@ -70,7 +70,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-slate-900">Email</div>
-                      <a href="mailto:info@ciplostem.com" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">info@ciplostem.com</a>
+                      <a href="mailto:info@cipla.com" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">info@cipla.com</a>
                     </div>
                   </div>
                 </div>

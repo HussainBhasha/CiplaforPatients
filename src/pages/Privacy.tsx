@@ -30,7 +30,7 @@ export default function Privacy() {
               </section>
               <section className="space-y-2">
                 <div className="font-semibold text-slate-900">Contact</div>
-                <div>For privacy questions, contact: info@ciplostem.com</div>
+                <div>For privacy questions, contact: info@cipla.com</div>
               </section>
             </div>
           </div>

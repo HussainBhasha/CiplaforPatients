@@ -17,6 +17,7 @@ import safetyProfileImage from "@/assets/Safety Profile.png";
 import patientOutcomesImage from "@/assets/Patient Outcomes.png";
 import scientificPublicationsImage from "@/assets/scientific publications.png";
 import ciplobottleImage from "@/assets/Ciplobottle2.png";
+import newstemcellImage from "@/assets/newstemcell.png";
 import { Activity, ArrowRight, ChevronDown, Droplet, Pill, Stethoscope, X, Users, FlaskConical, Syringe, Bone, FileText, BarChart3, MapPin, Calendar, CheckCircle2, Smile, Star, UsersRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -159,7 +160,7 @@ export default function Doctor() {
     const ctx = gsap.context(() => {
       const sectionEl = mscRef.current;
       gsap.set(mscEl, { transformOrigin: "50% 50%" });
-      
+
       // Only apply scroll-based animation on desktop
       if (sectionEl && !isMobile) {
         const tl = gsap.timeline({
@@ -367,7 +368,7 @@ export default function Doctor() {
   }, []);
 
   return (
-    <div ref={pageRef} className="min-h-dvh bg-[#EAF7FF]">
+    <div ref={pageRef} className="min-h-dvh bg-sky-100">
       <MarketingNavbar />
       <main className="pt-20">
         <section
@@ -463,7 +464,10 @@ export default function Doctor() {
         <section ref={(node) => { orthoRef.current = node; }} className="py-14 sm:py-20">
           <Container>
             <div className="mx-auto grid max-w-6xl gap-10 lg:min-h-[70vh] lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-              <div className={cn("transition-all duration-700 ease-out", orthoInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}>
+              <div className={cn(
+                "transition-all duration-700 ease-out",
+                "opacity-100 translate-y-0"
+              )}>
                 <div className="flex items-center justify-center">
                   <div className="flex w-full max-w-[920px] aspect-[16/9] items-center justify-center overflow-hidden rounded-[32px]">
                     <img
@@ -488,7 +492,7 @@ export default function Doctor() {
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                   {[
                     { title: "Blood Derived Therapies", items: ["PRP", "GFC", "ACS"] },
-                    { title: "Cell Based Therapies", items: ["Mesenchymal Stem Cells", "Tissue regeneration"] },
+                    { title: "Cell Based Therapies", items: ["Mesenchymal Stem Cells"] },
                   ].map((card, idx) => (
                     <div
                       key={card.title}
@@ -632,7 +636,7 @@ export default function Doctor() {
           </Container>
         </section>
 
-        <section ref={(node) => { moaRef.current = node; }} className="py-14 sm:py-20">
+        <section id="science" ref={(node) => { moaRef.current = node; }} className="py-14 sm:py-20 scroll-mt-24">
           <Container>
             <div className="mx-auto max-w-6xl">
               <div className="font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
@@ -823,69 +827,132 @@ export default function Doctor() {
 
               <div ref={resourcesScrollRef} className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-2">
                 {[
-                  { image: scientificPublicationsImage, label: "Scientific Publications" },
-                  { image: clinicalTrialsImage, label: "Clinical Trial Data" },
-                  { image: mechanismIllustrationImage, label: "Mechanism of Action" },
-                  { image: ciplobottleImage, label: "Product Information" },
-                ].map((x, idx) => (
-                  <div
-                    key={x.label}
-                    className={cn(
-                      "transition-all duration-700 ease-out",
-                      resourcesInView && resourcesStep >= idx + 1 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none",
-                    )}
-                    style={{ transitionDelay: `${idx * 90}ms` }}
-                  >
-                  <div className="text-center text-sm font-semibold text-slate-900">{x.label}</div>
-                  {x.label === "Mechanism of Action" ? (
-                    <div className="mt-4 overflow-hidden rounded-[22px]">
-                      <img
-                        src={x.image}
-                        alt={x.label}
-                        className="w-full h-auto object-contain"
-                        decoding="async"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
+                  {
+                    image: scientificPublicationsImage,
+                    label: "Scientific Publications",
+                    link: "https://online.fliphtml5.com/HUssain1608/1602-Ciplostem-LBL-1-combined-ci2z/",
+                    external: true,
+                  },
+                  {
+                    image: clinicalTrialsImage,
+                    label: "Clinical Trial Data",
+                    target: "evidence",
+                  },
+{
+                      image: mechanismIllustrationImage,
+                      label: "Mechanism of Action",
+                      target: "science",
+                    },
+                    {
+                      image: newstemcellImage,
+                      label: "Product Information",
+                      link: "https://online.fliphtml5.com/leljv/CIPLOSTEM_PPT/#p=1",
+                      external: true,
+                    },
+                ].map((x, idx) => {
+                  // Reveal 2 at a time: cards 0,1 → step>=1; cards 2,3 → step>=3
+                  const visible = idx < 2 ? resourcesStep >= 1 : resourcesStep >= 3;
+                  return (
                     <div
+                      key={x.label}
                       className={cn(
-                        "mt-4 relative aspect-[16/9] overflow-hidden rounded-[22px]",
-                        x.label === "Product Information" && "p-3",
+                        "flex flex-col h-full transition-all duration-700 ease-out",
+                        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none",
                       )}
+                      style={{ transitionDelay: visible ? `${(idx % 2) * 100}ms` : "0ms" }}
                     >
-                      <img
-                        src={x.image}
-                        alt={x.label}
-                        className={cn(
-                          "absolute inset-0 h-full w-full",
-                          x.label === "Product Information" ? "object-contain" : "object-cover",
-                          x.label === "Scientific Publications" ? "object-[center_40%]" : "object-center",
-                        )}
-                        decoding="async"
-                        loading="lazy"
-                      />
+                      <div className="text-center text-sm font-semibold text-slate-900">{x.label}</div>
+                      {x.label === "Mechanism of Action" ? (
+                        <div className="mt-4 overflow-hidden rounded-[22px]">
+                          <img
+                            src={x.image}
+                            alt={x.label}
+                            className="w-full h-auto object-contain"
+                            decoding="async"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className={cn(
+                            "mt-4 relative aspect-[16/9] overflow-hidden rounded-[22px]",
+                            x.label === "Product Information" && "p-3",
+                          )}
+                        >
+                          {x.label === "Scientific Publications" ? (
+                            <a
+                              href="https://online.fliphtml5.com/HUssain1608/1602-Ciplostem-LBL-1-combined-ci2z/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block h-full w-full cursor-pointer"
+                            >
+                              <img
+                                src={x.image}
+                                alt={x.label}
+                                className={cn(
+                                  "absolute inset-0 h-full w-full",
+                                  "object-[center_40%]",
+                                )}
+                                decoding="async"
+                                loading="lazy"
+                              />
+                            </a>
+                          ) : (
+                            <img
+                              src={x.image}
+                              alt={x.label}
+                              className={cn(
+                                "absolute inset-0 h-full w-full",
+                                x.label === "Product Information" ? "object-contain" : "object-cover",
+                                x.label === "Scientific Publications" ? "object-[center_40%]" : "object-center",
+                              )}
+                              decoding="async"
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
+
+                      )}
+
+                      <div className="mt-auto pt-4 flex justify-center relative z-50">
+                        <Button
+                          type="button"
+                          onClick={() => {
+                            if (x.external && x.link) {
+                              window.open(x.link, "_blank");
+                              return;
+                            }
+
+                            if (x.target) {
+                              document
+                                .getElementById(x.target)
+                                ?.scrollIntoView({ behavior: "smooth" });
+                            }
+                          }}
+                        >
+                          Read More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </div>
+
                     </div>
-                  )}
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-
-
             </div>
+
+
+
           </Container>
         </section>
 
         <section ref={(node) => { ctaRef.current = node; }} className="relative overflow-hidden py-14 sm:py-20">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(1000px_circle_at_50%_0%,rgba(56,189,248,0.22),transparent_60%)]" />
           <Container>
-            <div
-              className={cn(
-                "mx-auto max-w-6xl rounded-[36px] bg-white/70 p-10 ring-1 ring-sky-200/60 shadow-soft-xl backdrop-blur-xl transition-all duration-700 ease-out sm:p-14",
-                "js-scroll-card",
-                ctaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
-              )}
-            >
+            <div className={cn(
+              "mx-auto max-w-6xl rounded-[36px] bg-white/70 p-10 ring-1 ring-sky-200/60 shadow-soft-xl backdrop-blur-xl transition-all duration-700 ease-out sm:p-14",
+              "js-scroll-card",
+              ctaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+            )}>
               <div className="mx-auto max-w-3xl text-center">
                 <div className="font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
                   <RevealWords text="Partnering With Doctors In The Future Of Regenerative Medicine" active={ctaInView} />
@@ -1052,11 +1119,11 @@ export default function Doctor() {
                               <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                              
+
                               {/* Axes */}
                               <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                               <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                              
+
                               {/* Y-axis labels */}
                               <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">100</text>
                               <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">80</text>
@@ -1064,10 +1131,10 @@ export default function Doctor() {
                               <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">40</text>
                               <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">20</text>
                               <text x="35" y="124" textAnchor="end" className="text-xs fill-slate-600 font-medium">0</text>
-                              
+
                               {/* Area fill */}
                               <polygon points="60,110 60,92 120,75 180,58 240,42 300,32 300,110" fill="url(#blueAreaGradient)" opacity="0.4" />
-                              
+
                               {/* Data points and line */}
                               <polyline points="60,92 120,75 180,58 240,42 300,32" fill="none" stroke="url(#blueGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                               <circle cx="60" cy="92" r="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
@@ -1075,14 +1142,14 @@ export default function Doctor() {
                               <circle cx="180" cy="58" r="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
                               <circle cx="240" cy="42" r="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
                               <circle cx="300" cy="32" r="6" fill="#3b82f6" stroke="white" strokeWidth="2" />
-                              
+
                               {/* X-axis labels */}
                               <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                               <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">1 Month</text>
                               <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">3 Months</text>
                               <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                               <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
-                              
+
                               <defs>
                                 <linearGradient id="blueGraphGradient" x1="0" y1="0" x2="100" y2="0">
                                   <stop offset="0%" stopColor="#60a5fa" />
@@ -1109,11 +1176,11 @@ export default function Doctor() {
                               <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                              
+
                               {/* Axes */}
                               <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                               <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                              
+
                               {/* Y-axis labels */}
                               <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">10</text>
                               <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">8</text>
@@ -1121,10 +1188,10 @@ export default function Doctor() {
                               <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">4</text>
                               <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">2</text>
                               <text x="35" y="124" textAnchor="end" className="text-xs fill-slate-600 font-medium">0</text>
-                              
+
                               {/* Area fill */}
                               <polygon points="60,110 60,80 120,65 180,50 240,38 300,28 300,110" fill="url(#cyanAreaGradient)" opacity="0.4" />
-                              
+
                               {/* Data points and line */}
                               <polyline points="60,80 120,65 180,50 240,38 300,28" fill="none" stroke="url(#cyanGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                               <circle cx="60" cy="80" r="6" fill="#06b6d4" stroke="white" strokeWidth="2" />
@@ -1132,14 +1199,14 @@ export default function Doctor() {
                               <circle cx="180" cy="50" r="6" fill="#06b6d4" stroke="white" strokeWidth="2" />
                               <circle cx="240" cy="38" r="6" fill="#06b6d4" stroke="white" strokeWidth="2" />
                               <circle cx="300" cy="28" r="6" fill="#06b6d4" stroke="white" strokeWidth="2" />
-                              
+
                               {/* X-axis labels */}
                               <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                               <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">3 Months</text>
                               <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                               <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">9 Months</text>
                               <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
-                              
+
                               <defs>
                                 <linearGradient id="cyanGraphGradient" x1="0" y1="0" x2="100" y2="0">
                                   <stop offset="0%" stopColor="#22d3ee" />
@@ -1224,11 +1291,11 @@ export default function Doctor() {
                               <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                              
+
                               {/* Axes */}
                               <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                               <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                              
+
                               {/* Y-axis labels */}
                               <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">100</text>
                               <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">80</text>
@@ -1236,10 +1303,10 @@ export default function Doctor() {
                               <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">40</text>
                               <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">20</text>
                               <text x="35" y="124" textAnchor="end" className="text-xs fill-slate-600 font-medium">0</text>
-                              
+
                               {/* Area fill */}
                               <polygon points="60,110 60,88 120,74 180,58 240,42 300,28 300,110" fill="url(#purpleAreaGradient)" opacity="0.4" />
-                              
+
                               {/* Data points and line */}
                               <polyline points="60,88 120,74 180,58 240,42 300,28" fill="none" stroke="url(#purpleGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                               <circle cx="60" cy="88" r="6" fill="#a855f7" stroke="white" strokeWidth="2" />
@@ -1247,14 +1314,14 @@ export default function Doctor() {
                               <circle cx="180" cy="58" r="6" fill="#a855f7" stroke="white" strokeWidth="2" />
                               <circle cx="240" cy="42" r="6" fill="#a855f7" stroke="white" strokeWidth="2" />
                               <circle cx="300" cy="28" r="6" fill="#a855f7" stroke="white" strokeWidth="2" />
-                              
+
                               {/* X-axis labels */}
                               <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                               <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                               <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
                               <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">18 Months</text>
                               <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">24 Months</text>
-                              
+
                               <defs>
                                 <linearGradient id="purpleGraphGradient" x1="0" y1="0" x2="100" y2="0">
                                   <stop offset="0%" stopColor="#c084fc" />
@@ -1281,11 +1348,11 @@ export default function Doctor() {
                               <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                               <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                              
+
                               {/* Axes */}
                               <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                               <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                              
+
                               {/* Y-axis labels */}
                               <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">10</text>
                               <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">8</text>
@@ -1293,10 +1360,10 @@ export default function Doctor() {
                               <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">4</text>
                               <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">2</text>
                               <text x="35" y="124" textAnchor="end" className="text-xs fill-slate-600 font-medium">0</text>
-                              
+
                               {/* Area fill */}
                               <polygon points="60,110 60,85 120,70 180,55 240,40 300,28 300,110" fill="url(#pinkAreaGradient)" opacity="0.4" />
-                              
+
                               {/* Data points and line */}
                               <polyline points="60,85 120,70 180,55 240,40 300,28" fill="none" stroke="url(#pinkGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                               <circle cx="60" cy="85" r="6" fill="#ec4899" stroke="white" strokeWidth="2" />
@@ -1304,14 +1371,14 @@ export default function Doctor() {
                               <circle cx="180" cy="55" r="6" fill="#ec4899" stroke="white" strokeWidth="2" />
                               <circle cx="240" cy="40" r="6" fill="#ec4899" stroke="white" strokeWidth="2" />
                               <circle cx="300" cy="28" r="6" fill="#ec4899" stroke="white" strokeWidth="2" />
-                              
+
                               {/* X-axis labels */}
                               <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                               <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                               <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
                               <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">18 Months</text>
                               <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">24 Months</text>
-                              
+
                               <defs>
                                 <linearGradient id="pinkGraphGradient" x1="0" y1="0" x2="100" y2="0">
                                   <stop offset="0%" stopColor="#f472b6" />
@@ -1424,21 +1491,21 @@ export default function Doctor() {
                         <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                        
+
                         {/* Axes */}
                         <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                         <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                        
+
                         {/* Y-axis labels */}
                         <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">80%</text>
                         <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">60%</text>
                         <text x="35" y="64" textAnchor="end" className="text-xs fill-slate-600 font-medium">40%</text>
                         <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">20%</text>
                         <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">0%</text>
-                        
+
                         {/* Area fill */}
                         <polygon points="60,110 60,98 120,80 180,62 240,48 300,36 300,110" fill="url(#outcomeAreaGradient)" opacity="0.4" />
-                        
+
                         {/* Data points and line */}
                         <polyline points="60,98 120,80 180,62 240,48 300,36" fill="none" stroke="url(#outcomeGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                         <circle cx="60" cy="98" r="6" fill="#0f172a" stroke="white" strokeWidth="2" />
@@ -1446,14 +1513,14 @@ export default function Doctor() {
                         <circle cx="180" cy="62" r="6" fill="#0f172a" stroke="white" strokeWidth="2" />
                         <circle cx="240" cy="48" r="6" fill="#0f172a" stroke="white" strokeWidth="2" />
                         <circle cx="300" cy="36" r="6" fill="#0f172a" stroke="white" strokeWidth="2" />
-                        
+
                         {/* X-axis labels */}
                         <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                         <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">3 Months</text>
                         <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                         <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
                         <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">24 Months</text>
-                        
+
                         <defs>
                           <linearGradient id="outcomeGraphGradient" x1="0" y1="0" x2="100" y2="0">
                             <stop offset="0%" stopColor="#475569" />
@@ -1509,11 +1576,11 @@ export default function Doctor() {
                         <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                        
+
                         {/* Axes */}
                         <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                         <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                        
+
                         {/* Y-axis labels */}
                         <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">10</text>
                         <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">8</text>
@@ -1521,10 +1588,10 @@ export default function Doctor() {
                         <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">4</text>
                         <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">2</text>
                         <text x="35" y="124" textAnchor="end" className="text-xs fill-slate-600 font-medium">0</text>
-                        
+
                         {/* Area fill */}
                         <polygon points="60,110 60,82 120,65 180,50 240,38 300,26 300,110" fill="url(#painAreaGradient)" opacity="0.4" />
-                        
+
                         {/* Data points and line */}
                         <polyline points="60,82 120,65 180,50 240,38 300,26" fill="none" stroke="url(#painGraphGradient)" strokeWidth="3" strokeLinecap="round" />
                         <circle cx="60" cy="82" r="6" fill="#f43f5e" stroke="white" strokeWidth="2" />
@@ -1532,14 +1599,14 @@ export default function Doctor() {
                         <circle cx="180" cy="50" r="6" fill="#f43f5e" stroke="white" strokeWidth="2" />
                         <circle cx="240" cy="38" r="6" fill="#f43f5e" stroke="white" strokeWidth="2" />
                         <circle cx="300" cy="26" r="6" fill="#f43f5e" stroke="white" strokeWidth="2" />
-                        
+
                         {/* X-axis labels */}
                         <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                         <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">3 Months</text>
                         <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                         <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
                         <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">24 Months</text>
-                        
+
                         <defs>
                           <linearGradient id="painGraphGradient" x1="0" y1="0" x2="100" y2="0">
                             <stop offset="0%" stopColor="#fb7185" />
@@ -1595,17 +1662,17 @@ export default function Doctor() {
                           <rect x="130" y="50" width="60" height="60" fill="#0f172a" rx="8" />
                           <rect x="210" y="30" width="60" height="80" fill="#f43f5e" rx="8" />
                           <rect x="290" y="20" width="60" height="90" fill="#0f172a" rx="8" />
-                          
+
                           {/* Axes */}
                           <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                           <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                          
+
                           {/* Y-axis labels */}
                           <text x="35" y="25" textAnchor="end" className="text-xs fill-slate-600 font-medium">100%</text>
                           <text x="35" y="50" textAnchor="end" className="text-xs fill-slate-600 font-medium">75%</text>
                           <text x="35" y="75" textAnchor="end" className="text-xs fill-slate-600 font-medium">50%</text>
                           <text x="35" y="100" textAnchor="end" className="text-xs fill-slate-600 font-medium">25%</text>
-                          
+
                           {/* X-axis labels */}
                           <text x="80" y="130" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Neutral</text>
                           <text x="160" y="130" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Satisfied</text>
@@ -1657,42 +1724,42 @@ export default function Doctor() {
                         <line x1="40" y1="60" x2="380" y2="60" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="80" x2="380" y2="80" stroke="#f1f5f9" strokeWidth="1" />
                         <line x1="40" y1="100" x2="380" y2="100" stroke="#f1f5f9" strokeWidth="1" />
-                        
+
                         {/* Axes */}
                         <line x1="40" y1="110" x2="380" y2="110" stroke="#cbd5e1" strokeWidth="2" />
                         <line x1="40" y1="20" x2="40" y2="110" stroke="#cbd5e1" strokeWidth="2" />
-                        
+
                         {/* Y-axis labels */}
                         <text x="35" y="24" textAnchor="end" className="text-xs fill-slate-600 font-medium">100%</text>
                         <text x="35" y="44" textAnchor="end" className="text-xs fill-slate-600 font-medium">75%</text>
                         <text x="35" y="64" textAnchor="end" className="text-xs fill-slate-600 font-medium">50%</text>
                         <text x="35" y="84" textAnchor="end" className="text-xs fill-slate-600 font-medium">25%</text>
                         <text x="35" y="104" textAnchor="end" className="text-xs fill-slate-600 font-medium">0%</text>
-                        
+
                         {/* Lines */}
                         <polyline points="60,88 120,70 180,52 240,38 300,28" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" />
                         <polyline points="60,92 120,78 180,64 240,50 300,40" fill="none" stroke="#78350f" strokeWidth="3" strokeLinecap="round" />
-                        
+
                         {/* Data points */}
                         <circle cx="60" cy="88" r="6" fill="#059669" stroke="white" strokeWidth="2" />
                         <circle cx="120" cy="70" r="6" fill="#059669" stroke="white" strokeWidth="2" />
                         <circle cx="180" cy="52" r="6" fill="#059669" stroke="white" strokeWidth="2" />
                         <circle cx="240" cy="38" r="6" fill="#059669" stroke="white" strokeWidth="2" />
                         <circle cx="300" cy="28" r="6" fill="#059669" stroke="white" strokeWidth="2" />
-                        
+
                         <circle cx="60" cy="92" r="6" fill="#78350f" stroke="white" strokeWidth="2" />
                         <circle cx="120" cy="78" r="6" fill="#78350f" stroke="white" strokeWidth="2" />
                         <circle cx="180" cy="64" r="6" fill="#78350f" stroke="white" strokeWidth="2" />
                         <circle cx="240" cy="50" r="6" fill="#78350f" stroke="white" strokeWidth="2" />
                         <circle cx="300" cy="40" r="6" fill="#78350f" stroke="white" strokeWidth="2" />
-                        
+
                         {/* X-axis labels */}
                         <text x="60" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">Baseline</text>
                         <text x="120" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Weeks</text>
                         <text x="180" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">3 Months</text>
                         <text x="240" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">6 Months</text>
                         <text x="300" y="135" textAnchor="middle" className="text-xs fill-slate-600 font-medium">12 Months</text>
-                        
+
                         {/* Legend */}
                         <circle cx="60" cy="15" r="4" fill="#059669" />
                         <text x="72" y="19" className="text-xs fill-slate-600">Daily Activities</text>

@@ -1,6 +1,7 @@
 import Container from "@/components/ui/Container";
 import MarketingNavbar from "@/components/layout/MarketingNavbar";
 import Footer from "@/components/layout/Footer";
+import ReferencesSection from "@/components/ReferencesSection";
 import Button from "@/components/ui/Button";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
@@ -74,36 +75,36 @@ const oaSymptomHighlights = [
 ];
 
 const grades = [
-  { 
-    k: "Grade I", 
-    title: "Mild changes", 
-    text: "Early cartilage irritation with minimal pain.", 
+  {
+    k: "Grade I",
+    title: "Mild changes",
+    text: "Early cartilage irritation with minimal pain.",
     image: gradeStage1Image,
     treatment: "Self-help\nSimple painkillers, external applications, supplements",
     treatmentImage: selfHelpImage
   },
-  { 
-    k: "Grade II", 
-    title: "Moderate changes", 
-    text: "Cartilage damage begins; pain may increase with activity.", 
+  {
+    k: "Grade II",
+    title: "Moderate changes",
+    text: "Cartilage damage begins; pain may increase with activity.",
     image: gradeStage2Image,
     treatment: "Information and advice\nEducation, weight loss, exercise, lifestyle changes",
     treatmentImage: informationImage
   },
-  { 
-    k: "Grade III", 
-    title: "Advanced changes", 
-    text: "Noticeable cartilage loss and inflammation; mobility reduces.", 
+  {
+    k: "Grade III",
+    title: "Advanced changes",
+    text: "Noticeable cartilage loss and inflammation; mobility reduces.",
     image: gradeStage3Image,
-    treatment: "Simple non-surgical options\nPrescribed oral painkillers, physiotherapy, supporting devices",
+    treatment: "Simple and advanced non-surgical options\nPrescribed oral painkillers, physiotherapy, supporting devices, Intra articular injections",
     treatmentImage: nonSurgicalImage
   },
-  { 
-    k: "Grade IV", 
-    title: "Severe changes", 
-    text: "Joint-space narrowing; significant pain and stiffness.", 
+  {
+    k: "Grade IV",
+    title: "Severe changes",
+    text: "Joint-space narrowing; significant pain and stiffness.",
     image: gradeStage4Image,
-    treatment: "Advanced non-surgical & Surgical options\nIntra articular injections, repair/partial or total joint replacement",
+    treatment: "Surgical options\nRepair/partial or total joint replacement",
     treatmentImage: surgicalImage
   },
 ];
@@ -254,9 +255,9 @@ export default function Patient() {
       setErrors(nextErrors);
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       const response = await fetch("http://localhost:3001/api/assessment", {
         method: "POST",
@@ -277,7 +278,7 @@ export default function Patient() {
           other_symptoms: otherSymptoms
         })
       });
-      
+
       if (response.ok) {
         const { total, label } = calcScore();
         setResult({ score: total, max: scoreMax, label });
@@ -338,39 +339,39 @@ export default function Patient() {
             <div className="absolute inset-0">
               <div className="h-full flex items-center">
                 <div className="max-w-3xl pl-6 sm:pl-10 md:pl-14 -translate-y-4 sm:translate-y-0">
-                {/* Mobile Text */}
-                <div className="md:hidden">
-                  <div className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
-                    Your Knee Health Journey
+                  {/* Mobile Text */}
+                  <div className="md:hidden">
+                    <div className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
+                      Your Knee Health Journey
+                    </div>
+                    <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
+                      Understand your knee condition better with our personalized assessment. Get insights into your knee health and discover solutions tailored for you.
+                    </p>
                   </div>
-                  <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
-                    Understand your knee condition better with our personalized assessment. Get insights into your knee health and discover solutions tailored for you.
-                  </p>
-                </div>
-                
-                {/* Desktop Text */}
-                <div className="hidden md:block">
-                  <div className="font-display text-5xl sm:text-6xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
-                    Knee Osteoarthritis (OA)
+
+                  {/* Desktop Text */}
+                  <div className="hidden md:block">
+                    <div className="font-display text-5xl sm:text-6xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
+                      Knee Osteoarthritis (OA)
+                    </div>
+                    <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
+                      Osteoarthritis is a common joint condition where knee cartilage gradually wears down, causing pain, stiffness, and reduced
+                      mobility. Early awareness and assessment can help you understand your knee health better.
+                    </p>
                   </div>
-                  <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
-                    Osteoarthritis is a common joint condition where knee cartilage gradually wears down, causing pain, stiffness, and reduced
-                    mobility. Early awareness and assessment can help you understand your knee health better.
-                  </p>
-                </div>
-                
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-button transition hover:brightness-110"
-                    onClick={() => {
-                      const el = document.getElementById("assessment");
-                      el?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }}
-                  >
-                    Taken Assessment
-                  </button>
-                </div>
+
+                  <div className="mt-6">
+                    <button
+                      type="button"
+                      className="inline-flex items-center justify-center rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-button transition hover:brightness-110"
+                      onClick={() => {
+                        const el = document.getElementById("assessment");
+                        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }}
+                    >
+                      Take an Assessment
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -437,14 +438,14 @@ export default function Patient() {
         </section>
 
         <section ref={(node) => { symptomsRef.current = node; }} className="relative py-14 sm:py-20">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_20%,rgba(56,189,248,0.14),transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_20%,rgba(11,58,102,0.06),transparent_55%)]" />
           <Container>
             <div className="mx-auto max-w-6xl">
               <div className="max-w-xl">
-                <div className={cn("text-sm font-semibold text-sky-700 reveal-fade", symptomsInView && "reveal-fade-visible")}>
+                <div className={cn("text-sm font-semibold text-[#0b3a66] reveal-fade", symptomsInView && "reveal-fade-visible")}>
                   Knee OA: Symptoms
                 </div>
-                <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+                <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-[#0b3a66] sm:text-4xl">
                   <RevealWords text="Signs Your Knee May Be Telling You" active={symptomsInView} />
                 </div>
                 <p className={cn("mt-4 text-sm leading-relaxed text-slate-600 reveal-fade", symptomsInView && "reveal-fade-visible")}>
@@ -453,38 +454,60 @@ export default function Patient() {
                 </p>
               </div>
 
-              <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-stretch">
-                <div className="grid content-start gap-4">
+              <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-stretch">
+                {/* Left Side: Symptom Cards */}
+                <div className="flex flex-col gap-4">
                   {oaSymptomHighlights.map((item, idx) => (
                     <div
                       key={item.title}
                       className={cn(
-                        "flex items-start gap-4 rounded-[24px] bg-white/90 p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 ease-out hover:shadow-xl hover:ring-sky-400 hover:-translate-y-1 cursor-pointer",
-                        symptomsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+                        "flex items-center gap-4 rounded-[22px] bg-white p-4 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80 transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(11,58,102,0.08)] hover:border-[#0b3a66]/60 hover:-translate-y-1 cursor-pointer",
+                        symptomsInView
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-4"
                       )}
                       style={{ transitionDelay: `${idx * 90}ms` }}
                     >
-                      <div className="grid h-12 w-12 flex-none place-items-center rounded-2xl bg-sky-50 text-sky-700 ring-1 ring-sky-100">
+
+                      {/* Icon */}
+                      <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-[#0b3a66]/5 text-[#0b3a66] ring-1 ring-[#0b3a66]/10">
                         {item.icon}
                       </div>
-                      <div className="min-w-0">
-                        <div className="flex items-baseline gap-3">
-                          <div className="text-sm font-semibold text-sky-700">
+
+                      {/* Text */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-bold text-[#0b3a66]">
                             {String(idx + 1).padStart(2, "0")}
-                          </div>
-                          <div className="text-sm font-semibold text-slate-900">{item.title}</div>
+                          </span>
+
+                          <h3 className="text-sm font-semibold text-slate-900">
+                            {item.title}
+                          </h3>
                         </div>
-                        <div className="mt-2 text-sm leading-relaxed text-slate-600">{item.text}</div>
+
+                        <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                          {item.text}
+                        </p>
                       </div>
+
                     </div>
                   ))}
                 </div>
 
-                <div className={cn("flex items-center justify-center lg:self-start transition-all duration-700 ease-out", symptomsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4")}>
+                {/* Right Side: Circular Infographic Image */}
+                <div
+                  className={cn(
+                    "flex items-center justify-center transition-all duration-700 ease-out lg:self-center",
+                    symptomsInView
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-4"
+                  )}
+                >
                   <img
                     src={symptomsImage}
-                    alt="Knee OA symptoms"
-                    className="h-auto w-full max-w-[520px] object-contain lg:max-h-[440px] lg:max-w-[440px]"
+                    alt="Knee OA symptoms wheel"
+                    className="h-full w-full max-w-[430px] object-contain"
                     decoding="async"
                     loading="lazy"
                   />
@@ -510,14 +533,13 @@ export default function Patient() {
                 <div
                   key={g.k}
                   className={cn(
-                    "overflow-hidden rounded-[26px] bg-white/90 ring-1 ring-sky-200/70 shadow-soft-xl transition-all duration-300 ease-out hover:shadow-xl hover:ring-sky-400 hover:-translate-y-2 cursor-pointer",
-                    gradeInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+                    "flex flex-col h-full overflow-hidden rounded-[26px] bg-white/90 ring-1 ring-sky-200/70 shadow-soft-xl transition-all duration-300 ease-out hover:shadow-xl hover:ring-sky-400 hover:-translate-y-2 cursor-pointer",
                   )}
                   style={{ transitionDelay: `${idx * 90}ms` }}
                 >
                   <div
                     className={cn(
-                      "h-56 w-full bg-white sm:h-64",
+                      "h-56 w-full bg-white sm:h-64 flex-shrink-0",
                     )}
                   >
                     <img
@@ -528,11 +550,11 @@ export default function Patient() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-7">
+                  <div className="p-7 flex flex-col flex-1">
                     <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">{g.k}</div>
                     <div className="mt-2 text-lg font-semibold text-slate-900">{g.title}</div>
                     <div className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{g.text}</div>
-                    
+
                     {/* Treatment section */}
                     {"treatment" in g && g.treatment && (
                       <div className="mt-6 pt-6 border-t border-slate-200">
@@ -549,7 +571,14 @@ export default function Patient() {
                         )}
                         <div className="space-y-1">
                           {g.treatment.split('\n').map((line, i) => (
-                            <div key={i} className={i === 0 ? "text-sm font-semibold text-sky-700" : "text-xs text-slate-600"}>
+                            <div
+                              key={i}
+                              className={
+                                i === 0
+                                  ? "min-h-[56px] text-sm font-semibold text-sky-700"
+                                  : "text-xs text-slate-600"
+                              }
+                            >
                               {line}
                             </div>
                           ))}
@@ -694,12 +723,12 @@ export default function Patient() {
                 <div className="order-1 lg:order-2">
                   <div className="relative mx-auto max-w-md">
                     <div className="relative h-80 w-full">
-                      <img 
-                        src={newStemCellImage} 
-                        alt="Stem cells" 
-                        className="h-full w-full object-contain" 
-                        decoding="async" 
-                        loading="lazy" 
+                      <img
+                        src={newStemCellImage}
+                        alt="Stem cells"
+                        className="h-full w-full object-contain"
+                        decoding="async"
+                        loading="lazy"
                       />
                     </div>
                   </div>
@@ -714,12 +743,12 @@ export default function Patient() {
                   <div className="relative mx-auto max-w-2xl">
                     {/* Glowing effects */}
                     <div className="absolute -inset-16 rounded-full bg-gradient-to-tr from-teal-300/20 to-sky-300/20 blur-3xl" />
-                    <img 
-                      src={mscImage} 
-                      alt="Mesenchymal Stem Cells" 
-                      className="relative w-full h-auto" 
-                      decoding="async" 
-                      loading="lazy" 
+                    <img
+                      src={mscImage}
+                      alt="Mesenchymal Stem Cells"
+                      className="relative w-full h-auto"
+                      decoding="async"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -758,57 +787,97 @@ export default function Patient() {
 
             {/* --- Part 3: Preparation of Stem Cells --- */}
             <div className="mt-20 relative">
-              <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-                <div className="order-1 lg:order-1">
-                  <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
-                    <div className="h-2 w-2 rounded-full bg-sky-500" />
-                    Part 03
-                  </div>
-                  <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
-                    Stem Cell Preparation
-                  </h2>
-                  <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    A rigorous, multi-stage process ensures the highest quality and safety standards for therapeutic stem cell applications.
-                  </p>
-                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { step: "01", title: "Collection", desc: "Harvest from donor tissue" },
-                      { step: "02", title: "Isolation", desc: "Separate stem cells from tissue" },
-                      { step: "03", title: "Processing", desc: "Cultivate and expand cells" },
-                      { step: "04", title: "Purification", desc: "Remove unwanted contaminants" },
-                      { step: "05", title: "Quality Testing", desc: "Verify safety and potency" },
-                      { step: "06", title: "Storage", desc: "Cryopreserve for future use" },
-                    ].map((item, i) => (
-                      <div
-                        key={i}
-                        className="group flex items-start gap-4 cursor-pointer rounded-2xl bg-gradient-to-br from-white to-sky-50/30 p-5 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-300"
-                      >
-                        <div className="flex h-10 w-10 flex-none items-center justify-center rounded-2xl bg-sky-600 text-xs font-bold text-white transition-all duration-300 group-hover:bg-sky-700 group-hover:scale-110">
-                          {item.step}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-base font-semibold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
-                            {item.title}
-                          </div>
-                          <div className="mt-1 text-sm text-slate-600">{item.desc}</div>
-                        </div>
+              {/* Full-width header */}
+              <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+                <div className="h-2 w-2 rounded-full bg-sky-500" />
+                Part 03
+              </div>
+              <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+                Stem Cell Preparation
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
+                Bone marrow-derived mesenchymal stem cells (BMMSCs) undergo a carefully controlled
+                multi-stage manufacturing process including isolation, expansion, cell banking,
+                and cryopreservation to ensure quality, safety, and therapeutic effectiveness.
+              </p>
+
+              {/* Step cards (left) + Image (right) side by side */}
+              <div className="mt-8 grid gap-8 lg:grid-cols-2 lg:items-center">
+                {/* Left: 9 Step Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    {
+                      step: "01",
+                      title: "Bone Marrow Aspiration",
+                      desc: "Collection of bone marrow samples for stem cell extraction.",
+                    },
+                    {
+                      step: "02",
+                      title: "Isolation & Culture of BMMSCs",
+                      desc: "Isolation and culture of Bone Marrow Mesenchymal Stem Cells.",
+                    },
+                    {
+                      step: "03",
+                      title: "Expansion of BMMSCs",
+                      desc: "Controlled expansion to increase stem cell quantity.",
+                    },
+                    {
+                      step: "04",
+                      title: "Master Cell Bank (MCB)",
+                      desc: "Expanded cells are stored and preserved in the Master Cell Bank.",
+                    },
+                    {
+                      step: "05",
+                      title: "Pooled & Expanded",
+                      desc: "Selected cell batches are pooled and further expanded.",
+                    },
+                    {
+                      step: "06",
+                      title: "Working Cell Bank (WCB)",
+                      desc: "Final stem cell batches are stored in the Working Cell Bank.",
+                    },
+                    {
+                      step: "07",
+                      title: "Large Scale Expansion",
+                      desc: "Advanced expansion process for large-scale cell production.",
+                    },
+                    {
+                      step: "08",
+                      title: "Quantified into 25M Cells in Vials",
+                      desc: "Cells are quantified and filled into therapeutic-dose vials.",
+                    },
+                    {
+                      step: "09",
+                      title: "Cryopreserved (-185°C to -195°C)",
+                      desc: "Stored under ultra-low temperatures to maintain viability.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="group flex items-start gap-3 cursor-pointer rounded-xl bg-gradient-to-br from-white to-sky-50/30 p-3 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-sky-300"
+                    >
+                      <div className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-sky-600 text-xs font-bold text-white transition-all duration-300 group-hover:bg-sky-700 group-hover:scale-110">
+                        {item.step}
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="order-2 lg:order-2">
-                  <div className="relative mx-auto max-w-2xl">
-                    <div className="absolute -inset-16 rounded-full bg-gradient-to-tr from-sky-300/20 to-teal-300/20 blur-3xl" />
-                    <div className="relative h-[500px] sm:h-[600px] w-full overflow-hidden">
-                      <img
-                        src={mscPreparationImage}
-                        alt="MSC Preparation"
-                        className="h-full w-full object-contain"
-                        decoding="async"
-                        loading="lazy"
-                      />
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
+                          {item.title}
+                        </div>
+                        <div className="mt-0.5 text-xs text-slate-500 leading-relaxed">{item.desc}</div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
+
+                {/* Right: MSC Preparation Image — beside the 9 cards */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={mscPreparationImage}
+                    alt="MSC Preparation"
+                    className="w-full h-auto object-contain"
+                    decoding="async"
+                    loading="lazy"
+                  />
                 </div>
               </div>
             </div>
@@ -957,23 +1026,6 @@ export default function Patient() {
             </div>
           </Container>
         </section>
-
-        {postPreviewOpen ? (
-          <div
-            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 px-4 py-6"
-            onClick={() => setPostPreviewOpen(false)}
-          >
-            <div className="max-h-[92vh] max-w-[95vw] overflow-hidden rounded-2xl bg-sky-100/70 shadow-soft-xl">
-              <img
-                src={postInjectionImage}
-                alt="Post injection precautions"
-                className="max-h-[92vh] w-auto max-w-[95vw] object-contain"
-                decoding="async"
-                loading="eager"
-              />
-            </div>
-          </div>
-        ) : null}
 
         <section id="assessment" className="py-14 sm:py-20">
           <Container>
@@ -1272,8 +1324,8 @@ export default function Patient() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-slate-900">Email Us</div>
-                      <a href="mailto:info@ciplostem.com" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">
-                        info@ciplostem.com
+                      <a href="mailto:info@cipla.com" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">
+                        info@cipla.com
                       </a>
                     </div>
                   </div>
@@ -1292,8 +1344,8 @@ export default function Patient() {
                         rel="noopener noreferrer"
                         className="mt-1 block text-xs leading-relaxed text-slate-600 hover:text-sky-700"
                       >
-                        CIPLA LTD HEAD OFFICE-MUMBAI<br/>
-                        PENINSULA BUSINESS PARK, GANPATRAO KADAM<br/>
+                        CIPLA LTD HEAD OFFICE-MUMBAI<br />
+                        PENINSULA BUSINESS PARK, GANPATRAO KADAM<br />
                         MARG, LOWER PAREL, MUMBAI.
                       </a>
                     </div>
@@ -1322,7 +1374,7 @@ export default function Patient() {
                           message: e.currentTarget.message.value
                         })
                       });
-                      
+
                       if (response.ok) {
                         alert("Message sent! We'll get back to you soon.");
                         e.currentTarget.reset();
@@ -1382,6 +1434,7 @@ export default function Patient() {
           </Container>
         </section>
       </main>
+      <ReferencesSection />
       <Footer />
     </div>
   );
