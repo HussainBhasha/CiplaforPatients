@@ -8,6 +8,7 @@ type Props = {
 export default function IntroVideoOverlay({ src, onDone }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);
   const [blocked, setBlocked] = useState(false);
+  const [fadingOut, setFadingOut] = useState(false);
 
   useEffect(() => {
     const v = ref.current;
@@ -23,9 +24,14 @@ export default function IntroVideoOverlay({ src, onDone }: Props) {
     play();
   }, []);
 
+  const handleEnd = () => {
+    setFadingOut(true);
+    setTimeout(onDone, 500);
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[80] bg-black"
+      className={`fixed inset-0 z-[80] bg-black transition-opacity duration-500 ${fadingOut ? "opacity-0" : "opacity-100"}`}
       onClick={() => {
         if (!blocked) return;
         const v = ref.current;
@@ -43,10 +49,10 @@ export default function IntroVideoOverlay({ src, onDone }: Props) {
         muted
         playsInline
         autoPlay
-        preload="auto"
+        preload="metadata"
         className="h-full w-full object-cover"
-        onEnded={onDone}
-        onError={onDone}
+        onEnded={handleEnd}
+        onError={handleEnd}
       />
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/35" />

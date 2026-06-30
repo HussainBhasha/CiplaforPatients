@@ -1,5 +1,5 @@
 import Container from "@/components/ui/Container";
-import ciplobottle from "@/assets/ciplobottle.png";
+import ciplobottle from "@/assets/Ciplobottle2.png";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type Props = {
@@ -135,19 +135,19 @@ export default function BottleProductSection({ stacked }: Props) {
               Allogeneic Mesenchymal Stem Cells
             </div>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600">
-              A next-generation regenerative product designed to support bone regeneration with a clinically disciplined pathway—from preparation to delivery and recovery guidance.
+              A next-generation regenerative product designed to support cartilage preservation with a clinically disciplined pathway—from preparation to delivery and recovery guidance.
             </p>
 
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
               {[
                 { k: "Cell type", v: "Allogeneic MSCs" },
-                { k: "Indication", v: "Bone regeneration" },
+                { k: "Indication", v: "Cartilage preservation" },
                 { k: "Approach", v: "Protocol-driven" },
                 { k: "Care model", v: "Guided recovery" },
               ].map((x) => (
                 <div
                   key={x.k}
-                  className="rounded-2xl bg-white/85 p-4 ring-1 ring-sky-200/60 shadow-soft-xl"
+                  className="rounded-2xl bg-white/85 p-4 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 ease-out cursor-pointer hover:bg-white hover:ring-sky-400/60 hover:shadow-soft-2xl hover:scale-105"
                 >
                   <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                     {x.k}
@@ -185,18 +185,18 @@ export default function BottleProductSection({ stacked }: Props) {
                 Allogeneic Mesenchymal Stem Cells
               </div>
               <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600">
-                A next-generation regenerative product designed to support bone regeneration with a clinically disciplined pathway—from
+                A next-generation regenerative product designed to support cartilage preservation with a clinically disciplined pathway—from
                 preparation to delivery and recovery guidance.
               </p>
 
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 {[
                   { k: "Cell type", v: "Allogeneic MSCs" },
-                  { k: "Indication", v: "Bone regeneration" },
+                  { k: "Indication", v: "Cartilage preservation" },
                   { k: "Approach", v: "Protocol-driven" },
                   { k: "Care model", v: "Guided recovery" },
                 ].map((x) => (
-                  <div key={x.k} className="rounded-2xl bg-white/85 p-4 ring-1 ring-sky-200/60 shadow-soft-xl">
+                  <div key={x.k} className="rounded-2xl bg-white/85 p-4 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 ease-out cursor-pointer hover:bg-white hover:ring-sky-400/60 hover:shadow-soft-2xl hover:scale-105">
                     <div className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">{x.k}</div>
                     <div className="mt-1 text-sm font-semibold text-slate-900">{x.v}</div>
                   </div>

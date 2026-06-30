@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Home from "@/pages/Home";
 import Privacy from "@/pages/Privacy";
 import About from "@/pages/About";
-import Patient from "@/pages/Patient";
 import Doctor from "@/pages/Doctor";
 import Contact from "@/pages/Contact";
+import Admin from "@/pages/Admin";
+import Home from "@/pages/Home";
+import Patient from "@/pages/Patient";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -44,14 +45,17 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/patient" element={<Patient />} />
-        <Route path="/doctor" element={<Doctor />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy" element={<Privacy />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/patient" element={<Patient />} />
+          <Route path="/doctor" element={<Doctor />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/admin" element={<Admin />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

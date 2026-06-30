@@ -3,25 +3,23 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
-import brandLogo from "@/assets/1157 Ciplostem Logo Final.png";
+import brandLogo from "@/assets/ciplostem-logo.png";
+import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 
 const defaultNav = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Patient", href: "/patient" },
   { label: "Doctor", href: "/doctor" },
   { label: "Assessment", href: "/patient#assessment" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 const patientNav = [
-  { label: "Patient", href: "/patient" },
+  { label: "Home", href: "/patient" },
   { label: "Assessment", href: "/patient#assessment" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 const doctorNav = [
-  { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Doctor", href: "/doctor" },
   { label: "Contact", href: "/contact" },
@@ -79,33 +77,51 @@ export default function MarketingNavbar() {
     <header className="fixed inset-x-0 top-0 z-40">
       <div
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-0 h-20 transition-opacity",
+          "pointer-events-none absolute inset-x-0 top-0 h-16 transition-opacity",
           scrolled ? "opacity-0" : "opacity-100",
           "bg-gradient-to-b from-white/80 via-white/40 to-transparent",
         )}
       />
       <div
         className={cn(
-          "transition-all duration-300",
-          scrolled
-            ? "backdrop-blur-md bg-white/80 shadow-[0_4px_18px_rgb(2_8_23/0.06)]"
-            : "bg-transparent",
+          "transition-all duration-300 bg-white",
+          scrolled ? "shadow-[0_4px_18px_rgb(2_8_23/0.06)]" : "",
         )}
       >
-        <Container>
-          <div className="relative flex h-16 sm:h-20 items-center justify-between">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pl-4 sm:pl-6 lg:pl-8 flex items-center">
+          {portal === "patient" ? (
+            <Link to="/" className="inline-flex items-center gap-2 shrink-0">
+              <img
+                src={ciplaLogo}
+                alt="Cipla"
+                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
+                decoding="async"
+                loading="eager"
+              />
+              <span className="sr-only">Cipla</span>
+            </Link>
+          ) : (
             <Link to="/" className="inline-flex items-center gap-2 shrink-0">
               <img
                 src={brandLogo}
                 alt="CiploStem"
-                className="h-10 sm:h-12 lg:h-14 w-auto object-contain"
+                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
                 decoding="async"
                 loading="eager"
               />
               <span className="sr-only">CiploStem</span>
             </Link>
+          )}
+        </div>
+        <Container>
+          <div className={cn("flex h-16 sm:h-20 items-center justify-between relative")}>
+            {/* Left: Logo */}
+            <div className="relative z-20">
+              {/* Logo is already absolutely positioned on the left */}
+            </div>
 
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm text-slate-600">
+            {/* Middle: Nav Links */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm text-slate-600 absolute left-1/2 -translate-x-1/2">
               {nav.map((item) => {
                 const [path, hash] = item.href.split("#");
                 const normalizedPath = path || "/";
@@ -142,16 +158,32 @@ export default function MarketingNavbar() {
               })}
             </nav>
 
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-800 backdrop-blur transition active:scale-95"
-                aria-label={open ? "Close menu" : "Open menu"}
-                aria-expanded={open}
-                onClick={() => setOpen((v) => !v)}
-              >
-                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
+            {/* Right: Mobile menu button (if needed) */}
+            <div className="relative z-20">
+              {!portal && (
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-80 backdrop-blur transition active:scale-95"
+                    aria-label={open ? "Close menu" : "Open menu"}
+                    aria-expanded={open}
+                    onClick={() => setOpen((v) => !v)}
+                  >
+                    {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                  </button>
+                </div>
+              )}
+              {portal && (
+                <button
+                  type="button"
+                  className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-80 backdrop-blur transition active:scale-95"
+                  aria-label={open ? "Close menu" : "Open menu"}
+                  aria-expanded={open}
+                  onClick={() => setOpen((v) => !v)}
+                >
+                  {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </button>
+              )}
             </div>
           </div>
         </Container>

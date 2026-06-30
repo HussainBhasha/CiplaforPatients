@@ -43,10 +43,43 @@ video,
 svg {
   max-width: 100%;
   height: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+img {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  display: block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 video {
   display: block;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Ensure images don't blur on resize */
+@supports (image-rendering: -webkit-optimize-contrast) {
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Mobile optimization: reduce filter effects on small screens */
+@media (max-width: 768px) {
+  img,
+  video {
+    filter: none;
+    transform: translateZ(0);
+    will-change: auto;
+    -webkit-transform: translateZ(0);
+  }
 }
 
 /* Better tap targets on touch */

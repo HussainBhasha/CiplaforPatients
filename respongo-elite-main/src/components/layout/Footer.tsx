@@ -1,6 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import Container from "@/components/ui/Container";
-import brandLogo from "@/assets/1157 Ciplostem Logo Final.png";
+import ciplaLogo from "@/assets/Cipla_logo.svg.png";
+import brandLogo from "@/assets/ciplostem-logo.png";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   const location = useLocation();
@@ -24,7 +26,6 @@ export default function Footer() {
         ] as const)
       : portal === "doctor"
         ? ([
-            { label: "Home", href: "/" },
             { label: "About", href: "/about" },
             { label: "Doctor", href: "/doctor" },
             { label: "Contact", href: "/contact" },
@@ -39,61 +40,93 @@ export default function Footer() {
           ] as const);
 
   return (
-    <footer className="mt-10 bg-[#081A2A] text-white">
+    <footer className="bg-white text-slate-900">
       <Container>
-        <div className="grid gap-10 py-12 sm:py-14 grid-cols-2 sm:grid-cols-2 md:grid-cols-4">
-          <div className="space-y-4 col-span-2 md:col-span-1">
-            <div className="flex items-center gap-3">
-              <img src={brandLogo} alt="CiploStem" className="h-9 sm:h-10 w-auto object-contain" />
+        <div className="flex flex-col gap-8 py-8 sm:py-10">
+          {/* Desktop Layout: Logo left, nav middle, contact/address right */}
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto_1fr] items-center">
+            {/* Left: Logo */}
+            <div className="hidden lg:flex justify-start">
+              {portal === "patient" ? (
+                <img src={ciplaLogo} alt="Cipla" className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125" />
+              ) : (
+               <img
+  src={brandLogo}
+  alt="CiploStem"
+  className="h-14 sm:h-16 w-auto shrink-0 max-w-full"
+/>
+              )}
             </div>
-            <p className="max-w-sm text-sm text-white/70">
-              Leading the future of regenerative medicine with advanced allogeneic mesenchymal stem cell therapy for bone healing and tissue recovery.
-            </p>
-            <div className="space-y-1 text-sm text-white/70">
-              <div>info@ciplostem.com</div>
-              <div>+1 (555) 123-4567</div>
-              <div>123 Biotech Ave, Medical City</div>
+
+            {/* Middle: Nav */}
+            <div className="hidden lg:flex flex-wrap justify-center gap-6 text-sm text-slate-600">
+              {nav.map((item) => {
+                if (item.label === "Patient" || item.label === "Privacy") return null;
+                return (
+                  <Link key={item.label} to={item.href} className="hover:text-sky-600 transition-colors font-medium">
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Right: Contact & Address */}
+            <div className="hidden lg:flex flex-col items-end gap-3 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-sky-700" />
+                <div>info@cipla.com</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-sky-700" />
+                <div>Toll Free: 1800-123-4567</div>
+              </div>
+              <div className="text-right flex items-start gap-2">
+                <MapPin className="h-4 w-4 text-sky-700 mt-0.5 flex-none" />
+                <div>
+                  <div className="font-semibold">CIPLA LTD HEAD OFFICE-MUMBAI</div>
+                  <div>PENINSULA BUSINESS PARK, GANPATRAO KADAM</div>
+                  <div>MARG, LOWER PAREL, MUMBAI.</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <div className="text-sm font-semibold text-white/90">Product</div>
-            <div className="grid gap-2 text-sm text-white/70">
-              <a href="/#about" className="hover:text-white transition-colors">Features</a>
-              <a href="/patient#assessment" className="hover:text-white transition-colors">How It Works</a>
-              <a href="/patient#assessment" className="hover:text-white transition-colors">Clinical Trials</a>
-              <a href="/#assessment" className="hover:text-white transition-colors">Research</a>
+          {/* Mobile layout for small screens */}
+          <div className="flex flex-col gap-4 lg:hidden">
+            {/* Logo first for mobile */}
+            <div className="flex justify-center">
+              {portal === "patient" ? (
+                <img src={ciplaLogo} alt="Cipla" className="h-10 sm:h-14 lg:h-16 w-auto object-contain" />
+              ) : (
+                <img
+  src={brandLogo}
+  alt="CiploStem"
+  className="h-20 lg:h-24 w-auto shrink-0"
+/>
+              )}
+            </div>
+            <div className="flex flex-col items-center gap-3 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-sky-700" />
+                <div>info@cipla.com</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-sky-700" />
+                <div>Toll Free: 1800-123-4567</div>
+              </div>
+              <div className="text-center flex flex-col items-center gap-2">
+                <MapPin className="h-4 w-4 text-sky-700" />
+                <div>
+                  <div className="font-semibold">CIPLA LTD HEAD OFFICE-MUMBAI</div>
+                  <div>PENINSULA BUSINESS PARK, GANPATRAO KADAM</div>
+                  <div>MARG, LOWER PAREL, MUMBAI.</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <div className="text-sm font-semibold text-white/90">Company</div>
-            <div className="grid gap-2 text-sm text-white/70">
-              <a href="/about" className="hover:text-white transition-colors">About Us</a>
-              <a href="/#about" className="hover:text-white transition-colors">Careers</a>
-              <a href="/#about" className="hover:text-white transition-colors">News</a>
-              <a href="/contact" className="hover:text-white transition-colors">Contact</a>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="text-sm font-semibold text-white/90">Navigation</div>
-            <div className="grid gap-2 text-sm text-white/70">
-              {nav.map((item) => (
-                <Link key={item.label} to={item.href} className="hover:text-white transition-colors">
-                  {item.label}
-                </Link>
-              ))}
-              <Link to="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-3 border-t border-white/10 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
-          <div>© {new Date().getFullYear()} CiploStem. All rights reserved.</div>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <a href="/patient#assessment" className="hover:text-white transition-colors">Terms of Service</a>
+          <div className="border-t border-slate-200 pt-6 text-center text-xs text-slate-500">
+            © {new Date().getFullYear()} {portal === "patient" ? "Cipla" : "CiploStem"}. All rights reserved.
           </div>
         </div>
       </Container>
