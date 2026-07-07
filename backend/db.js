@@ -3,59 +3,52 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const dbHost = process.env.DB_HOST;
+const dbPort = Number(process.env.DB_PORT) || 3306;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbName = process.env.DB_NAME;
 
-// Create MySQL connection pool
-const pool = mysql.createPool({
-
-  host: process.env.DB_HOST,
-
-  port: Number(process.env.DB_PORT) || 3306,
-
-  user: process.env.DB_USER,
-
-  password: process.env.DB_PASSWORD,
-
-  database: process.env.DB_NAME,
-
+const serverPool = mysql.createPool({
+  host: dbHost,
+  port: dbPort,
+  user: dbUser,
+  password: dbPassword,
+  timezone: "Z",
+  connectTimeout: 10000,
   waitForConnections: true,
-
-  connectionLimit: 10,
-
-  queueLimit: 0
-
+  connectionLimit: 5,
+  queueLimit: 0,
 });
 
-
+export let pool = null;
 
 // Initialize database and tables
 export async function initDB() {
 
   try {
+    if (!dbHost || !dbUser || !dbName) {
+      throw new Error("Missing DB env vars. Required: DB_HOST, DB_USER, DB_NAME (and DB_PASSWORD if applicable).");
+    }
 
+    await serverPool.query("SELECT 1");
+    console.log("Database server connected");
 
-    // Check database connection
-    const connection = await pool.getConnection();
+    await serverPool.query("CREATE DATABASE IF NOT EXISTS ??", [dbName]);
 
-
-    console.log("Database connected");
-
-
-    // Create database if not exists
-    await connection.query(
-      `CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`
-    );
-
-
-    connection.release();
-
-
-
-    // Select database
-    await pool.query(
-      `USE ${process.env.DB_NAME}`
-    );
-
-
+    pool = mysql.createPool({
+      host: dbHost,
+      port: dbPort,
+      user: dbUser,
+      password: dbPassword,
+      database: dbName,
+      timezone: "Z",
+      connectTimeout: 10000,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
+    await pool.query("SET time_zone = '+05:30'");
 
     // Create assessment table
     await pool.query(`
@@ -92,9 +85,6 @@ export async function initDB() {
 
     `);
 
-
-
-
     // Create contact table
     await pool.query(`
 
@@ -122,23 +112,13 @@ export async function initDB() {
 
     console.log("Database initialized successfully!");
 
-
-
   } catch (error) {
-
-
     console.error(
       "Database initialization error:",
       error
     );
-
-
     throw error;
-
   }
-
 }
 
-
-
-export default pool;
+export { pool as default };

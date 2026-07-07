@@ -8,7 +8,6 @@ import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 
 const defaultNav = [
   { label: "About", href: "/about" },
-  { label: "Doctor", href: "/doctor" },
   { label: "Assessment", href: "/patient#assessment" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -19,17 +18,11 @@ const patientNav = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-const doctorNav = [
-  { label: "About", href: "/about" },
-  { label: "Doctor", href: "/doctor" },
-  { label: "Contact", href: "/contact" },
-] as const;
-
 export default function MarketingNavbar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const setPortal = (next: "patient" | "doctor" | null) => {
+  const setPortal = (next: "patient" | null) => {
     if (!next) return;
     try {
       sessionStorage.setItem("ciplostem:portal", next);
@@ -39,20 +32,18 @@ export default function MarketingNavbar() {
   };
   const portal = (() => {
     if (location.pathname.startsWith("/patient")) return "patient" as const;
-    if (location.pathname.startsWith("/doctor")) return "doctor" as const;
     try {
       const v = sessionStorage.getItem("ciplostem:portal");
-      if (v === "patient" || v === "doctor") return v;
+      if (v === "patient") return v;
     } catch {
       void 0;
     }
     return null;
   })();
-  const nav = portal === "patient" ? patientNav : portal === "doctor" ? doctorNav : defaultNav;
+  const nav = portal === "patient" ? patientNav : defaultNav;
 
   useEffect(() => {
     if (location.pathname.startsWith("/patient")) setPortal("patient");
-    if (location.pathname.startsWith("/doctor")) setPortal("doctor");
   }, [location.pathname]);
 
   useEffect(() => {
@@ -137,7 +128,6 @@ export default function MarketingNavbar() {
                     )}
                     onClick={(e: MouseEvent<HTMLAnchorElement>) => {
                       if (item.href.startsWith("/patient")) setPortal("patient");
-                      if (item.href.startsWith("/doctor")) setPortal("doctor");
 
                       if (hash && location.pathname === normalizedPath) {
                         e.preventDefault();
@@ -211,7 +201,6 @@ export default function MarketingNavbar() {
                 className="flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-semibold text-slate-800 hover:bg-sky-50 active:bg-sky-100 transition"
                 onClick={() => {
                   if (item.href.startsWith("/patient")) setPortal("patient");
-                  if (item.href.startsWith("/doctor")) setPortal("doctor");
                   setOpen(false);
                 }}
               >

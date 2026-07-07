@@ -130,6 +130,7 @@ export default function About() {
 
               <div className="relative mx-auto w-full max-w-md flex justify-center">
                 <img
+                  {...({ fetchpriority: "high" } as const)}
                   src={ciplobottleImage}
                   alt="CiploStem vial"
                   width={800}
@@ -137,7 +138,6 @@ export default function About() {
                   className="h-[280px] md:h-[450px] w-auto select-none object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.15)]"
                   decoding="async"
                   loading="eager"
-                  fetchPriority="high"
                 />
               </div>
             </div>

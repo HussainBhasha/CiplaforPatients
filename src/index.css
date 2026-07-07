@@ -230,3 +230,27 @@ video {
     scroll-behavior: auto !important;
   }
 }
+
+@layer base {
+  body {
+    color: #000 !important;
+  }
+  
+  h1, h2, h3, h4, h5, h6,
+  .text-display, .text-h1, .text-h2, .text-h3,
+  [class*="text-3xl"], [class*="text-4xl"], [class*="text-5xl"], [class*="text-6xl"] {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+}
+
+@layer utilities {
+  .text-slate-400, .text-slate-500, .text-slate-600, .text-slate-700, .text-slate-800, .text-slate-900,
+  .text-\[\#0b3a66\], .text-sky-600, .text-sky-700, .text-sky-800, .text-teal-600, .text-teal-700, .text-teal-800 {
+    color: #000 !important;
+  }
+  
+  .font-medium, .font-semibold {
+    font-weight: bold !important;
+  }
+}

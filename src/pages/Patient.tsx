@@ -9,9 +9,9 @@ import patientLandingMobileBg from "@/assets/patient 2.png";
 import oaComparisonImage from "@/assets/OA.png";
 import symptomsImage from "@/assets/symptoms.png";
 import gradeStage1Image from "@/assets/stage 1.png";
-import gradeStage2Image from "@/assets/stage 2.png";
-import gradeStage3Image from "@/assets/stage 3.png";
-import gradeStage4Image from "@/assets/stage 4.png";
+import gradeStage2Image from "@/assets/stage 2.jpeg";
+import gradeStage3Image from "@/assets/stage 3.jpeg";
+import gradeStage4Image from "@/assets/stage 4.jpeg";
 import selfHelpImage from "@/assets/self help.png";
 import informationImage from "@/assets/information.jpeg";
 import nonSurgicalImage from "@/assets/non surgical (2).png";
@@ -108,6 +108,8 @@ const grades = [
     treatmentImage: surgicalImage
   },
 ];
+
+const highFetchPriority = { fetchpriority: "high" } as const;
 
 export default function Patient() {
   useEffect(() => {
@@ -233,6 +235,8 @@ export default function Patient() {
       if (!age.trim() || !Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) nextErrors.age = "Enter a valid age.";
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
       if (!emailOk) nextErrors.email = "Enter a valid email.";
+      const phoneDigits = phone.replace(/[^\d]/g, "");
+      if (phoneDigits.length !== 0 && phoneDigits.length !== 10) nextErrors.phone = "Enter a valid 10-digit phone number.";
     }
     return nextErrors;
   };
@@ -283,10 +287,15 @@ export default function Patient() {
       });
 
       if (response.ok) {
+        const payload = await response.json().catch(() => null);
+        if (payload?.emailSent === false) {
+          alert(payload?.message || "Saved, but email failed to send.");
+        }
         const { total, label } = calcScore();
         setResult({ score: total, max: scoreMax, label });
       } else {
-        alert("Failed to submit assessment. Please try again.");
+        const msg = await response.json().catch(() => null);
+        alert(msg?.message || "Failed to submit assessment. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting assessment:", error);
@@ -329,7 +338,7 @@ export default function Patient() {
             decoding="async"
             loading="eager"
             aria-hidden="true"
-            fetchPriority="high"
+            {...highFetchPriority}
           />
           {/* Desktop Image */}
           <img
@@ -341,7 +350,7 @@ export default function Patient() {
             decoding="async"
             loading="eager"
             aria-hidden="true"
-            fetchPriority="high"
+            {...highFetchPriority}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent md:from-white/85 md:via-white/45" />
           <Container>
@@ -452,7 +461,7 @@ export default function Patient() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_20%,rgba(11,58,102,0.06),transparent_55%)]" />
           <Container>
             <div className="mx-auto max-w-6xl">
-              <div className="max-w-xl">
+              <div className="max-w-3xl mx-auto text-center">
                 <h1 className={cn("text-5xl font-extrabold text-[#0b3a66] reveal-fade", symptomsInView && "reveal-fade-visible")}>Knee OA: Symptoms</h1>
                 <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-[#0b3a66] sm:text-4xl">
                   <RevealWords text="Signs Your Knee May Be Telling You" active={symptomsInView} />
@@ -463,66 +472,38 @@ export default function Patient() {
                 </p>
               </div>
 
-              <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-stretch">
-                {/* Left Side: Symptom Cards */}
-                <div className="flex flex-col gap-4">
-                  {oaSymptomHighlights.map((item, idx) => (
-                    <div
-                      key={item.title}
-                      className={cn(
-                        "flex items-center gap-4 rounded-[22px] bg-white p-4 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80 transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(11,58,102,0.08)] hover:border-[#0b3a66]/60 hover:-translate-y-1 cursor-pointer",
-                        symptomsInView
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-4"
-                      )}
-                      style={{ transitionDelay: `${idx * 90}ms` }}
-                    >
+              <div className="mt-12 grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
+                {oaSymptomHighlights.map((item, idx) => (
+                  <div
+                    key={item.title}
+                    className={cn(
+                      "flex items-start gap-4 rounded-[22px] bg-white p-6 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80 transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(11,58,102,0.08)] hover:border-[#0b3a66]/60 hover:bg-sky-50/50 hover:-translate-y-1 cursor-pointer",
+                      symptomsInView
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-4"
+                    )}
+                    style={{ transitionDelay: `${idx * 90}ms` }}
+                  >
 
-                      {/* Icon */}
-                      <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-[#0b3a66]/5 text-[#0b3a66] ring-1 ring-[#0b3a66]/10">
-                        {item.icon}
+                    {/* Text */}
+                    <div className="min-w-0 flex-1 pt-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm font-bold text-[#0b3a66]">
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+
+                        <h3 className="text-base font-bold text-slate-900">
+                          {item.title}
+                        </h3>
                       </div>
 
-                      {/* Text */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[#0b3a66]">
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-
-                          <h3 className="text-sm font-semibold text-slate-900">
-                            {item.title}
-                          </h3>
-                        </div>
-
-                        <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                          {item.text}
-                        </p>
-                      </div>
-
+                      <p className="mt-1 text-sm leading-relaxed text-slate-500">
+                        {item.text}
+                      </p>
                     </div>
-                  ))}
-                </div>
 
-                {/* Right Side: Circular Infographic Image */}
-                <div
-                  className={cn(
-                    "flex items-center justify-center transition-all duration-700 ease-out lg:self-center",
-                    symptomsInView
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-4"
-                  )}
-                >
-                  <img
-                    src={symptomsImage}
-                    alt="Knee OA symptoms wheel"
-                    width={800}
-                    height={800}
-                    className="h-full w-full max-w-[430px] object-contain"
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           </Container>
@@ -558,7 +539,7 @@ export default function Patient() {
                       alt={`${g.k} illustration`}
                       width={800}
                       height={600}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain p-2"
                       decoding="async"
                       loading="lazy"
                     />
@@ -968,7 +949,7 @@ export default function Patient() {
                       </div>
                       <div className="space-y-2">
                         {[
-                          "Avoid overstraining/weight-bearing early",
+                          "Avoid overstraining or early weight-bearing",
                           "Do not take medicines unless prescribed",
                           "Avoid massage or hot pack on the area",
                           "Avoid very hot baths",
@@ -1000,7 +981,7 @@ export default function Patient() {
                         <span className="text-sm font-bold text-slate-900">Do’s</span>
                       </div>
                       <div className="space-y-2">
-                        {["Gradually return to normal activities", "Follow rehab plan recommended by your doctor"].map((x, i) => (
+                        {["Gradually return to normal activities", "Follow the rehab plan recommended by your doctor"].map((x, i) => (
                           <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
                             <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-emerald-600" />
                             <span>{x}</span>
@@ -1015,7 +996,7 @@ export default function Patient() {
                         <span className="text-sm font-bold text-slate-900">Don’ts</span>
                       </div>
                       <div className="space-y-2">
-                        {["Avoid smoking and alcohol (first 7 days)", "Avoid aggressive exercise unless advised"].map((x, i) => (
+                        {["Avoid smoking and alcohol for the first 7 days", "Avoid aggressive exercise unless advised by your doctor"].map((x, i) => (
                           <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
                             <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-rose-600" />
                             <span>{x}</span>
@@ -1269,11 +1250,15 @@ export default function Patient() {
                         <div className="mt-4">
                           <input
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => {
+                              setPhone(e.target.value);
+                              setErrors((p) => ({ ...p, phone: "" }));
+                            }}
                             placeholder="Phone (optional)"
                             inputMode="tel"
                             className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
                           />
+                          {errors.phone ? <div className="mt-2 text-xs text-rose-600">{errors.phone}</div> : null}
                         </div>
                         <div className="mt-4">
                           <textarea
@@ -1399,10 +1384,16 @@ export default function Patient() {
                       });
 
                       if (response.ok) {
-                        alert("Message sent! We'll get back to you soon.");
+                        const payload = await response.json().catch(() => null);
+                        if (payload?.emailSent === false) {
+                          alert(payload?.message || "Saved, but email failed to send.");
+                        } else {
+                          alert("Message sent! We'll get back to you soon.");
+                        }
                         e.currentTarget.reset();
                       } else {
-                        alert("Failed to send message");
+                        const msg = await response.json().catch(() => null);
+                        alert(msg?.message || "Failed to send message");
                       }
                     } catch (error) {
                       console.error("Error sending message:", error);
