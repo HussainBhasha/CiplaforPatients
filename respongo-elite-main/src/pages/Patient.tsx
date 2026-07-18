@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
 import oaComparisonImage from "@/assets/OA.png";
+import mobileOAImage from "@/assets/mobile OA.png";
 import symptomsImage from "@/assets/symptoms.png";
 import gradeStage1Image from "@/assets/stage 1.png";
 import gradeStage2Image from "@/assets/stage 2.png";
@@ -18,9 +19,20 @@ import nonSurgicalImage from "@/assets/non surgical (2).png";
 import surgicalImage from "@/assets/surgical.jpeg";
 import stemcellImage from "@/assets/stemcell.png";
 import newStemCellImage from "@/assets/newstemcell.png";
+import advanceStemCellImage from "@/assets/Advance stem cell.png";
 import mscImage from "@/assets/MSC.png";
 import mscPreparationImage from "@/assets/MSC preparation.png";
-import { Armchair, ArrowRight, Droplets, Footprints, Send, TrendingUp, Phone, Mail, MapPin } from "lucide-react";
+import stemCellPreparationImage from "@/assets/stem cell preparation.png";
+import walkingImage from "@/assets/walking image.png";
+import climbingImage from "@/assets/climbing.png";
+import sittingImage from "@/assets/sitting.png";
+import cryoshipperImage from "@/assets/cryoshipper.png";
+import cellVialImage from "@/assets/cell_vial.png";
+import waterBathImage from "@/assets/water_bath.png";
+import plasmalyteBagImage from "@/assets/plasmalyte_bag.png";
+import syringesImage from "@/assets/syringes.png";
+import injectionImage from "@/assets/injection.png";
+import { Armchair, ArrowRight, Droplets, Footprints, Send, TrendingUp, Phone, Mail, MapPin, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
 import gsap from "gsap";
@@ -56,21 +68,22 @@ const oaSymptomHighlights = [
     title: "Pain While Walking",
     text: "Discomfort or pain in the knee while walking, especially on longer distances.",
     icon: <Footprints className="h-6 w-6" />,
+    image: walkingImage,
+    color: "orange",
   },
   {
     title: "Difficulty Climbing Stairs",
     text: "Pain or difficulty while climbing up or down stairs.",
     icon: <TrendingUp className="h-6 w-6" />,
+    image: climbingImage,
+    color: "blue",
   },
   {
     title: "Getting Up from a Chair",
-    text: "Pain or stiffness when standing up after sitting for a while.",
+    text: "Pain or stiffness when getting up from a chair.",
     icon: <Armchair className="h-6 w-6" />,
-  },
-  {
-    title: "Stiffness & Swelling",
-    text: "Morning stiffness, knee swelling, or a feeling of buckling.",
-    icon: <Droplets className="h-6 w-6" />,
+    image: sittingImage,
+    color: "green",
   },
 ];
 
@@ -96,7 +109,7 @@ const grades = [
     title: "Advanced changes",
     text: "Noticeable cartilage loss and inflammation; mobility reduces.",
     image: gradeStage3Image,
-    treatment: "Simple and advanced non-surgical options\nPrescribed oral painkillers, physiotherapy, supporting devices, Intra articular injections",
+    treatment: "Simple and advanced non-surgical options\nPrescription oral painkillers, physiotherapy, supportive devices, and Hyaluronic Acid Injections.",
     treatmentImage: nonSurgicalImage
   },
   {
@@ -104,10 +117,12 @@ const grades = [
     title: "Severe changes",
     text: "Joint-space narrowing; significant pain and stiffness.",
     image: gradeStage4Image,
-    treatment: "Surgical options\nRepair/partial or total joint replacement",
+    treatment: "Surgical options\npartial or total knee replacement (TKR)",
     treatmentImage: surgicalImage
   },
 ];
+
+const highFetchPriority = { fetchpriority: "high" } as const;
 
 export default function Patient() {
   useEffect(() => {
@@ -233,6 +248,8 @@ export default function Patient() {
       if (!age.trim() || !Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) nextErrors.age = "Enter a valid age.";
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
       if (!emailOk) nextErrors.email = "Enter a valid email.";
+      const phoneDigits = phone.replace(/[^\d]/g, "");
+      if (phoneDigits.length !== 0 && phoneDigits.length !== 10) nextErrors.phone = "Enter a valid 10-digit phone number.";
     }
     return nextErrors;
   };
@@ -283,10 +300,15 @@ export default function Patient() {
       });
 
       if (response.ok) {
+        const payload = await response.json().catch(() => null);
+        if (payload?.emailSent === false) {
+          alert(payload?.message || "Saved, but email failed to send.");
+        }
         const { total, label } = calcScore();
         setResult({ score: total, max: scoreMax, label });
       } else {
-        alert("Failed to submit assessment. Please try again.");
+        const msg = await response.json().catch(() => null);
+        alert(msg?.message || "Failed to submit assessment. Please try again.");
       }
     } catch (error) {
       console.error("Error submitting assessment:", error);
@@ -329,7 +351,7 @@ export default function Patient() {
             decoding="async"
             loading="eager"
             aria-hidden="true"
-            fetchPriority="high"
+            {...highFetchPriority}
           />
           {/* Desktop Image */}
           <img
@@ -341,30 +363,19 @@ export default function Patient() {
             decoding="async"
             loading="eager"
             aria-hidden="true"
-            fetchPriority="high"
+            {...highFetchPriority}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/45 to-transparent md:from-white/85 md:via-white/45" />
           <Container>
             <div className="absolute inset-0">
               <div className="h-full flex items-center">
                 <div className="max-w-3xl pl-6 sm:pl-10 md:pl-14 -translate-y-4 sm:translate-y-0">
-                  {/* Mobile Text */}
-                  <div className="md:hidden">
-                    <div className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
-                      Your Knee Health Journey
-                    </div>
-                    <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
-                      Understand your knee condition better with our personalized assessment. Get insights into your knee health and discover solutions tailored for you.
-                    </p>
-                  </div>
-
-                  {/* Desktop Text */}
-                  <div className="hidden md:block">
-                    <div className="font-display text-5xl sm:text-6xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
+                  <div>
+                    <div className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
                       Knee Osteoarthritis (OA)
                     </div>
                     <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
-                      Osteoarthritis is a common joint condition where knee cartilage gradually wears down, causing pain, stiffness, and reduced
+                      Knee Osteoarthritis is a common joint condition where knee cartilage gradually wears down, causing pain, stiffness, and reduced
                       mobility. Early awareness and assessment can help you understand your knee health better.
                     </p>
                   </div>
@@ -401,25 +412,34 @@ export default function Patient() {
                   Understanding Knee Osteoarthritis
                 </div>
                 <div className="mt-4 text-sm sm:text-base font-medium text-slate-600">
-                  Know the difference between a healthy knee and an osteoarthritic knee
+                  Healthy Knee vs. Osteoarthritic Knee: Understand the Key Differences
                 </div>
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600">
-                  Knee Osteoarthritis is a chronic joint condition where the protective cartilage between bones gradually wears down. This can
+                  Knee Osteoarthritis is a chronic joint degenerative where the protective cartilage between bones gradually wears down. This can
                   lead to pain, stiffness, swelling, and reduced movement.
                 </p>
 
-                <div className="mt-8 grid gap-4">
+                <div className="hidden md:grid mt-8 gap-4">
                   <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl">
-                    <div className="text-sm font-semibold text-slate-900">Healthy Knee</div>
+                    <div className="text-sm font-semibold text-slate-900">Normal Knee</div>
                     <div className="mt-2 text-sm leading-relaxed text-slate-600">
-                      Smooth cartilage, healthy joint space, and flexible movement support normal knee function.
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>Smooth Cartilage</li>
+                        <li>Healthy Ligament</li>
+                        <li>Normal Bone</li>
+                      </ul>
                     </div>
                   </div>
 
                   <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl">
                     <div className="text-sm font-semibold text-slate-900">Osteoarthritis Knee</div>
                     <div className="mt-2 text-sm leading-relaxed text-slate-600">
-                      Cartilage breakdown, bone changes, and inflammation may cause pain and reduced mobility.
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>Cartilage Breakdown</li>
+                        <li>Bone Spurs</li>
+                        <li>Inflamed Synovium</li>
+                        <li>Bone Changes</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -432,16 +452,54 @@ export default function Patient() {
                   oaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
                 )}
               >
-                <div className="relative h-[360px] sm:h-[440px] lg:h-[520px]">
+                <div className="relative md:h-[360px] lg:h-[520px]">
                   <img
                     src={oaComparisonImage}
                     alt="Healthy knee vs osteoarthritis comparison"
                     width={1200}
                     height={800}
-                    className="h-full w-full object-contain"
+                    className="hidden md:block h-full w-full object-contain"
                     decoding="async"
                     loading="eager"
                   />
+
+                  {/* Mobile Image with Text Overlays */}
+                  <div className="md:hidden relative w-full h-auto">
+                    <img
+                      src={mobileOAImage}
+                      alt="Healthy knee vs osteoarthritis comparison mobile"
+                      width={1200}
+                      height={800}
+                      className="w-full h-auto object-contain"
+                      decoding="async"
+                      loading="eager"
+                    />
+
+                    {/* Normal Knee Labels */}
+                    <div className="absolute top-[40%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Smooth Cartilage
+                    </div>
+                    <div className="absolute top-[51%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Healthy Ligament
+                    </div>
+                    <div className="absolute top-[64%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Normal Bone
+                    </div>
+
+                    {/* OA Knee Labels */}
+                    <div className="absolute top-[33%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Cartilage Breakdown
+                    </div>
+                    <div className="absolute top-[46%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Bone Spurs
+                    </div>
+                    <div className="absolute top-[54%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Inflamed Synovium
+                    </div>
+                    <div className="absolute top-[68%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
+                      Bone Changes
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -452,77 +510,83 @@ export default function Patient() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_15%_20%,rgba(11,58,102,0.06),transparent_55%)]" />
           <Container>
             <div className="mx-auto max-w-6xl">
-              <div className="max-w-xl">
+              <div className="max-w-3xl mx-auto text-center">
                 <h1 className={cn("text-5xl font-extrabold text-[#0b3a66] reveal-fade", symptomsInView && "reveal-fade-visible")}>Knee OA: Symptoms</h1>
                 <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-[#0b3a66] sm:text-4xl">
                   <RevealWords text="Signs Your Knee May Be Telling You" active={symptomsInView} />
                 </div>
-                <p className={cn("mt-4 text-sm leading-relaxed text-slate-600 reveal-fade", symptomsInView && "reveal-fade-visible")}>
-                  Knee osteoarthritis symptoms often develop gradually and can impact your daily activities. Recognizing them early can help
-                  you take the right steps towards better joint health.
+                <p className={cn("mt-4 text-sm leading-relaxed text-black reveal-fade", symptomsInView && "reveal-fade-visible")}>
+                  Symptoms of knee osteoarthritis often develop gradually and can significantly impact your daily activities. Recognizing these symptoms early can help you take the right steps toward better joint health.
                 </p>
               </div>
 
-              <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-stretch">
-                {/* Left Side: Symptom Cards */}
-                <div className="flex flex-col gap-4">
-                  {oaSymptomHighlights.map((item, idx) => (
+              <div className="mt-12 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto px-4">
+                {oaSymptomHighlights.map((item, idx) => {
+                  const colors = {
+                    orange: {
+                      cardBorder: "border-orange-200 hover:border-orange-300",
+                      ringBorder: "border-orange-200",
+                      dot: "bg-orange-500",
+                      badgeBg: "bg-orange-500",
+                      iconBg: "bg-orange-50",
+                      iconColor: "text-orange-500",
+                    },
+                    blue: {
+                      cardBorder: "border-blue-200 hover:border-blue-300",
+                      ringBorder: "border-blue-200",
+                      dot: "bg-blue-500",
+                      badgeBg: "bg-blue-500",
+                      iconBg: "bg-blue-50",
+                      iconColor: "text-blue-500",
+                    },
+                    green: {
+                      cardBorder: "border-green-200 hover:border-green-300",
+                      ringBorder: "border-green-200",
+                      dot: "bg-green-500",
+                      badgeBg: "bg-green-500",
+                      iconBg: "bg-green-50",
+                      iconColor: "text-green-500",
+                    }
+                  }[item.color as "orange" | "blue" | "green"];
+
+                  return (
                     <div
                       key={item.title}
                       className={cn(
-                        "flex items-center gap-4 rounded-[22px] bg-white p-4 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80 transition-all duration-300 ease-out hover:shadow-[0_20px_50px_rgba(11,58,102,0.08)] hover:border-[#0b3a66]/60 hover:-translate-y-1 cursor-pointer",
-                        symptomsInView
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-4"
+                        "flex flex-col items-center text-center rounded-[24px] bg-white p-8 shadow-sm border transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md cursor-pointer",
+                        colors?.cardBorder,
+                        symptomsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                       )}
                       style={{ transitionDelay: `${idx * 90}ms` }}
                     >
+                      {/* Image Circle Area */}
+                      <div className={cn("relative w-48 h-48 rounded-full border-[1.5px] flex items-center justify-center mb-6", colors?.ringBorder)}>
 
-                      {/* Icon */}
-                      <div className="flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-[#0b3a66]/5 text-[#0b3a66] ring-1 ring-[#0b3a66]/10">
-                        {item.icon}
-                      </div>
-
-                      {/* Text */}
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[#0b3a66]">
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-
-                          <h3 className="text-sm font-semibold text-slate-900">
-                            {item.title}
-                          </h3>
+                        {/* Image Placeholder */}
+                        <div className="w-[calc(100%-16px)] h-[calc(100%-16px)] rounded-full bg-slate-50 overflow-hidden flex items-center justify-center text-slate-400 text-sm">
+                          {item.image ? (
+                            <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                          ) : (
+                            "Image Area"
+                          )}
                         </div>
 
-                        <p className="mt-1 text-xs leading-relaxed text-slate-500">
-                          {item.text}
-                        </p>
+                        {/* Number Badge */}
+                        <div className={cn("absolute -bottom-4 px-5 py-1 rounded-full text-sm font-bold text-white shadow-sm", colors?.badgeBg)}>
+                          {String(idx + 1).padStart(2, "0")}
+                        </div>
                       </div>
 
-                    </div>
-                  ))}
-                </div>
+                      <h3 className="mt-4 text-[17px] font-bold text-[#0b3a66] mb-4">
+                        {item.title}
+                      </h3>
 
-                {/* Right Side: Circular Infographic Image */}
-                <div
-                  className={cn(
-                    "flex items-center justify-center transition-all duration-700 ease-out lg:self-center",
-                    symptomsInView
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-4"
-                  )}
-                >
-                  <img
-                    src={symptomsImage}
-                    alt="Knee OA symptoms wheel"
-                    width={800}
-                    height={800}
-                    className="h-full w-full max-w-[430px] object-contain"
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </div>
+                      <p className="text-[14px] leading-relaxed text-slate-500 mb-8 flex-1 px-2">
+                        {item.text}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </Container>
@@ -558,7 +622,7 @@ export default function Patient() {
                       alt={`${g.k} illustration`}
                       width={800}
                       height={600}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain p-2"
                       decoding="async"
                       loading="lazy"
                     />
@@ -572,7 +636,7 @@ export default function Patient() {
                     {"treatment" in g && g.treatment && (
                       <div className="mt-6 pt-6 border-t border-slate-200">
                         {g.treatmentImage && (
-                          <div className="h-40 w-full overflow-hidden rounded-xl mb-4">
+                          <div className="relative h-40 w-full overflow-hidden rounded-xl mb-4 bg-white">
                             <img
                               src={g.treatmentImage}
                               alt={`${g.k} treatment`}
@@ -582,6 +646,16 @@ export default function Patient() {
                               decoding="async"
                               loading="lazy"
                             />
+                            {g.k === "Grade I" && (
+                              <>
+                                <div className="absolute top-[28%] left-[56%] -translate-x-1/2 -translate-y-1/2 text-center text-[8px] sm:text-[9.5px] font-black text-black leading-[1.1] tracking-tighter">
+                                  Analgesic<br />Gel
+                                </div>
+                                <div className="absolute top-[58%] left-[82%] -translate-x-1/2 -translate-y-1/2 text-center text-[10px] sm:text-[12px] font-black text-black tracking-tight">
+                                  Oil
+                                </div>
+                              </>
+                            )}
                           </div>
                         )}
                         <div className="space-y-1">
@@ -605,7 +679,7 @@ export default function Patient() {
               ))}
             </div>
 
-            <div className="mt-10 text-center text-sm text-slate-600">Progression of Knee OA from Grade I to Grade IV</div>
+
           </Container>
         </section>
 
@@ -622,38 +696,27 @@ export default function Patient() {
           <Container>
             <div className="mx-auto grid max-w-6xl gap-10 md:grid-cols-2 md:items-center">
               <div className="order-2 md:order-1">
-                <div
-                  ref={stemVisualRef}
-                  className="relative mx-auto max-w-[520px] opacity-0 md:mx-0"
-                >
-                  <div className="absolute -inset-10 rounded-full bg-sky-400/15 blur-3xl glow-pulse" />
+                <div className="relative mx-auto w-full md:mx-0">
                   <div className="relative">
                     <img
-                      src={stemcellImage}
-                      alt="3D stem cell visual"
+                      src={advanceStemCellImage}
+                      alt="Advanced stem cell visual"
                       width={800}
                       height={800}
-                      className="mx-auto w-full max-w-[420px] select-none animate-floaty animate-rotate-slow object-contain"
+                      className="mx-auto w-full max-w-[650px] select-none object-contain scale-110 lg:scale-125 origin-center"
                       decoding="async"
                       loading="lazy"
                     />
-                    <div className="pointer-events-none absolute inset-0">
-                      <div className="absolute left-[18%] top-[22%] h-1.5 w-1.5 rounded-full bg-sky-400/60 blur-[1px] animate-floaty" />
-                      <div className="absolute left-[62%] top-[18%] h-2 w-2 rounded-full bg-sky-300/55 blur-[1px] animate-floaty" />
-                      <div className="absolute left-[72%] top-[58%] h-1.5 w-1.5 rounded-full bg-sky-500/55 blur-[1px] animate-floaty" />
-                      <div className="absolute left-[34%] top-[68%] h-2 w-2 rounded-full bg-sky-400/55 blur-[1px] animate-floaty" />
-                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="order-1 md:order-2">
                 <div className="font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
-                  Advanced Stem Cell Therapy for Knee Regeneration
+                  Advanced Stem Cell Therapy for Knee Joint Preservation
                 </div>
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                  Stem cell technology supports the body's natural healing process by helping regenerate damaged tissues, improve joint
-                  function, and promote better mobility.
+                  Stem cell therapy supports the body's natural regenerative processes by promoting tissue repair, preserving cartilage integrity, enhancing joint function, and improving mobility in individuals with knee osteoarthritis.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -665,10 +728,6 @@ export default function Patient() {
                     {
                       title: "Knee Cartilage Support",
                       text: "Helps maintain healthy joint structure and movement.",
-                    },
-                    {
-                      title: "Mobility Enhancement",
-                      text: "Designed to support flexibility and comfortable movement.",
                     },
                   ].map((card) => (
                     <div
@@ -699,7 +758,7 @@ export default function Patient() {
             <div className="mx-auto max-w-4xl text-center">
               <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">STEM CELL THERAPY</div>
               <div className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
-                How Stem Cells Work
+                How do stem cells work in Knee OA?
               </div>
             </div>
 
@@ -711,28 +770,29 @@ export default function Patient() {
                     <div className="h-2 w-2 rounded-full bg-sky-500" />
                     Part 01
                   </div>
-                  <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+                  <h2 className="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-black sm:text-4xl">
                     What Are Stem Cells?
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Stem cells are the body's raw materials — cells from which all other specialized cells are generated. They have two unique properties: the ability to self-renew through cell division, and the potential to develop into many different cell types.
+                    Stem cells are the body's natural repair cells. They are unique because they can renew themselves, develop into different specialized cell types, help repair and restore damaged tissues, and play an important role in maintaining healthy organs throughout life.
                   </p>
                   <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      { title: "Self‑Renewal", desc: "Can divide and replicate indefinitely", color: "sky" },
-                      { title: "Differentiation", desc: "Transform into specialized cell types", color: "teal" },
+                      { title: "Self-Renewal", desc: "Can continuously produce new stem cells." },
+                      { title: "Repair & Restoration", desc: "Support the body's natural healing by helping repair damaged tissues." },
+                      { title: "Differentiation", desc: "Can develop into different specialized cell types." },
+                      { title: "Tissue Building", desc: "Help maintain and regenerate tissues and organs." },
                     ].map((item, i) => (
                       <div
                         key={i}
                         className="group cursor-pointer rounded-2xl bg-gradient-to-br from-white to-sky-50/30 p-6 ring-1 ring-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-300"
                       >
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className={`h-2 w-2 rounded-full bg-${item.color}-500`} />
+                        <div className="mb-3">
                           <div className="text-base font-bold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
                             {item.title}
                           </div>
                         </div>
-                        <div className="text-sm text-slate-600">{item.desc}</div>
+                        <div className="text-sm text-slate-700">{item.desc}</div>
                       </div>
                     ))}
                   </div>
@@ -759,15 +819,13 @@ export default function Patient() {
             <div className="mt-20 relative">
               <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
                 <div>
-                  <div className="relative mx-auto max-w-2xl">
-                    {/* Glowing effects */}
-                    <div className="absolute -inset-16 rounded-full bg-gradient-to-tr from-teal-300/20 to-sky-300/20 blur-3xl" />
+                  <div className="mx-auto max-w-2xl">
                     <img
                       src={mscImage}
                       alt="Mesenchymal Stem Cells"
                       width={1200}
                       height={800}
-                      className="relative w-full h-auto"
+                      className="w-full h-auto"
                       decoding="async"
                       loading="lazy"
                     />
@@ -782,14 +840,14 @@ export default function Patient() {
                     Mesenchymal Stem Cells (MSCs)
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Mesenchymal stem cells are multipotent stromal cells that can differentiate into a variety of cell types. They are found in bone marrow, adipose tissue, and other tissues, and play a crucial role in tissue repair and regeneration.
+                    Mesenchymal Stem Cells (MSCs) are adult stem cells with the unique ability to develop into different specialized tissues. They play an important role in repairing, regenerating, and healing damaged tissues while supporting the body's natural healing process.
                   </p>
                   <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      { title: "Cartilage Cells", desc: "Form flexible connective tissue" },
-                      { title: "Bone Cells", desc: "Provide structural support and strength" },
-                      { title: "Muscle Cells", desc: "Enable movement and flexibility" },
-                      { title: "Connective Tissue", desc: "Support and connect body structures" },
+                      { title: "Unique Cells", desc: "Specialized adult stem cells capable of supporting tissue repair and regeneration." },
+                      { title: "Differentiation Potential", desc: "Can develop into bone, cartilage, muscle, and connective tissue." },
+                      { title: "Repair & Regeneration", desc: "Support the body's natural repair process by helping damaged tissues recover." },
+                      { title: "Natural Healing", desc: "Promote a healthier tissue environment that supports regeneration." },
                     ].map((cell, i) => (
                       <div
                         key={i}
@@ -798,7 +856,7 @@ export default function Patient() {
                         <div className="text-base font-bold text-slate-900 transition-colors duration-300 group-hover:text-sky-700 mb-3">
                           {cell.title}
                         </div>
-                        <div className="text-sm text-slate-600">{cell.desc}</div>
+                        <div className="text-sm text-slate-700">{cell.desc}</div>
                       </div>
                     ))}
                   </div>
@@ -806,101 +864,357 @@ export default function Patient() {
               </div>
             </div>
 
-            {/* --- Part 3: Preparation of Stem Cells --- */}
+            {/* --- Part 3: Properties of Mesenchymal Stem Cells (MSCs) --- */}
+            <div className="mt-20 relative">
+              <div className="grid gap-12 lg:grid-cols-2 lg:items-stretch pt-4">
+                {/* Visual Flow side */}
+                <div className="order-1 lg:order-2 h-full">
+                  <div className="relative mx-auto max-w-sm flex flex-col items-center lg:mt-14 h-[calc(100%-3.5rem)]">
+                    <div className="absolute -inset-16 rounded-full bg-gradient-to-tr from-sky-300/20 to-indigo-300/20 blur-3xl pointer-events-none" />
+                    
+                    <div className="relative z-10 w-full flex flex-col items-center h-full">
+                      {[
+                        "Self-Replication",
+                        "Differentiation",
+                        "Anti-Inflammatory",
+                        "Immunomodulatory",
+                        "Anti-Catabolic",
+                        "Low Immunogenicity"
+                      ].map((heading, i, arr) => (
+                        <div key={i} className={`w-full flex flex-col items-center ${i < arr.length - 1 ? 'flex-1' : ''}`}>
+                          <div className="w-full shrink-0 rounded-2xl bg-white/90 px-6 py-4 shadow-sm ring-1 ring-slate-100 backdrop-blur-sm text-left transition-all hover:-translate-y-1 hover:shadow-md hover:ring-sky-200 cursor-pointer">
+                            <span className="text-[15px] font-bold text-slate-800">{heading}</span>
+                          </div>
+                          {i < arr.length - 1 && (
+                            <div className="flex flex-col items-center justify-center flex-1 my-2 min-h-[1.5rem] w-full">
+                              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white text-sky-500 shadow-sm ring-1 ring-sky-200">
+                                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                </svg>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Text side */}
+                <div className="order-2 lg:order-1">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-200">
+                    <div className="h-2 w-2 rounded-full bg-indigo-500" />
+                    Part 03
+                  </div>
+                  <h2 className="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-black sm:text-4xl">
+                    Properties of Mesenchymal Stem Cells (MSCs)
+                  </h2>
+                  <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
+                    Mesenchymal Stem Cells possess several unique biological properties that make them valuable in regenerative medicine and tissue repair.
+                  </p>
+                  
+                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {[
+                      {
+                        title: "Self-Replication",
+                        desc: "Can continuously produce new stem cells to support long-term tissue maintenance.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                          </svg>
+                        )
+                      },
+                      {
+                        title: "Differentiation",
+                        desc: "Can develop into specialized cells such as cartilage, bone, muscle, and connective tissue.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        title: "Anti-Inflammatory",
+                        desc: "Help reduce inflammation and create a healthier environment for tissue repair.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        title: "Immunomodulatory",
+                        desc: "Help regulate the body's immune response to support healing.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        title: "Anti-Catabolic",
+                        desc: "Help reduce tissue breakdown and preserve healthy joint structures.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                          </svg>
+                        )
+                      },
+                      {
+                        title: "Low Immunogenicity",
+                        desc: "Have a lower likelihood of triggering an immune reaction, making them suitable for regenerative therapies.",
+                        icon: (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 11a9 9 0 019-9m0 0a9 9 0 019 9m-9-9v18" />
+                          </svg>
+                        )
+                      }
+                    ].map((feature, i) => (
+                      <div
+                        key={i}
+                        className="group cursor-pointer rounded-2xl bg-gradient-to-br from-white to-sky-50/30 p-5 ring-1 ring-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-300 flex flex-col h-full"
+                      >
+                        <div className="mb-3">
+                          <div className="text-[15px] font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
+                            {feature.title}
+                          </div>
+                        </div>
+                        <div className="text-[13px] leading-relaxed text-slate-700 mt-auto">{feature.desc}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* --- Part 4: Preparation of Stem Cells --- */}
             <div className="mt-20 relative">
               {/* Full-width header */}
-              <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
-                <div className="h-2 w-2 rounded-full bg-sky-500" />
-                Part 03
+              <div className="flex flex-col items-center text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
+                  <div className="h-2 w-2 rounded-full bg-sky-500" />
+                  Part 04
+                </div>
+                <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+                  Stem Cell Preparation
+                </h2>
+                <p className="mt-4 max-w-3xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base">
+                  Allogeneic Bone Marrow-Derived Mesenchymal Stem Cells (BMMSCs) undergo a carefully controlled
+                  multi-stage manufacturing process, including isolation, expansion, cell banking,
+                  and cryopreservation, to ensure quality, safety, and therapeutic effectiveness.
+                </p>
               </div>
-              <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
-                Stem Cell Preparation
-              </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                Bone marrow-derived mesenchymal stem cells (BMMSCs) undergo a carefully controlled
-                multi-stage manufacturing process including isolation, expansion, cell banking,
-                and cryopreservation to ensure quality, safety, and therapeutic effectiveness.
-              </p>
 
-              {/* Step cards (left) + Image (right) side by side */}
-              <div className="mt-8 grid gap-8 lg:grid-cols-2 lg:items-center">
-                {/* Left: 9 Step Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {/* Image (Top) + Step cards (Bottom) for better readability */}
+              <div className="mt-12 flex flex-col gap-12">
+                {/* Top: MSC Preparation Image */}
+                <div className="flex items-center justify-center rounded-2xl bg-white/40 p-4 ring-1 ring-slate-100 shadow-sm backdrop-blur-sm">
+                  <img
+                    src={stemCellPreparationImage}
+                    alt="MSC Preparation Flowchart"
+                    width={1600}
+                    height={800}
+                    className="w-full max-w-5xl h-auto object-contain drop-shadow-sm"
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </div>
+
+                {/* Bottom: 12 Step Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
                     {
                       step: "01",
-                      title: "Bone Marrow Aspiration",
-                      desc: "Collection of bone marrow samples for stem cell extraction.",
+                      title: "Isolation & Culture of BMMSCs",
+                      desc: "Isolation and culture of bone marrow mesenchymal stem cells (BMMSCs).",
                     },
                     {
                       step: "02",
-                      title: "Isolation & Culture of BMMSCs",
-                      desc: "Isolation and culture of Bone Marrow Mesenchymal Stem Cells.",
+                      title: "Expansion of BMMSCs",
+                      desc: "Controlled expansion of BMMSCs to increase cell quantity.",
                     },
                     {
                       step: "03",
-                      title: "Expansion of BMMSCs",
-                      desc: "Controlled expansion to increase stem cell quantity.",
+                      title: "Master Cell Bank (MCB)",
+                      desc: "Expanded BMMSCs are stored in the Master Cell Bank.",
                     },
                     {
                       step: "04",
-                      title: "Master Cell Bank (MCB)",
-                      desc: "Expanded cells are stored and preserved in the Master Cell Bank.",
+                      title: "Pooling & Expansion",
+                      desc: "Selected BMMSC batches are pooled and further expanded.",
                     },
                     {
                       step: "05",
-                      title: "Pooled & Expanded",
-                      desc: "Selected cell batches are pooled and further expanded.",
+                      title: "Working Cell Bank (WCB)",
+                      desc: "Final BMMSC batches are stored in the Working Cell Bank.",
                     },
                     {
                       step: "06",
-                      title: "Working Cell Bank (WCB)",
-                      desc: "Final stem cell batches are stored in the Working Cell Bank.",
+                      title: "Large-Scale Expansion",
+                      desc: "Large-scale expansion of BMMSCs for clinical production.",
                     },
                     {
                       step: "07",
-                      title: "Large Scale Expansion",
-                      desc: "Advanced expansion process for large-scale cell production.",
+                      title: "Quantification into 25M Cell Vials",
+                      desc: "BMMSCs are quantified and filled into 25 million-cell therapeutic vials.",
                     },
                     {
                       step: "08",
-                      title: "Quantified into 25M Cells in Vials",
-                      desc: "Cells are quantified and filled into therapeutic-dose vials.",
+                      title: "Cryopreservation (-185°C to -195°C)",
+                      desc: "BMMSCs are cryopreserved at ultra-low temperatures to maintain viability.",
                     },
                     {
                       step: "09",
-                      title: "Cryopreserved (-185°C to -195°C)",
-                      desc: "Stored under ultra-low temperatures to maintain viability.",
+                      title: "Cold Chain Logistics",
+                      desc: "Cryopreserved BMMSC vials are transported under validated cold-chain conditions.",
+                    },
+                    {
+                      step: "10",
+                      title: "Hospital Delivery",
+                      desc: "BMMSC vials are delivered to the treatment center while maintaining product integrity.",
+                    },
+                    {
+                      step: "11",
+                      title: "Thawing & Reconstitution",
+                      desc: "Cryopreserved BMMSCs are thawed and reconstituted before administration.",
+                    },
+                    {
+                      step: "12",
+                      title: "Intra-articular Injection",
+                      desc: "BMMSCs are administered into the affected knee following the approved clinical procedure.",
                     },
                   ].map((item, i) => (
                     <div
                       key={i}
-                      className="group flex items-start gap-3 cursor-pointer rounded-xl bg-gradient-to-br from-white to-sky-50/30 p-3 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-sky-300"
+                      className="group flex items-start gap-3 cursor-pointer rounded-xl bg-gradient-to-br from-white to-sky-50/30 p-4 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-sky-300"
                     >
-                      <div className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-sky-600 text-xs font-bold text-white transition-all duration-300 group-hover:bg-sky-700 group-hover:scale-110">
+                      <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-sky-600 text-sm font-bold text-white transition-all duration-300 group-hover:bg-sky-700 group-hover:scale-110">
                         {item.step}
                       </div>
                       <div className="min-w-0">
-                        <div className="text-sm font-semibold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
+                        <div className="text-[15px] font-semibold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
                           {item.title}
                         </div>
-                        <div className="mt-0.5 text-xs text-slate-500 leading-relaxed">{item.desc}</div>
+                        <div className="mt-1 text-[13px] text-slate-500 leading-relaxed">{item.desc}</div>
                       </div>
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
 
-                {/* Right: MSC Preparation Image — beside the 9 cards */}
-                <div className="flex items-center justify-center">
-                  <img
-                    src={mscPreparationImage}
-                    alt="MSC Preparation"
-                    width={1200}
-                    height={800}
-                    className="w-full h-auto object-contain"
-                    decoding="async"
-                    loading="lazy"
-                  />
+            {/* --- Part 5: Injection Procedure (Redesigned) --- */}
+            <div className="mt-24 relative bg-[#F5FAFF] py-16 px-6 sm:px-12 rounded-[40px] shadow-sm ring-1 ring-sky-100/50">
+              {/* Full-width header */}
+              <div className="flex flex-col items-center text-center">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200 shadow-sm">
+                  <div className="h-2 w-2 rounded-full bg-sky-500" />
+                  Part 05
+                </div>
+                <h2 className="mt-6 font-display text-4xl font-bold tracking-[-0.03em] text-[#0b3a66] sm:text-5xl">
+                  Injection Procedure
+                </h2>
+                <p className="mt-4 max-w-3xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base font-medium">
+                  Following cryopreserved storage, Respocel® is thawed, reconstituted, prepared with the required solution, and administered through the approved intra-articular injection procedure.
+                </p>
+              </div>
+
+              {/* Horizontal Workflow timeline */}
+              <div className="mt-16 w-full max-w-[90rem] mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
+                  {[
+                    {
+                      step: "STEP 01",
+                      title: "Cryoshipper Storage",
+                      desc: "Cryopreserved Respocel® is transported inside a validated cryoshipper maintained between –185°C and –196°C.",
+                      image: cryoshipperImage,
+                    },
+                    {
+                      step: "STEP 02",
+                      title: "Cryopreserved Cell Vial",
+                      desc: "Each vial contains 25 million BMMSCs suspended in CryoStor® CS5.",
+                      image: cellVialImage,
+                    },
+                    {
+                      step: "STEP 03",
+                      title: "Controlled Thawing",
+                      desc: "The cryopreserved vial is thawed in a sterile 37°C water bath for 3–4 minutes.",
+                      image: waterBathImage,
+                    },
+                    {
+                      step: "STEP 04",
+                      title: "Reconstitution",
+                      desc: "Add 1 mL of PlasmaLyte A to prepare the stem cell suspension for administration.",
+                      image: plasmalyteBagImage,
+                    },
+                    {
+                      step: "STEP 05",
+                      title: "Dose Preparation",
+                      desc: "Prepare the therapeutic dose by combining the BMMSC suspension with Hyaluronic Acid.",
+                      image: syringesImage,
+                    },
+                    {
+                      step: "STEP 06",
+                      title: "Intra-articular Injection",
+                      desc: "Administer 2 mL of 25 million BMMSC suspension together with 2 mL of Hyaluronic Acid into the affected knee.",
+                      image: injectionImage,
+                    }
+                  ].map((item, i) => (
+                    <div key={i} className="flex flex-col relative group cursor-default">
+                      {/* Gradient Connector Arrow - Desktop (Between columns) */}
+                      {(i + 1) % 3 !== 0 && (
+                        <div className="hidden lg:block absolute top-[40%] -right-10 w-12 text-sky-300 z-20">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 drop-shadow-sm"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </div>
+                      )}
+                      
+                      <div className="w-full bg-white/80 backdrop-blur-xl rounded-[28px] p-6 ring-1 ring-sky-100 shadow-[0_8px_30px_rgba(2,132,199,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(2,132,199,0.12)] hover:ring-sky-300 relative z-10 flex flex-col h-full overflow-hidden">
+                        
+                        <div className="relative w-full aspect-[4/3] rounded-[20px] bg-slate-50 mb-6 overflow-hidden shadow-inner ring-1 ring-black/5">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="w-full h-full object-cover mix-blend-multiply drop-shadow-md transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent pointer-events-none" />
+                        </div>
+
+                        <div className="flex flex-col flex-1">
+                          <div className="inline-block w-fit text-[11px] font-bold tracking-widest text-sky-600 bg-sky-50 px-3 py-1.5 rounded-full ring-1 ring-sky-100 mb-4">
+                            {item.step}
+                          </div>
+                          <h3 className="text-xl font-bold text-[#0b3a66] mb-3 leading-tight">{item.title}</h3>
+                          <p className="text-[14px] text-slate-600 leading-relaxed font-medium">{item.desc}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom Information Card (Role of Hyaluronic Acid) */}
+              <div className="mt-16 max-w-5xl mx-auto">
+                <div className="rounded-[32px] bg-white p-8 md:p-10 ring-1 ring-sky-100 shadow-[0_10px_40px_rgba(2,132,199,0.08)] flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+                  <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-sky-50 rounded-full blur-3xl pointer-events-none" />
+                  
+                  <div className="flex h-20 w-20 flex-none items-center justify-center rounded-[24px] bg-gradient-to-br from-sky-50 to-sky-100 text-sky-600 ring-1 ring-sky-200/60 shadow-inner z-10">
+                    <ShieldCheck className="h-10 w-10 text-[#0b3a66]" strokeWidth={1.5} />
+                  </div>
+                  <div className="z-10 flex-1">
+                    <h3 className="font-display text-2xl font-bold text-[#0b3a66] mb-5">Role of Hyaluronic Acid</h3>
+                    <ul className="space-y-4">
+                      {[
+                        "Acts as a biological scaffold.",
+                        "Helps prevent fibroblast invasion.",
+                        "Supports regeneration while reducing fibrocartilage formation."
+                      ].map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]" />
+                          <span className="text-[15px] text-slate-700 font-medium leading-relaxed">{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -972,6 +1286,7 @@ export default function Patient() {
                           "Do not take medicines unless prescribed",
                           "Avoid massage or hot pack on the area",
                           "Avoid very hot baths",
+                          "Avoid self-medications pain-killers for 2-3 days post injection",
                         ].map((x, i) => (
                           <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
                             <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-rose-600" />
@@ -1039,7 +1354,7 @@ export default function Patient() {
                       <div className="flex-1 text-center sm:text-left">
                         <div className="text-base font-bold text-sky-800 mb-1">Important Note</div>
                         <div className="text-sm text-slate-600">
-                          If you have severe swelling, fever, or worsening pain, contact your doctor immediately.
+                          If you have severe swelling, fever, worsening pain, or any allergic reactions, contact your doctor immediately.
                         </div>
                       </div>
                     </div>
@@ -1067,12 +1382,7 @@ export default function Patient() {
                   <div className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
                     Assessment complete
                   </div>
-                  <div className="mt-6 text-sm text-slate-600">Your score</div>
-                  <div className="mt-2 font-display text-6xl font-semibold tracking-[-0.04em] text-sky-700 sm:text-7xl">
-                    {result.score}
-                    <span className="text-2xl text-slate-400">/{result.max}</span>
-                  </div>
-                  <div className="mt-4 inline-flex items-center rounded-full bg-sky-50 px-5 py-2 text-sm font-semibold text-sky-800 ring-1 ring-sky-100">
+                  <div className="mt-8 inline-flex items-center rounded-full bg-sky-50 px-6 py-3 text-base font-semibold text-sky-800 ring-1 ring-sky-100">
                     Risk level: {result.label}
                   </div>
                   <div className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-slate-600">
@@ -1269,11 +1579,15 @@ export default function Patient() {
                         <div className="mt-4">
                           <input
                             value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
+                            onChange={(e) => {
+                              setPhone(e.target.value);
+                              setErrors((p) => ({ ...p, phone: "" }));
+                            }}
                             placeholder="Phone (optional)"
                             inputMode="tel"
                             className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
                           />
+                          {errors.phone ? <div className="mt-2 text-xs text-rose-600">{errors.phone}</div> : null}
                         </div>
                         <div className="mt-4">
                           <textarea
@@ -1399,10 +1713,16 @@ export default function Patient() {
                       });
 
                       if (response.ok) {
-                        alert("Message sent! We'll get back to you soon.");
+                        const payload = await response.json().catch(() => null);
+                        if (payload?.emailSent === false) {
+                          alert(payload?.message || "Saved, but email failed to send.");
+                        } else {
+                          alert("Message sent! We'll get back to you soon.");
+                        }
                         e.currentTarget.reset();
                       } else {
-                        alert("Failed to send message");
+                        const msg = await response.json().catch(() => null);
+                        alert(msg?.message || "Failed to send message");
                       }
                     } catch (error) {
                       console.error("Error sending message:", error);

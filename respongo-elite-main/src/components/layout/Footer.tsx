@@ -8,10 +8,9 @@ export default function Footer() {
   const location = useLocation();
   const portal = (() => {
     if (location.pathname.startsWith("/patient")) return "patient" as const;
-    if (location.pathname.startsWith("/doctor")) return "doctor" as const;
     try {
       const v = sessionStorage.getItem("ciplostem:portal");
-      if (v === "patient" || v === "doctor") return v;
+      if (v === "patient") return v;
     } catch {
       void 0;
     }
@@ -24,20 +23,13 @@ export default function Footer() {
           { label: "Assessment", href: "/patient#assessment" },
           { label: "Contact", href: "/contact" },
         ] as const)
-      : portal === "doctor"
-        ? ([
-            { label: "About", href: "/about" },
-            { label: "Doctor", href: "/doctor" },
-            { label: "Contact", href: "/contact" },
-          ] as const)
-        : ([
-            { label: "Home", href: "/" },
-            { label: "About", href: "/about" },
-            { label: "Patient", href: "/patient" },
-            { label: "Doctor", href: "/doctor" },
-            { label: "Assessment", href: "/patient#assessment" },
-            { label: "Contact", href: "/contact" },
-          ] as const);
+      : ([
+          { label: "Home", href: "/" },
+          { label: "About", href: "/about" },
+          { label: "Patient", href: "/patient" },
+          { label: "Assessment", href: "/patient#assessment" },
+          { label: "Contact", href: "/contact" },
+        ] as const);
 
   return (
     <footer className="bg-white text-slate-900">
@@ -80,12 +72,13 @@ export default function Footer() {
                 <Phone className="h-4 w-4 text-sky-700" />
                 <div>Toll Free: 1800-123-4567</div>
               </div>
-              <div className="text-right flex items-start gap-2">
-                <MapPin className="h-4 w-4 text-sky-700 mt-0.5 flex-none" />
-                <div>
-                  <div className="font-semibold">CIPLA LTD HEAD OFFICE-MUMBAI</div>
-                  <div>PENINSULA BUSINESS PARK, GANPATRAO KADAM</div>
-                  <div>MARG, LOWER PAREL, MUMBAI.</div>
+              <div className="flex max-w-[320px] items-start gap-2 text-right leading-snug">
+                <MapPin className="mt-0.5 h-4 w-4 flex-none text-sky-700" />
+                <div className="space-y-0.5">
+                  <div className="font-semibold text-slate-800">Cipla Ltd Head Office, Mumbai</div>
+                  <div>Peninsula Business Park</div>
+                  <div>Ganpatrao Kadam Marg</div>
+                  <div>Lower Parel, Mumbai</div>
                 </div>
               </div>
             </div>
@@ -114,12 +107,13 @@ export default function Footer() {
                 <Phone className="h-4 w-4 text-sky-700" />
                 <div>Toll Free: 1800-123-4567</div>
               </div>
-              <div className="text-center flex flex-col items-center gap-2">
+              <div className="flex max-w-[280px] flex-col items-center gap-2 text-center leading-snug">
                 <MapPin className="h-4 w-4 text-sky-700" />
-                <div>
-                  <div className="font-semibold">CIPLA LTD HEAD OFFICE-MUMBAI</div>
-                  <div>PENINSULA BUSINESS PARK, GANPATRAO KADAM</div>
-                  <div>MARG, LOWER PAREL, MUMBAI.</div>
+                <div className="space-y-0.5">
+                  <div className="font-semibold text-slate-800">Cipla Ltd Head Office, Mumbai</div>
+                  <div>Peninsula Business Park</div>
+                  <div>Ganpatrao Kadam Marg</div>
+                  <div>Lower Parel, Mumbai</div>
                 </div>
               </div>
             </div>

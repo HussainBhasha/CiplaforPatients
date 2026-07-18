@@ -15,14 +15,16 @@ export default function Contact() {
   const [phone, setPhone] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [emailWarning, setEmailWarning] = useState("");
 
   // Detect portal type
   const portal = (() => {
     if (location.pathname.startsWith("/patient")) return "patient" as const;
-    if (location.pathname.startsWith("/doctor")) return "doctor" as const;
     try {
       const v = sessionStorage.getItem("ciplostem:portal");
-      if (v === "patient" || v === "doctor") return v;
+      if (v === "patient") return v;
     } catch {
       void 0;
     }
@@ -42,10 +44,10 @@ export default function Contact() {
         <section className="bg-sky-50/70">
           <Container>
             <div className="py-8 text-center sm:py-12">
-              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">CONTACT</div>
+              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">FOR MORE INFORMATION</div>
               <div className="mx-auto mt-3 max-w-4xl text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.03em] text-slate-900">
-                Get in touch with{" "}
-                <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">{contactName}</span>.
+                Contact the{" "}
+                <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">{contactName}</span> Team.
               </div>
             </div>
           </Container>
@@ -108,6 +110,7 @@ export default function Contact() {
                   <div className="mt-6 rounded-2xl bg-sky-50 p-5 ring-1 ring-sky-100">
                     <div className="text-sm font-semibold text-slate-900">Message sent</div>
                     <div className="mt-1 text-sm text-slate-600">We’ll get back to you soon.</div>
+                    {emailWarning ? <div className="mt-3 text-sm text-amber-700">{emailWarning}</div> : null}
                     <div className="mt-5">
                       <Button
                         variant="secondary"
@@ -117,6 +120,9 @@ export default function Contact() {
                           setEmail("");
                           setPhone("");
                           setMessage("");
+                          setPhoneError("");
+                          setSubmitError("");
+                          setEmailWarning("");
                         }}
                       >
                         Send another
@@ -128,6 +134,14 @@ export default function Contact() {
                     className="mt-6 space-y-3"
                     onSubmit={async (e) => {
                       e.preventDefault();
+                      setPhoneError("");
+                      setSubmitError("");
+                      setEmailWarning("");
+                      const digits = phone.replace(/[^\d]/g, "");
+                      if (digits.length !== 0 && digits.length !== 10) {
+                        setPhoneError("Phone number must be 10 digits.");
+                        return;
+                      }
                       setLoading(true);
                       
                       try {
@@ -146,18 +160,28 @@ export default function Contact() {
                         });
                         
                         if (response.ok) {
+                          const payload = await response.json().catch(() => null);
+                          if (payload?.emailSent === false) {
+                            setEmailWarning(payload?.message || "Saved, but email failed to send.");
+                          }
                           setSent(true);
                         } else {
-                          alert("Failed to send message");
+                          const msg = await response.json().catch(() => null);
+                          setSubmitError(msg?.message || "Failed to send message");
                         }
                       } catch (error) {
                         console.error("Error sending message:", error);
-                        alert("Failed to send message, please try again");
+                        setSubmitError("Failed to send message, please try again");
                       } finally {
                         setLoading(false);
                       }
                     }}
                   >
+                    {submitError ? (
+                      <div className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700 ring-1 ring-rose-100">
+                        {submitError}
+                      </div>
+                    ) : null}
                     <div className="grid gap-3 sm:grid-cols-2">
                       <input
                         value={fullName}
@@ -178,11 +202,15 @@ export default function Contact() {
 
                     <input
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        setPhoneError("");
+                      }}
                       placeholder="Phone number (optional)"
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
                       inputMode="tel"
                     />
+                    {phoneError ? <div className="text-xs text-rose-600">{phoneError}</div> : null}
 
                     <input
                       value={subject}
