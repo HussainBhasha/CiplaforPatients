@@ -6,6 +6,7 @@ import Contact from "@/pages/Contact";
 import Admin from "@/pages/Admin";
 import Home from "@/pages/Home";
 import Patient from "@/pages/Patient";
+import Disclaimer from "@/pages/Disclaimer";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -52,6 +53,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
         </Routes>
       </Suspense>
     </Router>

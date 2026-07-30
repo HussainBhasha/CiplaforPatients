@@ -22,6 +22,7 @@ export default function Footer() {
           { label: "Patient", href: "/patient" },
           { label: "Assessment", href: "/patient#assessment" },
           { label: "Contact", href: "/contact" },
+          { label: "Disclaimer", href: "/disclaimer" },
         ] as const)
       : ([
           { label: "Home", href: "/" },
@@ -29,6 +30,7 @@ export default function Footer() {
           { label: "Patient", href: "/patient" },
           { label: "Assessment", href: "/patient#assessment" },
           { label: "Contact", href: "/contact" },
+          { label: "Disclaimer", href: "/disclaimer" },
         ] as const);
 
   return (
@@ -97,6 +99,17 @@ export default function Footer() {
   className="h-20 lg:h-24 w-auto shrink-0"
 />
               )}
+            </div>
+            {/* Mobile Nav */}
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-slate-600 my-4">
+              {nav.map((item) => {
+                if (item.label === "Patient" || item.label === "Privacy") return null;
+                return (
+                  <Link key={item.label} to={item.href} className="hover:text-sky-600 transition-colors font-medium">
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
             <div className="flex flex-col items-center gap-3 text-sm text-slate-600">
               <div className="flex items-center gap-2">

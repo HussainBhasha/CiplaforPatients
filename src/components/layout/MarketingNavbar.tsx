@@ -81,7 +81,7 @@ export default function MarketingNavbar() {
       >
         <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pl-4 sm:pl-6 lg:pl-8 flex items-center">
           {portal === "patient" ? (
-            <Link to="/" className="inline-flex items-center gap-2 shrink-0">
+            <div className="inline-flex items-center gap-2 shrink-0">
               <img
                 src={ciplaLogo}
                 alt="Cipla"
@@ -90,9 +90,9 @@ export default function MarketingNavbar() {
                 loading="eager"
               />
               <span className="sr-only">Cipla</span>
-            </Link>
+            </div>
           ) : (
-            <Link to="/" className="inline-flex items-center gap-2 shrink-0">
+            <div className="inline-flex items-center gap-2 shrink-0">
               <img
                 src={brandLogo}
                 alt="CiploStem"
@@ -101,7 +101,7 @@ export default function MarketingNavbar() {
                 loading="eager"
               />
               <span className="sr-only">CiploStem</span>
-            </Link>
+            </div>
           )}
         </div>
         <Container>
