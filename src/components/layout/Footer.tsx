@@ -20,7 +20,6 @@ export default function Footer() {
     portal === "patient"
       ? ([
           { label: "Patient", href: "/patient" },
-          { label: "Assessment", href: "/patient#assessment" },
           { label: "Contact", href: "/contact" },
           { label: "Disclaimer", href: "/disclaimer" },
         ] as const)
@@ -28,7 +27,6 @@ export default function Footer() {
           { label: "Home", href: "/" },
           { label: "About", href: "/about" },
           { label: "Patient", href: "/patient" },
-          { label: "Assessment", href: "/patient#assessment" },
           { label: "Contact", href: "/contact" },
           { label: "Disclaimer", href: "/disclaimer" },
         ] as const);

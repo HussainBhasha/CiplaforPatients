@@ -8,14 +8,14 @@ import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 
 const defaultNav = [
   { label: "About", href: "/about" },
-  { label: "Assessment", href: "/patient#assessment" },
   { label: "Contact", href: "/contact" },
+  { label: "Disclaimer", href: "/disclaimer" },
 ] as const;
 
 const patientNav = [
   { label: "Home", href: "/patient" },
-  { label: "Assessment", href: "/patient#assessment" },
   { label: "Contact", href: "/contact" },
+  { label: "Disclaimer", href: "/disclaimer" },
 ] as const;
 
 export default function MarketingNavbar() {
@@ -65,7 +65,7 @@ export default function MarketingNavbar() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40">
+    <header className="absolute inset-x-0 top-0 z-40">
       <div
         className={cn(
           "pointer-events-none absolute inset-x-0 top-0 h-16 transition-opacity",
@@ -79,31 +79,7 @@ export default function MarketingNavbar() {
           scrolled ? "shadow-[0_4px_18px_rgb(2_8_23/0.06)]" : "",
         )}
       >
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10 pl-4 sm:pl-6 lg:pl-8 flex items-center">
-          {portal === "patient" ? (
-            <div className="inline-flex items-center gap-2 shrink-0">
-              <img
-                src={ciplaLogo}
-                alt="Cipla"
-                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
-                decoding="async"
-                loading="eager"
-              />
-              <span className="sr-only">Cipla</span>
-            </div>
-          ) : (
-            <div className="inline-flex items-center gap-2 shrink-0">
-              <img
-                src={brandLogo}
-                alt="CiploStem"
-                className="h-10 sm:h-14 lg:h-16 w-auto object-contain contrast-125"
-                decoding="async"
-                loading="eager"
-              />
-              <span className="sr-only">CiploStem</span>
-            </div>
-          )}
-        </div>
+
         <Container>
           <div className={cn("flex h-16 sm:h-20 items-center justify-between relative")}>
             {/* Left: Logo */}
@@ -112,7 +88,7 @@ export default function MarketingNavbar() {
             </div>
 
             {/* Middle: Nav Links */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm text-slate-600 absolute left-1/2 -translate-x-1/2">
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-base font-medium text-slate-600 absolute left-1/2 -translate-x-1/2">
               {nav.map((item) => {
                 const [path, hash] = item.href.split("#");
                 const normalizedPath = path || "/";
@@ -148,35 +124,42 @@ export default function MarketingNavbar() {
               })}
             </nav>
 
-            {/* Right: Mobile menu button (if needed) */}
-            <div className="relative z-20">
-              {!portal && (
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-80 backdrop-blur transition active:scale-95"
-                    aria-label={open ? "Close menu" : "Open menu"}
-                    aria-expanded={open}
-                    onClick={() => setOpen((v) => !v)}
-                  >
-                    {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                  </button>
-                </div>
-              )}
-              {portal && (
-                <button
-                  type="button"
-                  className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-80 backdrop-blur transition active:scale-95"
-                  aria-label={open ? "Close menu" : "Open menu"}
-                  aria-expanded={open}
-                  onClick={() => setOpen((v) => !v)}
-                >
-                  {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </button>
-              )}
+            {/* Mobile Centered Logo */}
+            <div className="absolute left-1/2 -translate-x-1/2 lg:hidden z-20 flex items-center">
+              <img
+                src={ciplaLogo}
+                alt="Cipla"
+                className="h-8 sm:h-10 w-auto object-contain contrast-125"
+                decoding="async"
+                loading="eager"
+              />
+            </div>
+
+            {/* Right: Mobile menu button & Cipla Logo */}
+            <div className="relative z-20 flex items-center gap-4 -mr-2 sm:-mr-4">
+              {/* Desktop Logo */}
+              <div className="hidden lg:flex items-center gap-2 shrink-0">
+                <img
+                  src={ciplaLogo}
+                  alt="Cipla"
+                  className="h-12 w-auto object-contain contrast-125"
+                  decoding="async"
+                  loading="eager"
+                />
+              </div>
+              <button
+                type="button"
+                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-800 backdrop-blur transition active:scale-95 ml-2"
+                aria-label={open ? "Close menu" : "Open menu"}
+                aria-expanded={open}
+                onClick={() => setOpen((v) => !v)}
+              >
+                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </button>
             </div>
           </div>
         </Container>
+        <div className="h-2 w-full bg-[#008A5E]" />
       </div>
 
       {/* Mobile sheet */}

@@ -213,26 +213,6 @@ const renderEmailLayout = ({ title, preheader, heading, introHtml, contentHtml, 
   `.trim();
 };
 
-const computeAssessmentScore = ({ pain_frequency, pain_severity, stiffness, swelling, cracking }) => {
-  const freq = asTrimmedString(pain_frequency);
-  const stiff = asTrimmedString(stiffness);
-  const swell = asTrimmedString(swelling);
-  const crack = asTrimmedString(cracking);
-
-  const painNum = Number(asTrimmedString(pain_severity));
-  const pain = Number.isFinite(painNum) ? Math.min(Math.max(painNum, 0), 10) : null;
-
-  const freqScore =
-    freq === 'Daily' ? 3 : freq === 'Several times a week' ? 2 : freq === 'Occasionally' ? 1 : freq === 'Rarely' ? 0 : null;
-  const stiffScore = stiff === 'Severe' ? 3 : stiff === 'Moderate' ? 2 : stiff === 'Mild' ? 1 : stiff === 'None' ? 0 : null;
-  const swellScore = swell === 'Constant' ? 3 : swell === 'Frequent' ? 2 : swell === 'Occasional' ? 1 : swell === 'None' ? 0 : null;
-  const crackScore = crack === 'Always' ? 3 : crack === 'Often' ? 2 : crack === 'Sometimes' ? 1 : crack === 'No' ? 0 : null;
-
-  if (freqScore == null || pain == null || stiffScore == null || swellScore == null || crackScore == null) return null;
-
-  const total = freqScore + pain + stiffScore + swellScore + crackScore;
-  const label = total <= 7 ? 'Low' : total <= 14 ? 'Moderate' : 'High';
-  return { total, max: 22, label };
 };
 
 const emailMaxAttempts = Number(process.env.EMAIL_MAX_ATTEMPTS) || 3;
@@ -294,36 +274,6 @@ await initDB();
 
 // API Routes
 
-// Submit assessment
-app.post('/api/assessment', async (req, res) => {
-  try {
-    const {
-      full_name,
-      email,
-      phone,
-      age,
-      pain_frequency,
-      pain_severity,
-      stiffness,
-      swelling,
-      cracking,
-      previous_treatments,
-      other_symptoms
-    } = req.body;
-
-    const cleanName = asTrimmedString(full_name);
-    const cleanEmail = asTrimmedString(email);
-    const cleanPhone = normalizePhone(phone);
-    const cleanAge = asTrimmedString(age);
-    const cleanFrequency = asTrimmedString(pain_frequency);
-    const cleanPain = asTrimmedString(pain_severity);
-    const cleanStiffness = asTrimmedString(stiffness);
-    const cleanSwelling = asTrimmedString(swelling);
-    const cleanCracking = asTrimmedString(cracking);
-    const cleanPrev = asTrimmedString(previous_treatments);
-    const cleanOther = asTrimmedString(other_symptoms);
-
-    if (cleanName.length < 2) return res.status(400).json({ message: 'Full name is required.' });
     if (!isValidEmail(cleanEmail)) return res.status(400).json({ message: 'Valid email is required.' });
     if (!isValidOptionalPhone(cleanPhone)) return res.status(400).json({ message: 'Phone number must be 10 digits.' });
     if (cleanAge) {
@@ -500,34 +450,6 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Get all assessments
-app.get('/api/admin/assessments', async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT
-        id,
-        full_name,
-        email,
-        phone,
-        age,
-        pain_frequency,
-        pain_severity,
-        stiffness,
-        swelling,
-        cracking,
-        previous_treatments,
-        other_symptoms,
-        DATE_FORMAT(created_at, '%d-%m-%Y %l:%i%p') AS created_at
-      FROM assessments
-      ORDER BY created_at DESC
-    `);
-    res.json(rows);
-  } catch (error) {
-    console.error('Error fetching assessments:', error);
-    res.status(500).json({ message: 'Failed to fetch assessments' });
-  }
-});
-
 // Get all contacts
 app.get('/api/admin/contacts', async (req, res) => {
   try {
@@ -547,98 +469,6 @@ app.get('/api/admin/contacts', async (req, res) => {
   } catch (error) {
     console.error('Error fetching contacts:', error);
     res.status(500).json({ message: 'Failed to fetch contacts' });
-  }
-});
-
-// Download assessments as Excel
-app.get('/api/admin/assessments/download', async (req, res) => {
-  try {
-    const [rows] = await pool.query(`
-      SELECT
-        id,
-        full_name,
-        email,
-        phone,
-        age,
-        pain_frequency,
-        pain_severity,
-        stiffness,
-        swelling,
-        cracking,
-        previous_treatments,
-        other_symptoms,
-        DATE_FORMAT(created_at, '%d-%m-%Y %l:%i%p') AS created_at
-      FROM assessments
-      ORDER BY created_at DESC
-    `);
-    const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet('Assessments');
-
-    sheet.columns = [
-      { header: 'id', key: 'id' },
-      { header: 'full_name', key: 'full_name' },
-      { header: 'email', key: 'email' },
-      { header: 'phone', key: 'phone' },
-      { header: 'age', key: 'age' },
-      { header: 'pain_frequency', key: 'pain_frequency' },
-      { header: 'pain_severity', key: 'pain_severity' },
-      { header: 'stiffness', key: 'stiffness' },
-      { header: 'swelling', key: 'swelling' },
-      { header: 'cracking', key: 'cracking' },
-      { header: 'previous_treatments', key: 'previous_treatments' },
-      { header: 'other_symptoms', key: 'other_symptoms' },
-      { header: 'created_at', key: 'created_at' },
-    ];
-
-    for (const row of rows) {
-      sheet.addRow({
-        ...row,
-        phone: row.phone == null ? '' : String(row.phone),
-        age: row.age == null ? '' : String(row.age),
-      });
-    }
-
-    sheet.getRow(1).font = { bold: true };
-    sheet.getColumn('phone').numFmt = '@';
-    sheet.getColumn('age').numFmt = '@';
-
-    for (const column of sheet.columns) {
-      if (!column) continue;
-      const key = column.key;
-      const wrap = key === 'previous_treatments' || key === 'other_symptoms';
-      let maxLen = typeof column.header === 'string' ? column.header.length : 10;
-
-      column.eachCell({ includeEmpty: true }, (cell) => {
-        if (wrap) cell.alignment = { wrapText: true, vertical: 'top' };
-        const raw = cell.value;
-        const text =
-          raw instanceof Date
-            ? raw.toLocaleString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true,
-              })
-            : raw == null
-              ? ''
-              : typeof raw === 'object' && 'text' in raw
-                ? String(raw.text ?? '')
-                : String(raw);
-        maxLen = Math.max(maxLen, text.length);
-      });
-
-      column.width = Math.min(Math.max(maxLen + 2, 12), wrap ? 60 : 40);
-    }
-
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename="assessments.xlsx"');
-    await workbook.xlsx.write(res);
-    res.end();
-  } catch (error) {
-    console.error('Error downloading assessments:', error);
-    res.status(500).json({ message: 'Failed to download assessments' });
   }
 });
 

@@ -39,6 +39,13 @@ import waterBathImage from "@/assets/water_bath.png";
 import plasmalyteBagImage from "@/assets/plasmalyte_bag.png";
 import syringesImage from "@/assets/syringes.png";
 import injectionImage from "@/assets/Intra-articular Injection.png";
+import prep1 from "@/assets/1.png";
+import prep2 from "@/assets/2.png";
+import prep3 from "@/assets/3.png";
+import prep4 from "@/assets/4.png";
+import prep5 from "@/assets/5.png";
+import prep6 from "@/assets/6.png";
+import prep7 from "@/assets/7.png";
 import { Armchair, ArrowRight, Droplets, Footprints, Send, TrendingUp, Phone, Mail, MapPin, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
@@ -143,32 +150,7 @@ export default function Patient() {
   const [contactSent, setContactSent] = useState(false);
   const [contactLoading, setContactLoading] = useState(false);
   const [contactSubmitError, setContactSubmitError] = useState("");
-  const [step, setStep] = useState(1);
-  const totalSteps = 4;
-  const [frequency, setFrequency] = useState<string | null>(null);
-  const [pain, setPain] = useState(5);
-  const [stiffness, setStiffness] = useState<string | null>(null);
-  const [swelling, setSwelling] = useState<string | null>(null);
-  const [cracking, setCracking] = useState<string | null>(null);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [previousTreatments, setPreviousTreatments] = useState("");
-  const [otherSymptoms, setOtherSymptoms] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<{ score: number; max: number; label: string } | null>(null);
-  const [postPreviewOpen, setPostPreviewOpen] = useState(false);
 
-  useEffect(() => {
-    if (!postPreviewOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setPostPreviewOpen(false);
-    };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [postPreviewOpen]);
 
   useEffect(() => {
     const section = stemSectionRef.current;
@@ -218,133 +200,7 @@ export default function Patient() {
     return () => ctx.revert();
   }, []);
 
-  const percent = useMemo(() => Math.round((step / totalSteps) * 100), [step]);
 
-  const scoreMax = 22;
-
-  const calcScore = () => {
-    const freqScore =
-      frequency === "Daily"
-        ? 3
-        : frequency === "Several times a week"
-          ? 2
-          : frequency === "Occasionally"
-            ? 1
-            : 0;
-    const stiffScore =
-      stiffness === "Severe" ? 3 : stiffness === "Moderate" ? 2 : stiffness === "Mild" ? 1 : 0;
-    const swellScore =
-      swelling === "Constant" ? 3 : swelling === "Frequent" ? 2 : swelling === "Occasional" ? 1 : 0;
-    const crackScore =
-      cracking === "Always" ? 3 : cracking === "Often" ? 2 : cracking === "Sometimes" ? 1 : 0;
-    const total = freqScore + pain + stiffScore + swellScore + crackScore;
-    const label = total <= 7 ? "Low" : total <= 14 ? "Moderate" : "High";
-    return { total, label };
-  };
-
-  const validate = (targetStep: number) => {
-    const nextErrors: Record<string, string> = {};
-    if (targetStep >= 1) {
-      if (!frequency) nextErrors.frequency = "Select one option to continue.";
-    }
-    if (targetStep >= 3) {
-      if (!stiffness) nextErrors.stiffness = "Select stiffness to continue.";
-      if (!swelling) nextErrors.swelling = "Select swelling to continue.";
-    }
-    if (targetStep >= 4) {
-      if (!cracking) nextErrors.cracking = "Select one option to continue.";
-      if (!name.trim()) nextErrors.name = "Name is required.";
-      const ageNum = Number(age);
-      if (!age.trim() || !Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) nextErrors.age = "Enter a valid age.";
-      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-      if (!emailOk) nextErrors.email = "Enter a valid email.";
-      const phoneDigits = phone.replace(/[^\d]/g, "");
-      if (phoneDigits.length !== 0 && phoneDigits.length !== 10) nextErrors.phone = "Enter a valid 10-digit phone number.";
-    }
-    return nextErrors;
-  };
-
-  const goNext = () => {
-    const nextErrors = validate(step);
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors);
-      return;
-    }
-    setErrors({});
-    setStep((s) => Math.min(totalSteps, s + 1));
-  };
-
-  const goBack = () => {
-    setErrors({});
-    setStep((s) => Math.max(1, s - 1));
-  };
-
-  const submit = async () => {
-    const nextErrors = validate(4);
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors);
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://localhost:3001/api/assessment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          full_name: name,
-          email,
-          phone,
-          age,
-          pain_frequency: frequency,
-          pain_severity: pain.toString(),
-          stiffness,
-          swelling,
-          cracking,
-          previous_treatments: previousTreatments,
-          other_symptoms: otherSymptoms
-        })
-      });
-
-      if (response.ok) {
-        const payload = await response.json().catch(() => null);
-        if (payload?.emailSent === false) {
-          alert(payload?.message || "Saved, but email failed to send.");
-        }
-        const { total, label } = calcScore();
-        setResult({ score: total, max: scoreMax, label });
-      } else {
-        const msg = await response.json().catch(() => null);
-        alert(msg?.message || "Failed to submit assessment. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting assessment:", error);
-      alert("Failed to submit assessment. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const reset = () => {
-    setResult(null);
-    setStep(1);
-    setFrequency(null);
-    setPain(5);
-    setStiffness(null);
-    setSwelling(null);
-    setCracking(null);
-    setName("");
-    setAge("");
-    setEmail("");
-    setPhone("");
-    setPreviousTreatments("");
-    setOtherSymptoms("");
-    setLoading(false);
-    setErrors({});
-  };
 
   return (
     <div className="min-h-dvh bg-sky-50">
@@ -390,18 +246,7 @@ export default function Patient() {
                     </p>
                   </div>
 
-                  <div className="mt-6">
-                    <button
-                      type="button"
-                      className="inline-flex items-center justify-center rounded-full bg-sky-600 px-5 py-2.5 text-sm font-semibold text-white shadow-button transition hover:brightness-110"
-                      onClick={() => {
-                        const el = document.getElementById("assessment");
-                        el?.scrollIntoView({ behavior: "smooth", block: "start" });
-                      }}
-                    >
-                      Take an Assessment
-                    </button>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -429,25 +274,29 @@ export default function Patient() {
                   lead to pain, stiffness, swelling, and reduced movement.
                 </p>
 
-                <div className="hidden md:grid mt-8 gap-4">
-                  <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl">
+                <div className="hidden md:grid md:grid-cols-2 mt-8 gap-4">
+                  <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-sky-300 cursor-default">
                     <div className="text-sm font-semibold text-slate-900">Normal Knee</div>
                     <div className="mt-2 text-sm leading-relaxed text-slate-600">
                       <ul className="list-disc pl-5 space-y-1">
                         <li>Smooth Cartilage</li>
+                        <li>Synovial Membrane</li>
+                        <li>Synovial Cavity</li>
                         <li>Healthy Ligament</li>
                         <li>Normal Bone</li>
                       </ul>
                     </div>
                   </div>
 
-                  <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl">
+                  <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-sky-300 cursor-default">
                     <div className="text-sm font-semibold text-slate-900">Osteoarthritis Knee</div>
                     <div className="mt-2 text-sm leading-relaxed text-slate-600">
                       <ul className="list-disc pl-5 space-y-1">
                         <li>Cartilage Breakdown</li>
                         <li>Bone Spurs</li>
-                        <li>Inflamed Synovium</li>
+                        <li>Synovial Membrane</li>
+                        <li>Synovial Cavity</li>
+                        <li>Ligament Changes</li>
                         <li>Bone Changes</li>
                       </ul>
                     </div>
@@ -697,10 +546,10 @@ export default function Patient() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_20%_20%,rgba(56,189,248,0.18),transparent_55%)]" />
           <div className="pointer-events-none absolute inset-0 opacity-70 hero-dots" />
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-[12%] top-[24%] h-2 w-2 rounded-full bg-sky-400/40 blur-[1px] node-pulse" />
+            <div className="absolute left-[2%] top-[24%] h-2 w-2 rounded-full bg-sky-400/40 blur-[1px] node-pulse" />
             <div className="absolute left-[18%] top-[62%] h-1.5 w-1.5 rounded-full bg-sky-300/35 blur-[1px] node-pulse" />
             <div className="absolute right-[18%] top-[22%] h-2.5 w-2.5 rounded-full bg-sky-300/35 blur-[1px] node-pulse" />
-            <div className="absolute right-[12%] top-[58%] h-2 w-2 rounded-full bg-sky-400/35 blur-[1px] node-pulse" />
+            <div className="absolute right-[2%] top-[58%] h-2 w-2 rounded-full bg-sky-400/35 blur-[1px] node-pulse" />
           </div>
 
           <Container>
@@ -726,7 +575,7 @@ export default function Patient() {
                   Advanced Stem Cell Therapy for Knee Joint Preservation
                 </div>
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                  Stem cell therapy supports the body's natural regenerative processes by promoting tissue repair, preserving cartilage integrity, enhancing joint function, and improving mobility in individuals with knee osteoarthritis.
+                  Stem cell therapy supports the body's natural healing processes by promoting tissue repair, preserving cartilage integrity, enhancing joint function, and improving mobility in individuals with knee osteoarthritis.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -788,7 +637,7 @@ export default function Patient() {
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-4">
                     {[
-                      { title: "Self-Renewal", desc: "Ability of Stem Cell to Undergo Repeated Cell Division While Maintaining its Identity" },
+                      { title: "Self-Renewal", desc: "Ability of stem cell to undergo repeated cell division while maintaining its identity." },
                       { title: "Repair & Restoration", desc: "Support the body's natural healing by helping repair damaged tissues." },
                       { title: "Differentiation", desc: "Can develop into different specialized cell types." },
                     ].map((item, i) => (
@@ -834,7 +683,7 @@ export default function Patient() {
                       alt="Mesenchymal Stem Cells"
                       width={1200}
                       height={800}
-                      className="w-full h-auto"
+                      className="w-full h-auto animate-[spin_30s_linear_infinite]"
                       decoding="async"
                       loading="lazy"
                     />
@@ -878,7 +727,7 @@ export default function Patient() {
               <div className="grid gap-12 lg:grid-cols-2 lg:items-stretch pt-4">
                 {/* Visual Flow side */}
                 <div className="order-1 lg:order-2 h-full flex flex-col justify-center">
-                  <div className="grid grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-10 lg:gap-x-20">
+                  <div className="grid grid-cols-2 gap-x-2 sm:gap-x-8 gap-y-6 lg:gap-y-10 lg:gap-x-20">
                     {[
                       { title: "SELF-REPLICATION", img: img1 },
                       { title: "DIFFERENTIATION", img: img2 },
@@ -887,15 +736,15 @@ export default function Patient() {
                       { title: "ANTI-CATABOLIC", img: img5 },
                       { title: "LOW IMMUNOGENICITY", img: img6 }
                     ].map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3 sm:gap-4 relative group">
-                        <div className="w-24 h-24 sm:w-28 sm:h-28 lg:w-36 lg:h-36 shrink-0 rounded-full overflow-hidden flex items-center justify-center relative">
+                      <div key={idx} className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-2 sm:gap-4 relative group">
+                        <div className="w-20 h-20 sm:w-28 sm:h-28 lg:w-36 lg:h-36 shrink-0 rounded-full overflow-hidden flex items-center justify-center relative shadow-sm">
                            {item.img ? (
                              <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
                            ) : (
                              <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Image</span>
                            )}
                         </div>
-                        <div className="font-bold text-[11px] sm:text-sm lg:text-[15px] text-[#0b3a66] leading-tight">
+                        <div className="font-bold text-[10px] sm:text-sm lg:text-[15px] text-[#0b3a66] leading-tight break-words hyphens-auto w-full">
                           {item.title}
                         </div>
                         
@@ -932,7 +781,7 @@ export default function Patient() {
                         desc: "Can develop into specialized cells of cartilage, bone, muscle, and connective tissue.",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                            <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                           </svg>
                         )
                       },
@@ -941,7 +790,7 @@ export default function Patient() {
                         desc: "Help reduce inflammation and create a healthier environment for tissue repair.",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                           </svg>
                         )
                       },
@@ -950,7 +799,7 @@ export default function Patient() {
                         desc: "Help regulate the body's immune response to support healing.",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                           </svg>
                         )
                       },
@@ -959,7 +808,7 @@ export default function Patient() {
                         desc: "Help reduce cartilage breakdown and preserve healthy joint structures.",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                           </svg>
                         )
                       },
@@ -968,7 +817,7 @@ export default function Patient() {
                         desc: "Have a lower likelihood of triggering an immune reaction, making them suitable for regenerative therapies.",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 11a9 9 0 019-9m0 0a9 9 0 019 9m-9-9v18" />
+                            <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M4 11a9 9 0 019-9m0 0a9 9 0 019 9m-9-9v18" />
                           </svg>
                         )
                       }
@@ -978,11 +827,11 @@ export default function Patient() {
                         className="w-full sm:w-[calc(50%-0.5rem)] group cursor-pointer rounded-2xl bg-gradient-to-br from-white to-sky-50/30 p-5 ring-1 ring-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-300 flex flex-col h-full"
                       >
                         <div className="mb-3">
-                          <div className="text-[15px] font-bold leading-tight text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
+                          <div className="text-base font-bold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
                             {feature.title}
                           </div>
                         </div>
-                        <div className="text-[13px] leading-relaxed text-slate-700 mt-auto">{feature.desc}</div>
+                        <div className="text-sm text-slate-700 mt-auto">{feature.desc}</div>
                       </div>
                     ))}
                   </div>
@@ -1009,99 +858,247 @@ export default function Patient() {
               </div>
 
               {/* Image (Top) + Step cards (Bottom) for better readability */}
-              <div className="mt-12 flex flex-col gap-12">
-                {/* Top: MSC Preparation Image */}
-                <div className="hidden md:flex items-center justify-center rounded-2xl bg-white/40 p-4 ring-1 ring-slate-100 shadow-sm backdrop-blur-sm">
-                  <img
-                    src={stemCellPreparationImage}
-                    alt="MSC Preparation Flowchart"
-                    width={1600}
-                    height={800}
-                    className="w-full max-w-5xl h-auto object-contain drop-shadow-sm"
-                    decoding="async"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Bottom: 12 Step Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {[
-                    {
-                      step: "01",
-                      title: "Isolation & Culture of BMMSCs",
-                      desc: "BMMSCs are collected from the bone marrow and cultured under controlled conditions.",
-                    },
-                    {
-                      step: "02",
-                      title: "Expansion of BMMSCs",
-                      desc: "BMMSCs are expanded and cultured to generate a sufficient number of cells for future use.",
-                    },
-                    {
-                      step: "03",
-                      title: "Master Cell Bank (MCB)",
-                      desc: "Expanded BMMSCs from 3 donors are stored in Master Cell Bank.",
-                    },
-                    {
-                      step: "04",
-                      title: "Pooling & Expansion",
-                      desc: "The expanded cells of all three donors are pooled together and further expanded.",
-                    },
-                    {
-                      step: "05",
-                      title: "Working Cell Bank (WCB)",
-                      desc: "Final BMMSC batches are stored in the Working Cell Bank.",
-                    },
-                    {
-                      step: "06",
-                      title: "Large-Scale Expansion",
-                      desc: "Large-scale expansion of BMMSCs for clinical use.",
-                    },
-                    {
-                      step: "07",
-                      title: "Quantification into 25M Cell Vials",
-                      desc: "BMMSCs are quantified and filled into 25 million-cell therapeutic vials ready for clinical use.",
-                    },
-                    {
-                      step: "08",
-                      title: "Cryopreservation (-185°C to -195°C)",
-                      desc: "BMMSCs are cryopreserved at ultra-low temperatures to maintain viability.",
-                    },
-                    {
-                      step: "09",
-                      title: "Cold Chain Logistics",
-                      desc: "Cryopreserved BMMSC vials are transported under validated cold-chain conditions.",
-                    },
-                    {
-                      step: "10",
-                      title: "Hospital Delivery",
-                      desc: "BMMSC vials are delivered to the treatment center while maintaining product integrity.",
-                    },
-                    {
-                      step: "11",
-                      title: "Thawing & Reconstitution",
-                      desc: "Cryopreserved BMMSCs are thawed and reconstituted before administration.",
-                    },
-                    {
-                      step: "12",
-                      title: "Intra-articular Injection",
-                      desc: "BMMSCs are administered into the affected knee following the approved clinical procedure.",
-                    },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="group flex items-start gap-3 cursor-pointer rounded-xl bg-gradient-to-br from-white to-sky-50/30 p-4 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-sky-300"
-                    >
-                      <div className="flex h-10 w-10 flex-none items-center justify-center rounded-xl bg-sky-600 text-sm font-bold text-white transition-all duration-300 group-hover:bg-sky-700 group-hover:scale-110">
-                        {item.step}
+              <div className="mt-12 w-full max-w-[1400px] mx-auto px-4">
+                {/* Desktop Grid Layout (Hidden on Mobile) */}
+                <div className="hidden lg:grid grid-cols-5 gap-x-[3.5rem] gap-y-16 relative w-full items-start">
+                  
+                  {/* Row 1 */}
+                  <div className="col-span-2 relative">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                         <img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="min-w-0">
-                        <div className="text-[15px] font-semibold text-slate-900 transition-colors duration-300 group-hover:text-sky-700">
-                          {item.title}
-                        </div>
-                        <div className="mt-1 text-[13px] text-slate-500 leading-relaxed">{item.desc}</div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex flex-col items-center justify-center min-h-[85px]">
+                        <h4 className="font-bold text-black text-[14px] leading-tight text-center">Bone Marrow Aspiration</h4>
+                        <ul className="text-[12px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
+                          <li>- Already done from "Healthy Adult donors"</li>
+                          <li>- Through the Informed Consent process:</li>
+                        </ul>
                       </div>
                     </div>
-                  ))}
+                    {/* Right Arrow */}
+                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Box 2 */}
+                  <div className="col-span-1 relative">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
+                        <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
+                        <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[13.5px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-xs font-bold">(In GLP-certified lab)</span></p>
+                      </div>
+                    </div>
+                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Box 3 */}
+                  <div className="col-span-1 relative">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-tight text-center">Expansion of BMMSCs</p>
+                      </div>
+                    </div>
+                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Box 4 */}
+                  <div className="col-span-1 relative">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
+                      </div>
+                    </div>
+                    {/* Arrow Down to Row 2 */}
+                    <div className="absolute left-1/2 -bottom-[3.5rem] -translate-x-1/2 z-10 text-red-500">
+                      <svg className="w-10 h-10 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Row 2 */}
+                  {/* Row 2 - Col 1 */}
+                  <div className="col-start-1 relative h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm h-full flex flex-col items-center justify-center p-4">
+                      <p className="font-bold text-black text-[17px] leading-snug text-center">Cryopreserved<br/><span className="text-[15px] font-bold mt-1 block">(-185°C to -195°C)</span></p>
+                    </div>
+                  </div>
+
+                  {/* Row 2 - Col 2 */}
+                  <div className="col-start-2 relative h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm h-full flex flex-col items-center justify-center p-4">
+                      <p className="font-bold text-black text-[17px] leading-snug text-center">Quantified into<br/>25M cells in Vials</p>
+                    </div>
+                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Row 2 - Col 3 */}
+                  <div className="col-start-3 relative h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-tight text-center">Large scale expansion</p>
+                      </div>
+                    </div>
+                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+
+                  {/* Row 2 - Col 4 (WCB) */}
+                  <div className="col-start-4 relative h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
+                      </div>
+                    </div>
+                    {/* Main Arrow between WCB and Large Scale */}
+                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+
+                    {/* Circular Icon (prep6) floating over the top border */}
+                    <div className="absolute -left-[80px] top-[15px] -translate-y-1/2 z-20 w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center">
+                      <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
+                      
+                      {/* Small Red Arrow Left (INSIDE CIRCLE) */}
+                      <div className="absolute -left-[50px] top-1/2 -translate-y-1/2 text-red-500 rotate-[155deg] z-20">
+                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                      </div>
+                      
+                      {/* Small Red Arrow Right (INSIDE CIRCLE) */}
+                      <div className="absolute -right-[50px] top-1/2 -translate-y-1/2 text-red-500 rotate-[205deg] z-20">
+                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Row 2 - Col 5 */}
+                  <div className="col-start-5 relative h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                        <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
+                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
+                        <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-tight text-center">Pooled & Expanded</p>
+                      </div>
+                    </div>
+                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mobile version (Vertical Flow) */}
+                <div className="flex lg:hidden flex-col items-center gap-6 w-full px-2">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex flex-col items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Bone Marrow Aspiration</p>
+                        <ul className="text-[13px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
+                          <li>- Already done from "Healthy Adult donors"</li>
+                          <li>- Through the Informed Consent process:</li>
+                        </ul>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
+                        <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
+                        <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-sm font-bold">(In GLP-certified lab)</span></p>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Expansion of BMMSCs</p>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                        <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
+                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
+                        <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Pooled & Expanded</p>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
+                      </div>
+                  </div>
+                  
+                  <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="z-20 flex justify-center relative my-1">
+                     <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center">
+                        <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
+                     </div>
+                  </div>
+
+                  <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Large scale expansion</p>
+                      </div>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm p-8 flex flex-col items-center text-center justify-center">
+                      <p className="font-bold text-black text-[18px] leading-snug">Quantified into<br/>25M cells in Vials</p>
+                  </div>
+                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm p-8 flex flex-col items-center text-center justify-center">
+                      <p className="font-bold text-black text-[18px] leading-snug">Cryopreserved<br/><span className="text-[16px] font-bold block mt-1">(-185°C to -195°C)</span></p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1155,7 +1152,7 @@ export default function Patient() {
                       {/* Gradient Connector Arrow - Desktop (Between columns) */}
                       {(i + 1) % 2 !== 0 && (
                         <div className="hidden md:block absolute top-[40%] -right-10 w-12 text-sky-300 z-20">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-12 h-12 drop-shadow-sm"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="miter" className="w-12 h-12 drop-shadow-sm"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </div>
                       )}
                       
@@ -1220,7 +1217,7 @@ export default function Patient() {
                   </h3>
 
                   <div className="grid gap-4 flex-1">
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm">
+                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="h-3 w-3 rounded-full bg-emerald-500" />
                         <span className="text-sm font-bold text-slate-900">Do’s</span>
@@ -1240,7 +1237,7 @@ export default function Patient() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm">
+                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="h-3 w-3 rounded-full bg-rose-500" />
                         <span className="text-sm font-bold text-slate-900">Don’ts</span>
@@ -1274,7 +1271,7 @@ export default function Patient() {
                   </h3>
 
                   <div className="grid gap-4 flex-1">
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm">
+                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="h-3 w-3 rounded-full bg-emerald-500" />
                         <span className="text-sm font-bold text-slate-900">Do’s</span>
@@ -1289,7 +1286,7 @@ export default function Patient() {
                       </div>
                     </div>
 
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm">
+                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="h-3 w-3 rounded-full bg-rose-500" />
                         <span className="text-sm font-bold text-slate-900">Don’ts</span>
@@ -1326,270 +1323,6 @@ export default function Patient() {
                   </div>
                 </div>
               </div>
-            </div>
-          </Container>
-        </section>
-
-        <section id="assessment" className="py-14 sm:py-20">
-          <Container>
-            <div className="text-center">
-              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">SELF-ASSESSMENT</div>
-              <div className="mt-5 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-6xl">
-                Understand your <span className="text-sky-700">knee health</span>.
-              </div>
-              <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-600">A 4-step quiz. Private. Takes under 2 minutes.</p>
-            </div>
-
-            <div className="mx-auto mt-10 max-w-5xl border border-slate-200 bg-white px-6 py-8 sm:px-10 sm:py-10">
-              {result ? (
-                <div className="text-center">
-                  <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">RESULT</div>
-                  <div className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
-                    Assessment complete
-                  </div>
-                  <div className="mt-8 inline-flex items-center rounded-full bg-sky-50 px-6 py-3 text-base font-semibold text-sky-800 ring-1 ring-sky-100">
-                    Risk level: {result.label}
-                  </div>
-                  <div className="mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-slate-600">
-                    This result is a quick screening indicator. For medical decisions, consult an orthopedic specialist.
-                  </div>
-                  <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                    <Button onClick={reset}>Start again</Button>
-                    <Button variant="secondary" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-                      Back to top
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
-                    <div>STEP {step} / {totalSteps}</div>
-                    <div>{percent}%</div>
-                  </div>
-                  <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full bg-gradient-to-r from-sky-700 to-sky-400" style={{ width: `${percent}%` }} />
-                  </div>
-
-                  {step === 1 ? (
-                    <div className="mt-10">
-                      <div className="text-h2 text-slate-900">
-                        How often do you experience knee pain?
-                      </div>
-                      <div className="mt-6 grid gap-4">
-                        {["Daily", "Several times a week", "Occasionally", "Rarely"].map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => {
-                              setFrequency(opt);
-                              setErrors((e) => ({ ...e, frequency: "" }));
-                            }}
-                            className={[
-                              "w-full rounded-2xl border px-6 py-5 text-left text-base font-medium transition-colors",
-                              frequency === opt
-                                ? "border-sky-400 bg-sky-50 text-slate-900"
-                                : "border-slate-200 bg-white text-slate-800 hover:border-sky-200",
-                            ].join(" ")}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                      {errors.frequency ? <div className="mt-3 text-xs text-rose-600">{errors.frequency}</div> : null}
-                    </div>
-                  ) : null}
-
-                  {step === 2 ? (
-                    <div className="mt-10">
-                      <div className="text-h2 text-slate-900">
-                        Pain intensity
-                      </div>
-                      <div className="mt-1 text-sm text-slate-600">0 = none, 10 = severe</div>
-
-                      <div className="mt-10 text-center font-display text-7xl font-semibold tracking-[-0.04em] text-sky-700">
-                        {pain}
-                      </div>
-
-                      <div className="mt-8">
-                        <input
-                          type="range"
-                          min={0}
-                          max={10}
-                          value={pain}
-                          onChange={(e) => setPain(Number(e.target.value))}
-                          className="w-full accent-sky-700"
-                        />
-                        <div className="mt-2 flex items-center justify-between text-sm text-slate-600">
-                          <div>Mild</div>
-                          <div>Severe</div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {step === 3 ? (
-                    <div className="mt-10">
-                      <div className="text-h2 text-slate-900">
-                        Joint stiffness?
-                      </div>
-                      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                        {["None", "Mild", "Moderate", "Severe"].map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => {
-                              setStiffness(opt);
-                              setErrors((e) => ({ ...e, stiffness: "" }));
-                            }}
-                            className={[
-                              "rounded-2xl border px-6 py-4 text-center text-sm font-semibold transition-colors",
-                              stiffness === opt
-                                ? "border-sky-400 bg-sky-50 text-slate-900"
-                                : "border-slate-200 bg-white text-slate-800 hover:border-sky-200",
-                            ].join(" ")}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                      {errors.stiffness ? <div className="mt-3 text-xs text-rose-600">{errors.stiffness}</div> : null}
-
-                      <div className="mt-10 text-h2 text-slate-900">
-                        Swelling around the joint?
-                      </div>
-                      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                        {["None", "Occasional", "Frequent", "Constant"].map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => {
-                              setSwelling(opt);
-                              setErrors((e) => ({ ...e, swelling: "" }));
-                            }}
-                            className={[
-                              "rounded-2xl border px-6 py-4 text-center text-sm font-semibold transition-colors",
-                              swelling === opt
-                                ? "border-sky-400 bg-sky-50 text-slate-900"
-                                : "border-slate-200 bg-white text-slate-800 hover:border-sky-200",
-                            ].join(" ")}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                      {errors.swelling ? <div className="mt-3 text-xs text-rose-600">{errors.swelling}</div> : null}
-                    </div>
-                  ) : null}
-
-                  {step === 4 ? (
-                    <div className="mt-10">
-                      <div className="text-h2 text-slate-900">
-                        Cracking sounds when moving?
-                      </div>
-                      <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                        {["No", "Sometimes", "Often", "Always"].map((opt) => (
-                          <button
-                            key={opt}
-                            type="button"
-                            onClick={() => {
-                              setCracking(opt);
-                              setErrors((e) => ({ ...e, cracking: "" }));
-                            }}
-                            className={[
-                              "rounded-2xl border px-6 py-4 text-center text-sm font-semibold transition-colors",
-                              cracking === opt
-                                ? "border-sky-400 bg-sky-50 text-slate-900"
-                                : "border-slate-200 bg-white text-slate-800 hover:border-sky-200",
-                            ].join(" ")}
-                          >
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                      {errors.cracking ? <div className="mt-3 text-xs text-rose-600">{errors.cracking}</div> : null}
-
-                      <div className="mt-8 border-t border-slate-200 pt-6">
-                        <div className="text-sm text-slate-600">Tell us a bit about you so we can share your score.</div>
-                        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                          <div>
-                            <input
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              placeholder="Name"
-                              className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                            />
-                            {errors.name ? <div className="mt-2 text-xs text-rose-600">{errors.name}</div> : null}
-                          </div>
-                          <div>
-                            <input
-                              value={age}
-                              onChange={(e) => setAge(e.target.value)}
-                              placeholder="Age"
-                              inputMode="numeric"
-                              className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                            />
-                            {errors.age ? <div className="mt-2 text-xs text-rose-600">{errors.age}</div> : null}
-                          </div>
-                        </div>
-                        <div className="mt-4">
-                          <input
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
-                            inputMode="email"
-                            className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                          />
-                          {errors.email ? <div className="mt-2 text-xs text-rose-600">{errors.email}</div> : null}
-                        </div>
-                        <div className="mt-4">
-                          <input
-                            value={phone}
-                            onChange={(e) => {
-                              setPhone(e.target.value);
-                              setErrors((p) => ({ ...p, phone: "" }));
-                            }}
-                            placeholder="Phone (optional)"
-                            inputMode="tel"
-                            className="w-full rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                          />
-                          {errors.phone ? <div className="mt-2 text-xs text-rose-600">{errors.phone}</div> : null}
-                        </div>
-                        <div className="mt-4">
-                          <textarea
-                            value={previousTreatments}
-                            onChange={(e) => setPreviousTreatments(e.target.value)}
-                            placeholder="Previous treatments (optional)"
-                            className="min-h-[80px] w-full resize-none rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                          />
-                        </div>
-                        <div className="mt-4">
-                          <textarea
-                            value={otherSymptoms}
-                            onChange={(e) => setOtherSymptoms(e.target.value)}
-                            placeholder="Other symptoms or notes (optional)"
-                            className="min-h-[80px] w-full resize-none rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm outline-none ring-sky-200 focus:ring-2"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  <div className="mt-10 flex items-center justify-between">
-                    <Button variant="secondary" onClick={goBack} disabled={step === 1}>
-                      Back
-                    </Button>
-                    {step === 4 ? (
-                      <Button onClick={submit} disabled={loading}>
-                        {loading ? "Submitting..." : "See my result"} <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    ) : (
-                      <Button onClick={goNext}>
-                        Next <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </>
-              )}
             </div>
           </Container>
         </section>

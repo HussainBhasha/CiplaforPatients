@@ -50,40 +50,7 @@ export async function initDB() {
     });
     await pool.query("SET time_zone = '+05:30'");
 
-    // Create assessment table
-    await pool.query(`
 
-      CREATE TABLE IF NOT EXISTS assessments (
-
-        id INT AUTO_INCREMENT PRIMARY KEY,
-
-        full_name VARCHAR(255) NOT NULL,
-
-        email VARCHAR(255) NOT NULL,
-
-        phone VARCHAR(50),
-
-        age VARCHAR(50),
-
-        pain_frequency VARCHAR(255),
-
-        pain_severity VARCHAR(255),
-
-        stiffness VARCHAR(255),
-
-        swelling VARCHAR(255),
-
-        cracking VARCHAR(255),
-
-        previous_treatments TEXT,
-
-        other_symptoms TEXT,
-
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-      )
-
-    `);
 
     // Create contact table
     await pool.query(`
