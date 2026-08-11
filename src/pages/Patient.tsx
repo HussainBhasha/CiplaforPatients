@@ -864,11 +864,11 @@ export default function Patient() {
                   
                   {/* Row 1 */}
                   <div className="col-span-2 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                          <img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex flex-col items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex flex-col items-center justify-center min-h-[85px]">
                         <h4 className="font-bold text-black text-[14px] leading-tight text-center">Bone Marrow Aspiration</h4>
                         <ul className="text-[12px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
                           <li>- Already done from "Healthy Adult donors"</li>
@@ -884,14 +884,14 @@ export default function Patient() {
 
                   {/* Box 2 */}
                   <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                         <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
                         <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
                         <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[13.5px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-xs font-bold">(In GLP-certified lab)</span></p>
                       </div>
                     </div>
@@ -902,11 +902,11 @@ export default function Patient() {
 
                   {/* Box 3 */}
                   <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[14px] leading-tight text-center">Expansion of BMMSCs</p>
                       </div>
                     </div>
@@ -917,11 +917,11 @@ export default function Patient() {
 
                   {/* Box 4 */}
                   <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-[280px]">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
                       </div>
                     </div>
@@ -934,14 +934,14 @@ export default function Patient() {
                   {/* Row 2 */}
                   {/* Row 2 - Col 1 */}
                   <div className="col-start-1 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm h-full flex flex-col items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default h-full flex flex-col items-center justify-center p-4">
                       <p className="font-bold text-black text-[17px] leading-snug text-center">Cryopreserved<br/><span className="text-[15px] font-bold mt-1 block">(-185°C to -195°C)</span></p>
                     </div>
                   </div>
 
                   {/* Row 2 - Col 2 */}
                   <div className="col-start-2 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm h-full flex flex-col items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default h-full flex flex-col items-center justify-center p-4">
                       <p className="font-bold text-black text-[17px] leading-snug text-center">Quantified into<br/>25M cells in Vials</p>
                     </div>
                     <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
@@ -951,11 +951,11 @@ export default function Patient() {
 
                   {/* Row 2 - Col 3 */}
                   <div className="col-start-3 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[14px] leading-tight text-center">Large scale expansion</p>
                       </div>
                     </div>
@@ -966,11 +966,11 @@ export default function Patient() {
 
                   {/* Row 2 - Col 4 (WCB) */}
                   <div className="col-start-4 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
                       </div>
                     </div>
@@ -980,7 +980,8 @@ export default function Patient() {
                     </div>
 
                     {/* Circular Icon (prep6) floating over the top border */}
-                    <div className="absolute -left-[80px] top-[15px] -translate-y-1/2 z-20 w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center">
+                    <div className="absolute -left-[80px] top-[15px] -translate-y-1/2 z-20">
+                      <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-sky-400 hover:scale-105 cursor-pointer relative">
                       <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
                       
                       {/* Small Red Arrow Left (INSIDE CIRCLE) */}
@@ -993,18 +994,19 @@ export default function Patient() {
                         <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
                       </div>
                     </div>
+                    </div>
                   </div>
 
                   {/* Row 2 - Col 5 */}
                   <div className="col-start-5 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden h-full">
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
                       <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
                         <img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                         <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
                         <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
                         <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
                       </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white flex items-center justify-center min-h-[85px]">
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
                         <p className="font-bold text-black text-[14px] leading-tight text-center">Pooled & Expanded</p>
                       </div>
                     </div>
@@ -1016,9 +1018,9 @@ export default function Patient() {
 
                 {/* Mobile version (Vertical Flow) */}
                 <div className="flex lg:hidden flex-col items-center gap-6 w-full px-2">
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex flex-col items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex flex-col items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Bone Marrow Aspiration</p>
                         <ul className="text-[13px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
                           <li>- Already done from "Healthy Adult donors"</li>
@@ -1028,47 +1030,47 @@ export default function Patient() {
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                         <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
                         <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
                         <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-sm font-bold">(In GLP-certified lab)</span></p>
                       </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Expansion of BMMSCs</p>
                       </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
                       </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
                         <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
                         <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
                         <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Pooled & Expanded</p>
                       </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
                       </div>
                   </div>
@@ -1076,27 +1078,27 @@ export default function Patient() {
                   <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
                   <div className="z-20 flex justify-center relative my-1">
-                     <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center">
+                     <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-sky-400 hover:scale-105 cursor-pointer relative">
                         <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
                      </div>
                   </div>
 
                   <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm flex flex-col overflow-hidden">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
                       <div className="flex justify-center p-1 bg-white relative"><img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white flex items-center justify-center">
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
                         <p className="font-bold text-black text-[15px] leading-tight text-center">Large scale expansion</p>
                       </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm p-8 flex flex-col items-center text-center justify-center">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default p-8 flex flex-col items-center text-center justify-center">
                       <p className="font-bold text-black text-[18px] leading-snug">Quantified into<br/>25M cells in Vials</p>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm p-8 flex flex-col items-center text-center justify-center">
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default p-8 flex flex-col items-center text-center justify-center">
                       <p className="font-bold text-black text-[18px] leading-snug">Cryopreserved<br/><span className="text-[16px] font-bold block mt-1">(-185°C to -195°C)</span></p>
                   </div>
                 </div>
