@@ -46,6 +46,8 @@ import prep4 from "@/assets/4.png";
 import prep5 from "@/assets/5.png";
 import prep6 from "@/assets/6.png";
 import prep7 from "@/assets/7.png";
+import prep8 from "@/assets/8.png";
+import prep9 from "@/assets/9.png";
 import { Armchair, ArrowRight, Droplets, Footprints, Send, TrendingUp, Phone, Mail, MapPin, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
@@ -934,15 +936,25 @@ export default function Patient() {
                   {/* Row 2 */}
                   {/* Row 2 - Col 1 */}
                   <div className="col-start-1 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default h-full flex flex-col items-center justify-center p-4">
-                      <p className="font-bold text-black text-[17px] leading-snug text-center">Cryopreserved<br/><span className="text-[15px] font-bold mt-1 block">(-185°C to -195°C)</span></p>
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep9} alt="Cryopreserved" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-snug text-center">Cryopreserved<br/><span className="text-[13px] font-bold mt-1 block">(-185°C to -195°C)</span></p>
+                      </div>
                     </div>
                   </div>
 
                   {/* Row 2 - Col 2 */}
                   <div className="col-start-2 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default h-full flex flex-col items-center justify-center p-4">
-                      <p className="font-bold text-black text-[17px] leading-snug text-center">Quantified into<br/>25M cells in Vials</p>
+                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
+                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
+                        <img src={prep8} alt="Quantified into 25M cells" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
+                      </div>
+                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
+                        <p className="font-bold text-black text-[14px] leading-snug text-center">Quantified into<br/>25M cells in Vials</p>
+                      </div>
                     </div>
                     <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
                       <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
@@ -1093,13 +1105,19 @@ export default function Patient() {
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default p-8 flex flex-col items-center text-center justify-center">
-                      <p className="font-bold text-black text-[18px] leading-snug">Quantified into<br/>25M cells in Vials</p>
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep8} alt="Quantified into 25M cells" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Quantified into<br/>25M cells in Vials</p>
+                      </div>
                   </div>
                   <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
 
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default p-8 flex flex-col items-center text-center justify-center">
-                      <p className="font-bold text-black text-[18px] leading-snug">Cryopreserved<br/><span className="text-[16px] font-bold block mt-1">(-185°C to -195°C)</span></p>
+                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
+                      <div className="flex justify-center p-1 bg-white relative"><img src={prep9} alt="Cryopreserved" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
+                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
+                        <p className="font-bold text-black text-[15px] leading-tight text-center">Cryopreserved<br/><span className="text-[14px] font-bold block mt-1">(-185°C to -195°C)</span></p>
+                      </div>
                   </div>
                 </div>
               </div>

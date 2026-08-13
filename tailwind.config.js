@@ -22,8 +22,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-        display: ["Space Grotesk", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
         "soft-xl": "0 18px 60px rgb(2 8 23 / 0.14)",

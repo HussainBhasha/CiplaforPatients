@@ -159,7 +159,6 @@ export default function MarketingNavbar() {
             </div>
           </div>
         </Container>
-        <div className="h-2 w-full bg-[#008A5E]" />
       </div>
 
       {/* Mobile sheet */}
