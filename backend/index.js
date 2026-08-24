@@ -213,8 +213,6 @@ const renderEmailLayout = ({ title, preheader, heading, introHtml, contentHtml, 
   `.trim();
 };
 
-};
-
 const emailMaxAttempts = Number(process.env.EMAIL_MAX_ATTEMPTS) || 3;
 const emailRetryBaseMs = Number(process.env.EMAIL_RETRY_BASE_MS) || 1500;
 const emailRetryMaxMs = Number(process.env.EMAIL_RETRY_MAX_MS) || 60000;
@@ -273,100 +271,6 @@ app.use(express.json());
 await initDB();
 
 // API Routes
-
-    if (!isValidEmail(cleanEmail)) return res.status(400).json({ message: 'Valid email is required.' });
-    if (!isValidOptionalPhone(cleanPhone)) return res.status(400).json({ message: 'Phone number must be 10 digits.' });
-    if (cleanAge) {
-      const ageNum = Number(cleanAge);
-      if (!Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) {
-        return res.status(400).json({ message: 'Age must be between 1 and 120.' });
-      }
-    }
-    if (!cleanFrequency) return res.status(400).json({ message: 'Pain frequency is required.' });
-    if (cleanPain) {
-      const painNum = Number(cleanPain);
-      if (!Number.isFinite(painNum) || painNum < 0 || painNum > 10) {
-        return res.status(400).json({ message: 'Pain severity must be between 0 and 10.' });
-      }
-    }
-
-    const query = `
-      INSERT INTO assessments (full_name, email, phone, age, pain_frequency, pain_severity, stiffness, swelling, cracking, previous_treatments, other_symptoms)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    
-    const [insertResult] = await pool.query(query, [
-      cleanName,
-      cleanEmail,
-      cleanPhone || null,
-      cleanAge || null,
-      cleanFrequency || null,
-      cleanPain || null,
-      cleanStiffness || null,
-      cleanSwelling || null,
-      cleanCracking || null,
-      cleanPrev || null,
-      cleanOther || null
-    ]);
-
-    const insertedId = insertResult?.insertId;
-    const [tsRows] = insertedId
-      ? await pool.query(`SELECT DATE_FORMAT(created_at, '%d-%m-%Y %l:%i%p') AS created_at FROM assessments WHERE id = ?`, [insertedId])
-      : [null];
-    const submittedAt = tsRows?.[0]?.created_at ? asTrimmedString(tsRows[0].created_at) : formatExportDateTime(new Date());
-
-    const computedScore = computeAssessmentScore({
-      pain_frequency: cleanFrequency,
-      pain_severity: cleanPain,
-      stiffness: cleanStiffness,
-      swelling: cleanSwelling,
-      cracking: cleanCracking,
-    });
-    const emailDispatches = [];
-
-    if (cleanEmail && isValidEmail(cleanEmail)) {
-      const candidateContent = renderKeyValueTable([
-        { label: 'Submission Time', value: submittedAt },
-        { label: 'Name', value: cleanName },
-        { label: 'Email', value: cleanEmail },
-        { label: 'Contact Number', value: cleanPhone || '' },
-        { label: 'Pain Frequency', value: cleanFrequency || '' },
-        { label: 'Pain Severity', value: cleanPain || '' },
-        { label: 'Stiffness', value: cleanStiffness || '' },
-        { label: 'Swelling', value: cleanSwelling || '' },
-        { label: 'Cracking', value: cleanCracking || '' },
-        { label: 'Score', value: computedScore ? `${computedScore.total}/${computedScore.max} (${computedScore.label})` : '' },
-      ]);
-
-      const candidateHtml = renderEmailLayout({
-        title: 'Assessment Received',
-        preheader: 'We have received your assessment',
-        heading: 'Assessment received successfully',
-        introHtml: `<div style="font-size:14px;line-height:22px;color:#334155;margin:0 0 16px;">Thank you for your submission. Our team will review your assessment and contact you if shortlisted.</div>`,
-        contentHtml: candidateContent,
-        footerNoteHtml: `<div style="margin-top:10px;">If you did not submit this assessment, please ignore this email.</div>`,
-      });
-
-      emailDispatches.push(
-        runEmailJob({
-          id: `assessment-candidate-${insertedId || Date.now()}`,
-          to: cleanEmail,
-          subject: `${emailCompanyName ? `${emailCompanyName} - ` : ''}Assessment Received`,
-          html: candidateHtml,
-          tag: 'assessment_candidate',
-          attempt: 1,
-        })
-      );
-    }
-
-    await Promise.allSettled(emailDispatches);
-
-    res.status(201).json({ message: 'Assessment submitted successfully!' });
-  } catch (error) {
-    console.error('Error submitting assessment:', error);
-    res.status(500).json({ message: 'Failed to submit assessment' });
-  }
-});
 
 // Submit contact
 app.post('/api/contact', async (req, res) => {

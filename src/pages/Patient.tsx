@@ -7,7 +7,6 @@ import Button from "@/components/ui/Button";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
 import oaComparisonImage from "@/assets/OA.png";
-import mobileOAImage from "@/assets/mobile OA.png";
 import symptomsImage from "@/assets/symptoms.png";
 import gradeStage1Image from "@/assets/stage 1.png";
 import gradeStage2Image from "@/assets/stage 2.png";
@@ -276,7 +275,7 @@ export default function Patient() {
                   lead to pain, stiffness, swelling, and reduced movement.
                 </p>
 
-                <div className="hidden md:grid md:grid-cols-2 mt-8 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 mt-8 gap-4">
                   <div className="rounded-[24px] bg-white/85 p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-sky-300 cursor-default">
                     <div className="text-sm font-semibold text-slate-900">Normal Knee</div>
                     <div className="mt-2 text-sm leading-relaxed text-slate-600">
@@ -284,8 +283,6 @@ export default function Patient() {
                         <li>Smooth Cartilage</li>
                         <li>Synovial Membrane</li>
                         <li>Synovial Cavity</li>
-                        <li>Healthy Ligament</li>
-                        <li>Normal Bone</li>
                       </ul>
                     </div>
                   </div>
@@ -297,11 +294,15 @@ export default function Patient() {
                         <li>Cartilage Breakdown</li>
                         <li>Bone Spurs</li>
                         <li>Synovial Membrane</li>
-                        <li>Synovial Cavity</li>
-                        <li>Ligament Changes</li>
-                        <li>Bone Changes</li>
                       </ul>
                     </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-[24px] bg-white/85 p-5 sm:p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-sky-300 cursor-default">
+                  <div className="text-sm leading-relaxed text-slate-600">
+                    <span className="font-bold text-slate-900">Synovial inflammation (synovitis):</span>{" "}
+                    The synovium becomes inflamed and thickened, producing excess synovial fluid. This can cause joint swelling, pain, stiffness, and reduced knee movement.
                   </div>
                 </div>
 
@@ -309,7 +310,7 @@ export default function Patient() {
 
               <div
                 className={cn(
-                  "transition-all duration-700 ease-out delay-100",
+                  "hidden md:block transition-all duration-700 ease-out delay-100",
                   oaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
                 )}
               >
@@ -319,48 +320,10 @@ export default function Patient() {
                     alt="Healthy knee vs osteoarthritis comparison"
                     width={1200}
                     height={800}
-                    className="hidden md:block h-full w-full object-contain"
+                    className="h-full w-full object-contain"
                     decoding="async"
                     loading="eager"
                   />
-
-                  {/* Mobile Image with Text Overlays */}
-                  <div className="md:hidden relative w-full h-auto">
-                    <img
-                      src={mobileOAImage}
-                      alt="Healthy knee vs osteoarthritis comparison mobile"
-                      width={1200}
-                      height={800}
-                      className="w-full h-auto object-contain"
-                      decoding="async"
-                      loading="eager"
-                    />
-
-                    {/* Normal Knee Labels */}
-                    <div className="absolute top-[40%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Smooth Cartilage
-                    </div>
-                    <div className="absolute top-[51%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Healthy Ligament
-                    </div>
-                    <div className="absolute top-[64%] left-[43%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Normal Bone
-                    </div>
-
-                    {/* OA Knee Labels */}
-                    <div className="absolute top-[33%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Cartilage Breakdown
-                    </div>
-                    <div className="absolute top-[46%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Bone Spurs
-                    </div>
-                    <div className="absolute top-[54%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Inflamed Synovium
-                    </div>
-                    <div className="absolute top-[68%] right-[5%] -translate-y-1/2 text-[9px] sm:text-[11px] font-bold text-slate-800 bg-white px-2 py-1 rounded shadow-sm border border-slate-100 whitespace-nowrap">
-                      Bone Changes
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -706,7 +669,7 @@ export default function Patient() {
                     {[
                       { title: "Unique Cells", desc: "Specialized adult stem cells capable of supporting tissue repair and regeneration." },
                       { title: "Differentiation Potential", desc: "Can develop into bone, cartilage, muscle, and connective tissue." },
-                      { title: "Repair & Preservation", desc: "Supports the body's natural repair process and helps to preserve the damaged tissue" },
+                      { title: "Repair & Preservation", desc: "Supports the body's natural repair process and helps to preserve the connective tissue." },
                       { title: "Natural Healing", desc: "Promote a healthier tissue environment that supports regeneration." },
                     ].map((cell, i) => (
                       <div
@@ -1164,7 +1127,7 @@ export default function Patient() {
                     {
                       step: "STEP 04",
                       title: "Intra-articular Injection",
-                      desc: "2 mL of BMMSCs together with 1 mL of PlasmaLyte is injected into the affected knee. Administer 2 mL of Hyaluronic Acid, which acts as the biological scaffold.",
+                      desc: "2 mL of BMMSCs together with 1 mL of PlasmaLyte is injected into the affected Knee followed by Administration of 2mL of Hyaluronic Acid, which acts as the biological scaffold.",
                       image: injectionImage,
                     }
                   ].map((item, i) => (
