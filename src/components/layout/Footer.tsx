@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import Container from "@/components/ui/Container";
 import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 import brandLogo from "@/assets/ciplostem-logo.png";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
   const location = useLocation();
@@ -63,22 +63,20 @@ export default function Footer() {
             </div>
 
             {/* Right: Contact & Address */}
-            <div className="hidden lg:flex flex-col items-end gap-3 text-sm text-slate-600">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-sky-700" />
-                <div>info@cipla.com</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-sky-700" />
-                <div>Toll Free: 1800-123-4567</div>
-              </div>
-              <div className="flex max-w-[320px] items-start gap-2 text-right leading-snug">
-                <MapPin className="mt-0.5 h-4 w-4 flex-none text-sky-700" />
-                <div className="space-y-0.5">
-                  <div className="font-semibold text-slate-800">Cipla Ltd Head Office, Mumbai</div>
-                  <div>Peninsula Business Park</div>
-                  <div>Ganpatrao Kadam Marg</div>
-                  <div>Lower Parel, Mumbai</div>
+            <div className="hidden lg:flex justify-end">
+              <div className="flex flex-col items-start gap-3.5 text-sm text-slate-700 text-left">
+                <div className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 shrink-0 text-slate-800" />
+                  <a href="mailto:info@cipla.com" className="hover:text-sky-600 transition-colors text-slate-800">info@cipla.com</a>
+                </div>
+                <div className="flex items-start gap-2.5 leading-snug">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-800" />
+                  <div className="space-y-1">
+                    <div className="font-semibold text-slate-900">Cipla Ltd Head Office - Mumbai</div>
+                    <div className="text-slate-800">Peninsula Business Park,</div>
+                    <div className="text-slate-800">Ganpatrao Kadam Marg,</div>
+                    <div className="text-slate-800">Lower Parel, Mumbai.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -109,22 +107,20 @@ export default function Footer() {
                 );
               })}
             </div>
-            <div className="flex flex-col items-center gap-3 text-sm text-slate-600">
-              <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-sky-700" />
-                <div>info@cipla.com</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-sky-700" />
-                <div>Toll Free: 1800-123-4567</div>
-              </div>
-              <div className="flex max-w-[280px] flex-col items-center gap-2 text-center leading-snug">
-                <MapPin className="h-4 w-4 text-sky-700" />
-                <div className="space-y-0.5">
-                  <div className="font-semibold text-slate-800">Cipla Ltd Head Office, Mumbai</div>
-                  <div>Peninsula Business Park</div>
-                  <div>Ganpatrao Kadam Marg</div>
-                  <div>Lower Parel, Mumbai</div>
+            <div className="flex justify-center">
+              <div className="flex flex-col items-start gap-3.5 text-sm text-slate-700 text-left">
+                <div className="flex items-center gap-2.5">
+                  <Mail className="h-4 w-4 shrink-0 text-slate-800" />
+                  <a href="mailto:info@cipla.com" className="hover:text-sky-600 transition-colors text-slate-800">info@cipla.com</a>
+                </div>
+                <div className="flex items-start gap-2.5 leading-snug">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-slate-800" />
+                  <div className="space-y-1">
+                    <div className="font-semibold text-slate-900">Cipla Ltd Head Office - Mumbai</div>
+                    <div className="text-slate-800">Peninsula Business Park,</div>
+                    <div className="text-slate-800">Ganpatrao Kadam Marg,</div>
+                    <div className="text-slate-800">Lower Parel, Mumbai.</div>
+                  </div>
                 </div>
               </div>
             </div>

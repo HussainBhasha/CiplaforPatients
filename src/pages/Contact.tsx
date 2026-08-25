@@ -4,7 +4,7 @@ import Container from "@/components/ui/Container";
 import MarketingNavbar from "@/components/layout/MarketingNavbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/Button";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Send } from "lucide-react";
 
 export default function Contact() {
   const location = useLocation();
@@ -33,6 +33,40 @@ export default function Contact() {
 
   const contactName = portal === "patient" ? "Cipla" : "Ciplostem";
   
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitError("");
+    setPhoneError("");
+
+    // Validate phone number if provided (must be 10 digits if entered)
+    const cleanedPhone = phone.replace(/\D/g, "");
+    if (phone.trim() && cleanedPhone.length !== 10) {
+      setPhoneError("Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, email, phone: cleanedPhone, subject, message }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to send message");
+      }
+      setSent(true);
+      if (data.emailWarning) {
+        setEmailWarning(data.emailWarning);
+      }
+    } catch (err: any) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   useEffect(() => {
     document.title = `${contactName} | Contact`;
   }, [contactName]);
@@ -60,18 +94,6 @@ export default function Contact() {
                 <div className="rounded-[22px] bg-white/90 p-5 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:shadow-[0_10px_40px_rgba(2,132,199,0.15)] hover:ring-sky-300">
                   <div className="flex items-start gap-3">
                     <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 ring-1 ring-sky-100 text-sky-700">
-                      <Phone className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-slate-900">Toll-Free Support</div>
-                      <a href="tel:18001234567" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">1800-123-4567</a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[22px] bg-white/90 p-5 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:shadow-[0_10px_40px_rgba(2,132,199,0.15)] hover:ring-sky-300">
-                  <div className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 ring-1 ring-sky-100 text-sky-700">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
@@ -87,17 +109,12 @@ export default function Contact() {
                       <MapPin className="h-5 w-5" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-slate-900">Headquarters</div>
-                      <a
-                        href="https://www.google.com/maps?q=PENINSULA%20BUSINESS%20PARK%20GANPATRAO%20KADAM%20MARG%20LOWER%20PAREL%20MUMBAI"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-1 block text-xs leading-relaxed text-slate-600 hover:text-sky-700"
-                      >
-                        CIPLA LTD HEAD OFFICE-MUMBAI<br/>
-                        PENINSULA BUSINESS PARK, GANPATRAO KADAM<br/>
-                        MARG, LOWER PAREL, MUMBAI.
-                      </a>
+                      <div className="text-sm font-semibold text-slate-900">Cipla Ltd Head Office - Mumbai</div>
+                      <div className="mt-1 text-sm leading-relaxed text-slate-600">
+                        Peninsula Business Park,<br />
+                        Ganpatrao Kadam Marg,<br />
+                        Lower Parel, Mumbai.
+                      </div>
                     </div>
                   </div>
                 </div>
