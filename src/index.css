@@ -259,21 +259,24 @@ video {
     text-rendering: auto !important;
   }
   
-  .font-medium, .font-semibold {
-    font-weight: 400 !important;
+  .font-medium {
+    font-weight: 500 !important;
     font-family: Poppins, sans-serif !important;
-    text-rendering: auto !important;
   }
-
-  .font-bold, .font-extrabold, .font-black {
-    font-weight: 400 !important;
+  .font-semibold {
+    font-weight: 600 !important;
     font-family: Poppins, sans-serif !important;
-    text-rendering: auto !important;
   }
-
-  *, *::before, *::after {
-    font-family: Poppins, ui-sans-serif, system-ui, sans-serif;
-    font-weight: 400;
-    text-rendering: auto;
+  .font-bold {
+    font-weight: 700 !important;
+    font-family: Poppins, sans-serif !important;
+  }
+  .font-extrabold {
+    font-weight: 800 !important;
+    font-family: Poppins, sans-serif !important;
+  }
+  .font-black {
+    font-weight: 900 !important;
+    font-family: Poppins, sans-serif !important;
   }
 }

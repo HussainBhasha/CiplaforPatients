@@ -38,6 +38,17 @@ export default function Disclaimer() {
               <li>Medical knowledge and guidelines are continually evolving. While every effort has been made to ensure the accuracy of this content, Cipla makes no representations or warranties regarding its completeness or accuracy.</li>
               <li>Cipla shall not be responsible for any consequences, losses, injuries, or damages, whether direct or indirect, arising from the use, misuse, misinterpretation, or inaccurate application of this content.</li>
             </ul>
+
+            <div className="mt-8 rounded-2xl border border-[#7dd3fc] bg-[#f0f9ff] px-6 py-3.5 sm:py-4 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-14 md:gap-20 text-[14px] sm:text-[15px] text-black">
+              <div>
+                <span className="font-normal text-black">Code : </span>
+                <span className="font-bold text-black">IN-IL-NP-SO-2026-0007</span>
+              </div>
+              <div>
+                <span className="font-normal text-black">Designed and Developed : </span>
+                <span className="font-bold text-black">Aug 2026</span>
+              </div>
+            </div>
           </div>
         </Container>
       </main>
