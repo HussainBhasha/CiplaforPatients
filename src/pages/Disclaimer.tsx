@@ -26,7 +26,7 @@ export default function Disclaimer() {
             </button>
           </div>
           <div className="mx-auto max-w-4xl rounded-3xl bg-white/80 backdrop-blur-xl p-8 sm:p-12 ring-1 ring-sky-200/60 shadow-soft-xl">
-            <h1 className="font-display text-4xl font-bold tracking-[-0.03em] text-[#0b3a66] mb-8">
+            <h1 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight text-[#0b3a66] mb-6">
               Disclaimer
             </h1>
             <ul className="space-y-4 text-[15px] leading-relaxed text-slate-700 font-medium list-disc pl-5">

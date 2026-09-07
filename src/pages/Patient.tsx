@@ -1,9 +1,8 @@
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import Container from "@/components/ui/Container";
 import MarketingNavbar from "@/components/layout/MarketingNavbar";
 import Footer from "@/components/layout/Footer";
 import ReferencesSection from "@/components/ReferencesSection";
-import Button from "@/components/ui/Button";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
 import oaComparisonImage from "@/assets/OA.png";
@@ -12,42 +11,38 @@ import gradeStage1Image from "@/assets/stage 1.png";
 import gradeStage2Image from "@/assets/stage 2.png";
 import gradeStage3Image from "@/assets/stage 3.png";
 import gradeStage4Image from "@/assets/stage 4.png";
-import selfHelpImage from "@/assets/self help.png";
-import informationImage from "@/assets/information.jpeg";
-import nonSurgicalImage from "@/assets/non surgical (2).png";
-import surgicalImage from "@/assets/surgical.jpeg";
 import stemcellImage from "@/assets/stemcell.png";
 import newStemCellImage from "@/assets/newstemcell.png";
 import stemCellImageJpg from "@/assets/stemcellimage.jpg";
 import advanceStemCellImage from "@/assets/Advance stem cell.png";
 import mscImage from "@/assets/newstemcell.png";
-import mscPreparationImage from "@/assets/MSC preparation.png";
-import stemCellPreparationImage from "@/assets/stem cell preparation.png";
 import walkingImage from "@/assets/walking image.png";
 import climbingImage from "@/assets/climbing.png";
 import sittingImage from "@/assets/sitting.png";
-import cryoshipperImage from "@/assets/cryoshipper.png";
 import img1 from "@/assets/img1.png";
 import img2 from "@/assets/img2.png";
 import img3 from "@/assets/img3.png";
 import img4 from "@/assets/img4.png";
 import img5 from "@/assets/img5.png";
 import img6 from "@/assets/img6.png";
-import cellVialImage from "@/assets/cell_vial.png";
-import waterBathImage from "@/assets/water_bath.png";
-import plasmalyteBagImage from "@/assets/plasmalyte_bag.png";
-import syringesImage from "@/assets/syringes.png";
-import injectionImage from "@/assets/Intra-articular Injection.png";
-import prep1 from "@/assets/1.png";
-import prep2 from "@/assets/2.png";
-import prep3 from "@/assets/3.png";
-import prep4 from "@/assets/4.png";
-import prep5 from "@/assets/5.png";
-import prep6 from "@/assets/6.png";
-import prep7 from "@/assets/7.png";
-import prep8 from "@/assets/8.png";
-import prep9 from "@/assets/9.png";
-import { Armchair, ArrowRight, Droplets, Footprints, Send, TrendingUp, Mail, MapPin, ShieldCheck } from "lucide-react";
+import patientVideo from "@/assets/videopatient.mp4";
+import gmpImage from "@/assets/GMP.png";
+import chonImage from "@/assets/CHON.png";
+import sinImage from "@/assets/SIN.png";
+import walkImage from "@/assets/walk.png";
+import exeImage from "@/assets/exe.png";
+import strImage from "@/assets/str.png";
+import sitImage from "@/assets/sit.png";
+import helImage from "@/assets/hel.png";
+import jointImage from "@/assets/joint.png";
+import sleepImage from "@/assets/sleep.png";
+import proteinImage from "@/assets/protein.png";
+import calciumImage from "@/assets/calcium.png";
+import vitaminDImage from "@/assets/vitamin D.png";
+import vegesImage from "@/assets/veges.png";
+import fatsImage from "@/assets/fats.png";
+import gainImage from "@/assets/GAIN.png";
+import { Armchair, ArrowRight, Droplets, Footprints, TrendingUp, ShieldCheck, Info, CheckCircle2, HeartPulse, Lightbulb, Image as ImageIcon, Utensils, Bone, Sun, Salad, Heart, Scale, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useInView } from "@/hooks/useInView";
 import gsap from "gsap";
@@ -82,6 +77,7 @@ const oaSymptomHighlights = [
   {
     title: "Pain While Walking",
     text: "Discomfort or pain in the knee while walking, especially on longer distances.",
+    citation: "1",
     icon: <Footprints className="h-6 w-6" />,
     image: walkingImage,
     color: "orange",
@@ -89,6 +85,7 @@ const oaSymptomHighlights = [
   {
     title: "Difficulty Climbing Stairs",
     text: "Pain or difficulty while climbing up or down stairs.",
+    citation: "1",
     icon: <TrendingUp className="h-6 w-6" />,
     image: climbingImage,
     color: "blue",
@@ -96,6 +93,7 @@ const oaSymptomHighlights = [
   {
     title: "Difficulty in getting up from a chair",
     text: "Pain or stiffness when getting up from a chair.",
+    citation: "1",
     icon: <Armchair className="h-6 w-6" />,
     image: sittingImage,
     color: "green",
@@ -108,32 +106,278 @@ const grades = [
     title: "Mild changes",
     text: "Early cartilage irritation with minimal pain.",
     image: gradeStage1Image,
-    treatment: "Self-help\nSimple painkillers, external applications, supplements",
-    treatmentImage: selfHelpImage
   },
   {
     k: "Grade II",
     title: "Moderate changes",
     text: "Cartilage damage begins; pain may increase with activity.",
     image: gradeStage2Image,
-    treatment: "Information and advice\nEducation, weight loss, exercise, lifestyle changes, pain killers & supplements",
-    treatmentImage: informationImage
   },
   {
     k: "Grade III",
     title: "Advanced changes",
     text: "Noticeable cartilage loss and inflammation; mobility reduces.",
     image: gradeStage3Image,
-    treatment: "Simple and advanced non-surgical options\nPrescription oral painkillers, physiotherapy, supportive devices, and Hyaluronic Acid Injections.",
-    treatmentImage: nonSurgicalImage
   },
   {
     k: "Grade IV",
     title: "Severe changes",
     text: "Joint-space narrowing; significant pain and stiffness.",
     image: gradeStage4Image,
-    treatment: "Surgical options\npartial or total knee replacement (TKR)",
-    treatmentImage: surgicalImage
+  },
+];
+
+type LifestyleTip = {
+  id: number;
+  number: string;
+  title: string;
+  description: string;
+  citation?: string;
+  listTitle?: string;
+  items?: string[];
+  patientTip?: string | null;
+  image?: string;
+};
+
+const lifestyleTips: LifestyleTip[] = [
+  {
+    id: 1,
+    number: "01",
+    title: "Walk Regularly",
+    description: "Walking is one of the safest and most effective exercises for people with knee osteoarthritis. Regular walking helps improve joint mobility, reduce stiffness, maintain muscle strength, and support overall health.",
+    citation: "12,14,15",
+    listTitle: "Key Benefits",
+    items: [
+      "Improves joint mobility",
+      "Reduces stiffness",
+      "Builds muscle strength",
+    ],
+    patientTip: "Start with 10-15 minutes and gradually build to 30 minutes most days of the week. Walk at a comfortable pace.",
+    image: walkImage,
+  },
+  {
+    id: 2,
+    number: "02",
+    title: "Strengthen Your Thigh Muscles",
+    description: "Strong thigh (quadriceps) muscles help support the knee joint and reduce stress on the joint surfaces. Strengthening exercises are strongly recommended for knee OA.",
+    citation: "11,12",
+    listTitle: "Exercises",
+    items: [
+      "Straight leg raises",
+      "Seated knee extensions",
+      "Chair sit-to-stand",
+      "Wall-supported mini squats",
+    ],
+    patientTip: "Perform 8-12 repetitions and progress gradually under healthcare guidance.",
+    image: exeImage,
+  },
+  {
+    id: 3,
+    number: "03",
+    title: "Stretch Daily",
+    description: "Gentle stretching helps reduce stiffness and maintain knee flexibility.",
+    citation: "11",
+    listTitle: "Examples",
+    items: [
+      "Hamstring stretch",
+      "Calf stretch",
+      "Knee bends while seated",
+    ],
+    patientTip: "Stretch slowly and never force a painful movement.",
+    image: strImage,
+  },
+  {
+    id: 4,
+    number: "04",
+    title: "Maintain a Healthy Weight",
+    description: "Excess body weight increases load on the knee joint and may worsen symptoms. Weight reduction in overweight individuals can improve pain and physical function.",
+    citation: "12,13",
+    listTitle: "Key Benefits",
+    items: [
+      "Reduces joint load",
+      "Improves pain relief",
+      "Enhances physical function",
+    ],
+    patientTip: "Even modest weight loss can help reduce pressure on the knees.",
+    image: helImage,
+  },
+  {
+    id: 5,
+    number: "05",
+    title: "Avoid Long Periods of Sitting",
+    description: "Extended sitting may increase joint stiffness and discomfort. Regular movement throughout the day helps keep joints mobile.",
+    citation: "11",
+    listTitle: "Helpful Habits",
+    items: [
+      "Stand up every 30 to 60 mins",
+      "Take short walking breaks",
+      "Perform gentle knee stretches",
+    ],
+    patientTip: "Stand up, stretch, or walk around every 30 to 60 minutes.",
+    image: sitImage,
+  },
+  {
+    id: 6,
+    number: "06",
+    title: "Choose Joint-Friendly Activities",
+    description: "Low-impact activities can improve fitness while minimizing stress on the knees.",
+    citation: "11,12",
+    listTitle: "Good Choices",
+    items: [
+      "Walking",
+      "Cycling",
+      "Swimming",
+      "Yoga",
+    ],
+    patientTip: "Choose low-impact activities that feel comfortable and avoid sudden twisting.",
+    image: jointImage,
+  },
+  {
+    id: 7,
+    number: "07",
+    title: "Sleep Well",
+    description: "Good sleep supports overall health and may help with pain management and daily functioning.",
+    citation: "16",
+    listTitle: "Healthy Habits",
+    items: [
+      "Regular sleep timings",
+      "Supportive knee pillow",
+      "Minimize bedtime screen time",
+    ],
+    patientTip: "Aim for regular sleep timings and minimize screen exposure before bedtime.",
+    image: sleepImage,
+  },
+];
+
+const dietTips = [
+  {
+    id: 1,
+    number: "01",
+    title: "Include Protein at Every Meal",
+    icon: Utensils,
+    description: "Protein supports muscle health, which is important for knee stability and physical function.",
+    citations: ["11", "12"],
+    groups: [
+      {
+        title: "Vegetarian Sources",
+        type: "veg" as const,
+        items: ["Dal", "Rajma", "Chole", "Soy chunks", "Tofu", "Paneer", "Greek yogurt (hung curd)"],
+      },
+      {
+        title: "Non-Vegetarian Sources",
+        type: "nonveg" as const,
+        items: ["Eggs", "Fish", "Chicken", "Lean meat"],
+      },
+    ],
+    patientTip: "Include one protein-rich food with every meal.",
+    supportingRef: null,
+    supportingCitations: [],
+    image: proteinImage,
+  },
+  {
+    id: 2,
+    number: "02",
+    title: "Eat Calcium-Rich Foods",
+    icon: Bone,
+    description: "Calcium supports bone health. Adequate intake is important for maintaining bone strength.",
+    citations: ["17", "18"],
+    groups: [
+      {
+        title: "Vegetarian Sources",
+        type: "veg" as const,
+        items: ["Milk", "Curd", "Paneer", "Ragi", "Sesame seeds (til)", "Broccoli", "Spinach"],
+      },
+      {
+        title: "Non-Vegetarian Sources",
+        type: "nonveg" as const,
+        items: ["Fish with edible bones", "Eggs"],
+      },
+    ],
+    patientTip: null,
+    supportingRef: null,
+    supportingCitations: [],
+    image: calciumImage,
+  },
+  {
+    id: 3,
+    number: "03",
+    title: "Get Enough Vitamin D",
+    icon: Sun,
+    description: "Vitamin D helps the body absorb calcium and supports bone health.",
+    citations: ["19", "20"],
+    groups: [
+      {
+        title: "Sources",
+        type: "general" as const,
+        items: ["Safe sunlight exposure", "Eggs", "Fatty fish", "Fortified milk", "Fortified foods"],
+      },
+    ],
+    patientTip: null,
+    supportingRef: null,
+    supportingCitations: [],
+    image: vitaminDImage,
+  },
+  {
+    id: 4,
+    number: "04",
+    title: "Fill Half Your Plate with Vegetables",
+    icon: Salad,
+    description: "Vegetables provide vitamins, minerals, and fiber while helping support healthy weight management.",
+    citations: ["21"],
+    groups: [
+      {
+        title: "Good Indian Options",
+        type: "veg" as const,
+        items: ["Lauki", "Tori", "Bhindi", "Beans", "Cabbage", "Carrot", "Spinach", "Methi"],
+      },
+    ],
+    patientTip: "Try to include vegetables in lunch and dinner every day.",
+    supportingRef: null,
+    supportingCitations: [],
+    image: vegesImage,
+  },
+  {
+    id: 5,
+    number: "05",
+    title: "Choose Healthy Fats",
+    icon: Heart,
+    description: "Replacing fried foods with healthier fat sources may support overall cardiovascular and metabolic health.",
+    citations: ["21", "22", "23"],
+    groups: [
+      {
+        title: "Better Choices",
+        type: "veg" as const,
+        items: ["Groundnuts", "Almonds", "Walnuts", "Flax seeds", "Mustard oil", "Groundnut oil (in moderation)"],
+      },
+      {
+        title: "Non-Veg Option",
+        type: "nonveg" as const,
+        items: ["Oily fish such as salmon, sardines, and mackerel"],
+      },
+    ],
+    patientTip: null,
+    supportingRef: null,
+    supportingCitations: [],
+    image: fatsImage,
+  },
+  {
+    id: 6,
+    number: "06",
+    title: "Limit Foods That Promote Weight Gain",
+    icon: Scale,
+    description: "Maintaining a healthy weight is one of the most important lifestyle measures for knee OA.",
+    citations: ["21", "22"],
+    groups: [
+      {
+        title: "Limit",
+        type: "limit" as const,
+        items: ["Sugar-sweetened beverages", "Excess sweets", "Bakery products", "Deep-fried snacks", "Ultra-processed foods"],
+      },
+    ],
+    patientTip: "Choose homemade meals more often.",
+    supportingRef: null,
+    supportingCitations: [],
+    image: gainImage,
   },
 ];
 
@@ -148,9 +392,87 @@ export default function Patient() {
   const { ref: gradeRef, inView: gradeInView } = useInView({ threshold: 0.18, rootMargin: "0px 0px -10% 0px" });
   const stemSectionRef = useRef<HTMLElement | null>(null);
   const stemVisualRef = useRef<HTMLDivElement | null>(null);
-  const [contactSent, setContactSent] = useState(false);
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSubmitError, setContactSubmitError] = useState("");
+  const patientVideoRef = useRef<HTMLVideoElement | null>(null);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
+  const isFullscreenTransitionRef = useRef(false);
+  const lastScrollPosRef = useRef(0);
+
+  useEffect(() => {
+    const video = patientVideoRef.current;
+    if (!video) return;
+
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!(
+        document.fullscreenElement ||
+        (document as any).webkitFullscreenElement ||
+        (document as any).mozFullScreenElement ||
+        (document as any).msFullscreenElement
+      );
+
+      if (isFullscreen) {
+        // Entering fullscreen: record current scroll position
+        lastScrollPosRef.current = window.scrollY;
+      } else {
+        // Exiting fullscreen (minimizing): lock observer and keep in same place
+        isFullscreenTransitionRef.current = true;
+
+        requestAnimationFrame(() => {
+          if (videoContainerRef.current) {
+            videoContainerRef.current.scrollIntoView({ block: "center", behavior: "instant" as ScrollBehavior });
+          } else if (lastScrollPosRef.current) {
+            window.scrollTo({ top: lastScrollPosRef.current, behavior: "instant" as ScrollBehavior });
+          }
+        });
+
+        // Release guard once browser layout has stabilized
+        setTimeout(() => {
+          isFullscreenTransitionRef.current = false;
+        }, 600);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    document.addEventListener("mozfullscreenchange", handleFullscreenChange);
+    document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const isFullscreen = !!(
+            document.fullscreenElement ||
+            (document as any).webkitFullscreenElement ||
+            (document as any).mozFullScreenElement ||
+            (document as any).msFullscreenElement
+          );
+
+          // Prevent resetting when in fullscreen or during minimize transition
+          if (isFullscreen || isFullscreenTransitionRef.current) return;
+
+          if (!entry.isIntersecting) {
+            // When scrolled up or down out of view: stop and reset to start
+            if (!video.paused) {
+              video.pause();
+            }
+            video.currentTime = 0;
+          }
+        });
+      },
+      {
+        threshold: 0.15,
+      }
+    );
+
+    observer.observe(video);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("mozfullscreenchange", handleFullscreenChange);
+      document.removeEventListener("MSFullscreenChange", handleFullscreenChange);
+    };
+  }, []);
 
 
   useEffect(() => {
@@ -206,8 +528,8 @@ export default function Patient() {
   return (
     <div className="min-h-dvh bg-sky-50">
       <MarketingNavbar />
-      <main className="pt-20">
-        <section className="relative h-[calc(100dvh-5rem)] w-full overflow-hidden">
+      <main className="pt-16 sm:pt-20">
+        <section className="relative h-[calc(100dvh-4rem)] sm:h-[calc(100dvh-5rem)] w-full overflow-hidden">
           {/* Mobile Image */}
           <img
             src={patientLandingMobileBg}
@@ -238,12 +560,12 @@ export default function Patient() {
               <div className="h-full flex items-center">
                 <div className="max-w-3xl pl-6 sm:pl-10 md:pl-14 -translate-y-4 sm:translate-y-0">
                   <div>
-                    <div className="font-display text-4xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.04em] text-[#0b3a66]">
+                    <div className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#0b3a66]">
                       Knee Osteoarthritis (OA)
                     </div>
                     <p className="mt-4 max-w-2xl text-sm sm:text-base leading-relaxed text-slate-700">
                       Knee Osteoarthritis is a common joint condition where knee cartilage gradually wears down, causing pain, stiffness, and reduced
-                      mobility. Early awareness and assessment can help you understand your knee health better.
+                      mobility. Early awareness and assessment can help you understand your knee health better.<sup>1</sup>
                     </p>
                   </div>
 
@@ -264,15 +586,15 @@ export default function Patient() {
                   oaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
                 )}
               >
-                <div className="font-display text-4xl sm:text-5xl font-semibold tracking-[-0.03em] text-slate-900">
+                <div className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
                   Understanding Knee Osteoarthritis
                 </div>
-                <div className="mt-4 text-sm sm:text-base font-medium text-slate-600">
+                <div className="mt-3 text-sm sm:text-base font-medium text-slate-600">
                   Healthy Knee vs. Osteoarthritic Knee: Understand the Key Differences
                 </div>
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600">
-                  Knee Osteoarthritis is a chronic joint degenerative where the protective cartilage between bones gradually wears down. This can
-                  lead to pain, stiffness, swelling, and reduced movement.
+                  Knee Osteoarthritis is a chronic joint degenerative disease where the protective cartilage between bones gradually wears down. This can
+                  lead to pain, stiffness, swelling, and reduced movement.<sup>1,2,4</sup>
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 mt-8 gap-4">
@@ -293,7 +615,7 @@ export default function Patient() {
                       <ul className="list-disc pl-5 space-y-1">
                         <li>Cartilage Breakdown</li>
                         <li>Bone Spurs</li>
-                        <li>Synovial Membrane</li>
+                        <li>Synovial inflammation</li>
                       </ul>
                     </div>
                   </div>
@@ -302,7 +624,7 @@ export default function Patient() {
                 <div className="mt-4 rounded-[24px] bg-white/85 p-5 sm:p-6 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-sky-300 cursor-default">
                   <div className="text-sm leading-relaxed text-slate-600">
                     <span className="font-bold text-slate-900">Synovial inflammation (synovitis):</span>{" "}
-                    The synovium becomes inflamed and thickened, producing excess synovial fluid. This can cause joint swelling, pain, stiffness, and reduced knee movement.
+                    The synovium becomes inflamed and thickened, producing excess synovial fluid. This can cause joint swelling, pain, stiffness, and difficulty in knee movement.<sup>3,4</sup>
                   </div>
                 </div>
 
@@ -335,12 +657,12 @@ export default function Patient() {
           <Container>
             <div className="mx-auto max-w-6xl">
               <div className="max-w-3xl mx-auto text-center">
-                <h1 className={cn("text-5xl font-extrabold text-[#0b3a66] reveal-fade", symptomsInView && "reveal-fade-visible")}>Knee OA: Symptoms</h1>
-                <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-[#0b3a66] sm:text-4xl">
+                <h1 className={cn("text-3xl sm:text-4xl font-semibold text-[#0b3a66] reveal-fade", symptomsInView && "reveal-fade-visible")}>Knee OA: Symptoms</h1>
+                <div className="mt-2 font-display text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-[#0b3a66]">
                   <RevealWords text="Signs Your Knee May Be Telling You" active={symptomsInView} />
                 </div>
                 <p className={cn("mt-4 max-w-3xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base font-medium reveal-fade", symptomsInView && "reveal-fade-visible")}>
-                  Symptoms of knee osteoarthritis often develop gradually and can significantly impact your daily activities. Recognizing these symptoms early can help you take the right steps toward better joint health.
+                  Symptoms of knee osteoarthritis often develop gradually and can significantly impact your daily activities. Recognizing these symptoms early can help you take the right steps toward better joint health.<sup>1,4</sup>
                 </p>
               </div>
 
@@ -407,6 +729,7 @@ export default function Patient() {
 
                       <p className="text-[14px] leading-relaxed text-slate-500 mb-8 flex-1 px-2">
                         {item.text}
+                        {item.citation && <sup>{item.citation}</sup>}
                       </p>
                     </div>
                   );
@@ -419,10 +742,10 @@ export default function Patient() {
         <section ref={(node) => { gradeRef.current = node; }} className="py-14 sm:py-20">
           <Container>
             <div className="text-center">
-              <div className="font-display text-4xl font-semibold tracking-[-0.03em] text-[#0b3a66] sm:text-5xl">
+              <div className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
                 <RevealWords text="Stages of Knee OA - Severity" active={gradeInView} />
               </div>
-              <div className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+              <div className="mt-2 font-display text-lg sm:text-xl md:text-2xl font-normal tracking-tight text-slate-700">
                 <RevealWords text="Kellgren-Lawrence Classification" active={gradeInView} delay={0.15} />
               </div>
             </div>
@@ -455,52 +778,29 @@ export default function Patient() {
                     <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">{g.k}</div>
                     <div className="mt-2 text-lg font-semibold text-slate-900">{g.title}</div>
                     <div className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{g.text}</div>
-
-                    {/* Treatment section */}
-                    {"treatment" in g && g.treatment && (
-                      <div className="mt-6 pt-6 border-t border-slate-200">
-                        {g.treatmentImage && (
-                          <div className="relative h-40 w-full overflow-hidden rounded-xl mb-4 bg-white">
-                            <img
-                              src={g.treatmentImage}
-                              alt={`${g.k} treatment`}
-                              width={800}
-                              height={400}
-                              className="h-full w-full object-cover"
-                              decoding="async"
-                              loading="lazy"
-                            />
-                            {g.k === "Grade I" && (
-                              <>
-                                <div className="absolute top-[28%] left-[56%] -translate-x-1/2 -translate-y-1/2 text-center text-[8px] sm:text-[9.5px] font-black text-black leading-[1.1] tracking-tighter">
-                                  Analgesic<br />Gel
-                                </div>
-                                <div className="absolute top-[58%] left-[82%] -translate-x-1/2 -translate-y-1/2 text-center text-[10px] sm:text-[12px] font-black text-black tracking-tight">
-                                  Oil
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        )}
-                        <div className="space-y-1">
-                          {g.treatment.split('\n').map((line, i) => (
-                            <div
-                              key={i}
-                              className={
-                                i === 0
-                                  ? "min-h-[56px] text-sm font-semibold text-sky-700"
-                                  : "text-[14px] leading-relaxed text-slate-500 px-2"
-                              }
-                            >
-                              {line}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* Note Callout */}
+            <div className="mt-10 max-w-3xl mx-auto">
+              <div className="group relative cursor-pointer overflow-hidden rounded-[24px] bg-gradient-to-r from-sky-50 via-white to-blue-50/70 p-5 sm:p-6 ring-1 ring-sky-200/80 shadow-soft-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.025] hover:shadow-[0_20px_40px_-12px_rgba(11,58,102,0.22)] hover:ring-2 hover:ring-sky-400 flex items-center gap-4 sm:gap-5">
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-[#0b3a66] to-[#0284c7] transition-all duration-300 group-hover:w-2" />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0b3a66] to-[#0284c7] text-white shadow-md shadow-sky-900/15 transition-transform duration-300 ease-out group-hover:scale-110 group-hover:rotate-3">
+                  <Info className="h-6 w-6" />
+                </div>
+                <div className="flex-1 text-left">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#0b3a66] bg-sky-100/90 px-2.5 py-0.5 rounded-full ring-1 ring-sky-200 transition-colors duration-300 group-hover:bg-sky-200 group-hover:ring-sky-300">
+                      Important Note
+                    </span>
+                  </div>
+                  <p className="text-sm sm:text-[15px] font-medium leading-relaxed text-slate-700">
+                    If you experience swelling, severe pain and difficulty in daily activities, <span className="font-semibold text-[#0b3a66]">consult your doctor.</span>
+                  </p>
+                </div>
+              </div>
             </div>
 
 
@@ -536,32 +836,18 @@ export default function Patient() {
               </div>
 
               <div className="order-1 md:order-2">
-                <div className="font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
+                <div className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
                   Advanced Stem Cell Therapy for Knee Joint Preservation
                 </div>
                 <p className="mt-4 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                  Stem cell therapy supports the body's natural healing processes by promoting tissue repair, preserving cartilage integrity, enhancing joint function, and improving mobility in individuals with knee osteoarthritis.
+                  Stem cell therapy supports the body's natural healing processes by promoting tissue repair, preserving cartilage integrity, enhancing joint function, and improving mobility in individuals with knee osteoarthritis.<sup>5,8</sup>
                 </p>
 
-                <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                  {[
-                    {
-                      title: "Cartilage Preservation",
-                      text: "Supports natural tissue repair and recovery.",
-                    },
-                    {
-                      title: "Knee Cartilage Support",
-                      text: "Helps maintain healthy joint structure and movement.",
-                    },
-                  ].map((card) => (
-                    <div
-                      key={card.title}
-                      className="rounded-[24px] bg-white/60 p-6 ring-1 ring-sky-200/60 shadow-soft-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-2xl hover:ring-sky-300/80 cursor-pointer"
-                    >
-                      <div className="text-sm font-semibold text-slate-900">{card.title}</div>
-                      <div className="mt-2 text-sm leading-relaxed text-slate-600">{card.text}</div>
-                    </div>
-                  ))}
+                <div className="mt-8">
+                  <div className="rounded-[24px] bg-white/60 p-6 ring-1 ring-sky-200/60 shadow-soft-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-2xl hover:ring-sky-300/80 cursor-pointer max-w-md">
+                    <div className="text-sm font-semibold text-slate-900">Cartilage Preservation</div>
+                    <div className="mt-2 text-sm leading-relaxed text-slate-600">Supports natural tissue repair and recovery.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -581,7 +867,7 @@ export default function Patient() {
             {/* Section Header */}
             <div className="mx-auto max-w-4xl text-center">
               <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">STEM CELL THERAPY</div>
-              <div className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
+              <div className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-slate-900">
                 How do stem cells work in Knee OA?
               </div>
             </div>
@@ -594,17 +880,17 @@ export default function Patient() {
                     <div className="h-2 w-2 rounded-full bg-sky-500" />
                     Part 01
                   </div>
-                  <h2 className="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-black sm:text-4xl">
+                  <h2 className="mt-3 font-display text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
                     What Are Stem Cells?
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Stem cells are the body's natural repair cells. They are unique because they can renew themselves, develop into different specialized cell types, help repair and restore damaged tissues, and play an important role in maintaining healthy organs throughout life.
+                    Stem cells are the body's natural repair cells. They are unique because they can renew themselves, develop into different specialized cell types, help repair and restore damaged tissues, and play an important role in maintaining healthy organs throughout life.<sup>5</sup>
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-4">
                     {[
-                      { title: "Self-Renewal", desc: "Ability of stem cell to undergo repeated cell division while maintaining its identity." },
-                      { title: "Repair & Restoration", desc: "Support the body's natural healing by helping repair damaged tissues." },
-                      { title: "Differentiation", desc: "Can develop into different specialized cell types." },
+                      { title: "Self-Renewal", desc: "Ability of stem cell to undergo repeated cell division while maintaining its identity.", citation: "5" },
+                      { title: "Repair & Restoration", desc: "Support the body's natural healing by helping repair damaged tissues.", citation: "5" },
+                      { title: "Differentiation", desc: "Can develop into different specialized cell types.", citation: "5" },
                     ].map((item, i) => (
                       <div
                         key={i}
@@ -615,7 +901,10 @@ export default function Patient() {
                             {item.title}
                           </div>
                         </div>
-                        <div className="text-sm text-slate-700">{item.desc}</div>
+                        <div className="text-sm text-slate-700">
+                          {item.desc}
+                          {item.citation && <sup>{item.citation}</sup>}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -659,18 +948,18 @@ export default function Patient() {
                     <div className="h-2 w-2 rounded-full bg-teal-500" />
                     Part 02
                   </div>
-                  <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
+                  <h2 className="mt-3 font-display text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
                     Mesenchymal Stem Cells (MSCs)
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Mesenchymal Stem Cells (MSCs) are adult stem cells with the unique ability to develop into different specialized tissues. They play an important role in repairing, regenerating, and healing damaged tissues while supporting the body's natural healing process.
+                    Mesenchymal Stem Cells (MSCs) are adult stem cells with the unique ability to develop into different specialized tissues. They play an important role in repairing, regenerating, and healing damaged tissues while supporting the body's natural healing process.<sup>6,7</sup>
                   </p>
                   <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
-                      { title: "Unique Cells", desc: "Specialized adult stem cells capable of supporting tissue repair and regeneration." },
-                      { title: "Differentiation Potential", desc: "Can develop into bone, cartilage, muscle, and connective tissue." },
-                      { title: "Repair & Preservation", desc: "Supports the body's natural repair process and helps to preserve the connective tissue." },
-                      { title: "Natural Healing", desc: "Promote a healthier tissue environment that supports regeneration." },
+                      { title: "Unique Cells", desc: "Specialized adult stem cells capable of supporting tissue repair and regeneration.", citation: "6" },
+                      { title: "Differentiation Potential", desc: "Can develop into bone, cartilage, muscle, and other connective tissues.", citation: "6,7" },
+                      { title: "Repair & Preservation", desc: "Supports the body's natural repair process and helps to preserve the connective tissue.", citation: "6" },
+                      { title: "Natural Healing", desc: "Promote a healthier tissue environment that supports regeneration.", citation: "5,6" },
                     ].map((cell, i) => (
                       <div
                         key={i}
@@ -679,7 +968,10 @@ export default function Patient() {
                         <div className="text-base font-bold text-slate-900 transition-colors duration-300 group-hover:text-sky-700 mb-3">
                           {cell.title}
                         </div>
-                        <div className="text-sm text-slate-700">{cell.desc}</div>
+                        <div className="text-sm text-slate-700">
+                          {cell.desc}
+                          {cell.citation && <sup>{cell.citation}</sup>}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -732,18 +1024,19 @@ export default function Patient() {
                     <div className="h-2 w-2 rounded-full bg-indigo-500" />
                     Part 03
                   </div>
-                  <h2 className="mt-4 font-display text-3xl font-bold tracking-[-0.03em] text-black sm:text-4xl">
-                    Properties of Mesenchymal Stem Cells (MSCs) in Knee OA
+                  <h2 className="mt-3 font-display text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">
+                    Properties of Allogeneic Bone Marrow Derived Mesenchymal Stem Cells
                   </h2>
                   <p className="mt-4 text-sm leading-relaxed text-slate-600 sm:text-base">
-                    Mesenchymal Stem Cells possess several unique biological properties that make them valuable in regenerative medicine and tissue repair.
+                    Mesenchymal Stem Cells possess several unique biological properties that make them valuable in regenerative medicine and tissue repair.<sup>6,7</sup>
                   </p>
                   
                   <div className="mt-8 flex flex-wrap justify-center gap-4">
                     {[
                       {
                         title: "Differentiation",
-                        desc: "Can develop into specialized cells of cartilage, bone, muscle, and connective tissue.",
+                        desc: "Can develop into specialized cells of cartilage, bone, muscle, and other connective tissues.",
+                        citation: "6,7",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -753,6 +1046,7 @@ export default function Patient() {
                       {
                         title: "Anti-Inflammatory",
                         desc: "Help reduce inflammation and create a healthier environment for tissue repair.",
+                        citation: "6",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -762,6 +1056,7 @@ export default function Patient() {
                       {
                         title: "Immunomodulatory",
                         desc: "Help regulate the body's immune response to support healing.",
+                        citation: "6",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -771,6 +1066,7 @@ export default function Patient() {
                       {
                         title: "Anti-Catabolic",
                         desc: "Help reduce cartilage breakdown and preserve healthy joint structures.",
+                        citation: "5,6",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -780,6 +1076,7 @@ export default function Patient() {
                       {
                         title: "Low Immunogenicity",
                         desc: "Have a lower likelihood of triggering an immune reaction, making them suitable for regenerative therapies.",
+                        citation: "6",
                         icon: (
                           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="miter" strokeWidth={2} d="M4 11a9 9 0 019-9m0 0a9 9 0 019 9m-9-9v18" />
@@ -796,7 +1093,10 @@ export default function Patient() {
                             {feature.title}
                           </div>
                         </div>
-                        <div className="text-sm text-slate-700 mt-auto">{feature.desc}</div>
+                        <div className="text-sm text-slate-700 mt-auto">
+                          {feature.desc}
+                          {feature.citation && <sup>{feature.citation}</sup>}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -804,662 +1104,511 @@ export default function Patient() {
               </div>
             </div>
 
-            {/* --- Part 4: Preparation of Stem Cells --- */}
-            <div className="mt-20 relative">
-              {/* Full-width header */}
-              <div className="flex flex-col items-center text-center">
-                <div className="inline-flex items-center gap-2 rounded-full bg-sky-50 px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200">
-                  <div className="h-2 w-2 rounded-full bg-sky-500" />
-                  Part 04
-                </div>
-                <h2 className="mt-4 font-display text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">
-                  Stem Cell Preparation
-                </h2>
-                <p className="mt-4 max-w-3xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base">
-                  Allogeneic Bone Marrow-Derived Mesenchymal Stem Cells (BMMSCs) undergo a carefully controlled
-                  multi-stage manufacturing process, including isolation, expansion, cell banking,
-                  and cryopreservation, to ensure quality, safety, and therapeutic effectiveness.
-                </p>
-              </div>
-
-              {/* Image (Top) + Step cards (Bottom) for better readability */}
-              <div className="mt-12 w-full max-w-[1400px] mx-auto px-4">
-                {/* Desktop Grid Layout (Hidden on Mobile) */}
-                <div className="hidden lg:grid grid-cols-5 gap-x-[3.5rem] gap-y-16 relative w-full items-start">
-                  
-                  {/* Row 1 */}
-                  <div className="col-span-2 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                         <img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex flex-col items-center justify-center min-h-[85px]">
-                        <h4 className="font-bold text-black text-[14px] leading-tight text-center">Bone Marrow Aspiration</h4>
-                        <ul className="text-[12px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
-                          <li>- Already done from "Healthy Adult donors"</li>
-                          <li>- Through the Informed Consent process:</li>
-                        </ul>
-                      </div>
-                    </div>
-                    {/* Right Arrow */}
-                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Box 2 */}
-                  <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
-                        <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
-                        <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[13.5px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-xs font-bold">(In GLP-certified lab)</span></p>
-                      </div>
-                    </div>
-                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Box 3 */}
-                  <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-tight text-center">Expansion of BMMSCs</p>
-                      </div>
-                    </div>
-                    <div className="absolute -right-[2.5rem] top-[130px] -translate-y-1/2 z-10 text-red-500">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Box 4 */}
-                  <div className="col-span-1 relative">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-[280px]">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
-                      </div>
-                    </div>
-                    {/* Arrow Down to Row 2 */}
-                    <div className="absolute left-1/2 -bottom-[3.5rem] -translate-x-1/2 z-10 text-red-500">
-                      <svg className="w-10 h-10 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Row 2 */}
-                  {/* Row 2 - Col 1 */}
-                  <div className="col-start-1 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep9} alt="Cryopreserved" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-snug text-center">Cryopreserved<br/><span className="text-[13px] font-bold mt-1 block">(-185°C to -195°C)</span></p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Row 2 - Col 2 */}
-                  <div className="col-start-2 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep8} alt="Quantified into 25M cells" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-snug text-center">Quantified into<br/>25M cells in Vials</p>
-                      </div>
-                    </div>
-                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Row 2 - Col 3 */}
-                  <div className="col-start-3 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-tight text-center">Large scale expansion</p>
-                      </div>
-                    </div>
-                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-
-                  {/* Row 2 - Col 4 (WCB) */}
-                  <div className="col-start-4 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
-                      </div>
-                    </div>
-                    {/* Main Arrow between WCB and Large Scale */}
-                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-
-                    {/* Circular Icon (prep6) floating over the top border */}
-                    <div className="absolute -left-[80px] top-[15px] -translate-y-1/2 z-20">
-                      <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-sky-400 hover:scale-105 cursor-pointer relative">
-                      <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
-                      
-                      {/* Small Red Arrow Left (INSIDE CIRCLE) */}
-                      <div className="absolute -left-[50px] top-1/2 -translate-y-1/2 text-red-500 rotate-[155deg] z-20">
-                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                      </div>
-                      
-                      {/* Small Red Arrow Right (INSIDE CIRCLE) */}
-                      <div className="absolute -right-[50px] top-1/2 -translate-y-1/2 text-red-500 rotate-[205deg] z-20">
-                        <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-
-                  {/* Row 2 - Col 5 */}
-                  <div className="col-start-5 relative h-[280px]">
-                    <div className="bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden h-full">
-                      <div className="flex-1 flex justify-center items-center p-1 relative bg-white">
-                        <img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                        <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
-                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
-                        <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span>
-                      </div>
-                      <div className="border-t-2 border-sky-300 p-2 bg-white relative z-10 flex items-center justify-center min-h-[85px]">
-                        <p className="font-bold text-black text-[14px] leading-tight text-center">Pooled & Expanded</p>
-                      </div>
-                    </div>
-                    <div className="absolute -left-[2.5rem] top-1/2 -translate-y-1/2 z-10 text-red-500 rotate-180">
-                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M13 5l7 7-7 7M6 5l7 7-7 7" /></svg>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Mobile version (Vertical Flow) */}
-                <div className="flex lg:hidden flex-col items-center gap-6 w-full px-2">
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep1} alt="Bone Marrow Aspiration" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex flex-col items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Bone Marrow Aspiration</p>
-                        <ul className="text-[13px] text-blue-700 mt-1 space-y-0.5 font-bold leading-tight text-center">
-                          <li>- Already done from "Healthy Adult donors"</li>
-                          <li>- Through the Informed Consent process:</li>
-                        </ul>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep2} alt="Isolation & Culture" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
-                        <span className="absolute top-[36%] left-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
-                        <span className="absolute top-[36%] right-[2%] font-extrabold text-black text-[13px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Isolation & Culture of BMMSCs<br/><span className="text-sm font-bold">(In GLP-certified lab)</span></p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep3} alt="Expansion" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Expansion of BMMSCs</p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Master Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Master Cell Bank (MCB)</p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep5} alt="Pooled & Expanded" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" />
-                        <span className="absolute top-[2%] left-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 1</span>
-                        <span className="absolute top-[2%] left-1/2 -translate-x-1/2 font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 2</span>
-                        <span className="absolute top-[2%] right-[2%] font-extrabold text-black text-[11px] tracking-wide z-10 drop-shadow-md">Donor 3</span></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Pooled & Expanded</p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep4} alt="Working Cell Bank" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Stored in<br/>Working Cell Bank (WCB)</p>
-                      </div>
-                  </div>
-                  
-                  <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="z-20 flex justify-center relative my-1">
-                     <div className="w-[110px] h-[110px] rounded-full shadow-md border-[3px] border-sky-300 bg-gradient-to-b from-cyan-100 to-cyan-300 flex justify-center items-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-sky-400 hover:scale-105 cursor-pointer relative">
-                        <img src={prep6} alt="Vials" className="w-[75px] h-[75px] object-contain z-10" />
-                     </div>
-                  </div>
-
-                  <div className="text-red-500 flex flex-col items-center my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep7} alt="Large Scale" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Large scale expansion</p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep8} alt="Quantified into 25M cells" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Quantified into<br/>25M cells in Vials</p>
-                      </div>
-                  </div>
-                  <div className="text-red-500 flex flex-col items-center -my-2"><svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={4}><path strokeLinecap="round" strokeLinejoin="miter" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-
-                  <div className="w-full max-w-sm bg-white rounded-2xl ring-2 ring-sky-300 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:ring-sky-400 cursor-default flex flex-col overflow-hidden">
-                      <div className="flex justify-center p-1 bg-white relative"><img src={prep9} alt="Cryopreserved" className="w-full h-auto object-contain max-h-[170px] scale-[1.15]" /></div>
-                      <div className="border-t-2 border-sky-300 p-3 bg-white relative z-10 flex items-center justify-center">
-                        <p className="font-bold text-black text-[15px] leading-tight text-center">Cryopreserved<br/><span className="text-[14px] font-bold block mt-1">(-185°C to -195°C)</span></p>
-                      </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* --- Part 5: Injection Procedure (Redesigned) --- */}
-            <div className="mt-24 relative bg-[#F5FAFF] py-16 px-6 sm:px-12 rounded-[40px] shadow-sm ring-1 ring-sky-100/50">
-              {/* Full-width header */}
-              <div className="flex flex-col items-center text-center">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-sky-700 ring-1 ring-sky-200 shadow-sm">
-                  <div className="h-2 w-2 rounded-full bg-sky-500" />
-                  Part 05
-                </div>
-                <h2 className="mt-6 font-display text-4xl font-bold tracking-[-0.03em] text-[#0b3a66] sm:text-5xl">
-                  Injection Procedure
-                </h2>
-                <p className="mt-4 max-w-3xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base font-medium">
-                  The Mesenchymal Stem Cells vial is transported, thawed, reconstituted with PlasmaLyte A, and administered via intra-articular injection together with Hyaluronic Acid.
-                </p>
-              </div>
-
-              {/* Horizontal Workflow timeline */}
-              <div className="mt-16 w-full max-w-5xl mx-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative">
-                  {[
-                    {
-                      step: "STEP 01",
-                      title: "Cryoshipper Storage",
-                      desc: "Mesenchymal Stem Cells are transported inside a validated cryoshipper maintained between –185°C and –196°C.",
-                      image: cryoshipperImage,
-                    },
-                    {
-                      step: "STEP 02",
-                      title: "Controlled Thawing",
-                      desc: "The cryopreserved vial is thawed in a sterile warm water bath at 37 degree celsius for 3–4 minutes.",
-                      image: waterBathImage,
-                    },
-                    {
-                      step: "STEP 03",
-                      title: "Reconstitution",
-                      desc: "1 ml of Plasmalyte A (Multiple Electrolyte solution) is added to prepare the stem cell suspension for administration.",
-                      image: plasmalyteBagImage,
-                    },
-                    {
-                      step: "STEP 04",
-                      title: "Intra-articular Injection",
-                      desc: "2 mL of BMMSCs together with 1 mL of PlasmaLyte is injected into the affected Knee followed by Administration of 2mL of Hyaluronic Acid, which acts as the biological scaffold.",
-                      image: injectionImage,
-                    }
-                  ].map((item, i) => (
-                    <div key={i} className="flex flex-col relative group cursor-default">
-                      {/* Gradient Connector Arrow - Desktop (Between columns) */}
-                      {(i + 1) % 2 !== 0 && (
-                        <div className="hidden md:block absolute top-[40%] -right-10 w-12 text-sky-300 z-20">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="miter" className="w-12 h-12 drop-shadow-sm"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </div>
-                      )}
-                      
-                      <div className="w-full bg-white/80 backdrop-blur-xl rounded-[28px] p-6 ring-1 ring-sky-100 shadow-[0_8px_30px_rgba(2,132,199,0.06)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(2,132,199,0.12)] hover:ring-sky-300 relative z-10 flex flex-col h-full overflow-hidden">
-                        
-                        <div className="relative w-full aspect-[4/3] rounded-[20px] mb-6 overflow-hidden">
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
-                          />
-                        </div>
-
-                        <div className="flex flex-col flex-1">
-                          <div className="inline-block w-fit text-[11px] font-bold tracking-widest text-sky-600 bg-sky-50 px-3 py-1.5 rounded-full ring-1 ring-sky-100 mb-4">
-                            {item.step}
-                          </div>
-                          <h3 className="text-xl font-bold text-[#0b3a66] mb-3 leading-tight">{item.title}</h3>
-                          <p className="text-[14px] text-slate-600 leading-relaxed font-medium">{item.desc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-            </div>
           </Container>
         </section>
 
-        {/* Post-injection Care Section */}
-        <section className="relative overflow-hidden py-16 sm:py-24">
-          {/* Background decorative elements */}
+        {/* Video Guide Section */}
+        <section className="relative overflow-hidden py-16 sm:py-24 bg-gradient-to-b from-sky-50/40 via-white to-sky-50/20">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-sky-200/30 blur-3xl" />
-            <div className="absolute right-0 top-1/3 h-80 w-80 rounded-full bg-sky-300/20 blur-3xl" />
-            <div className="absolute bottom-10 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-sky-100/40 blur-3xl" />
+            <div className="absolute left-1/2 -top-24 h-96 w-96 -translate-x-1/2 rounded-full bg-sky-200/30 blur-3xl" />
           </div>
 
           <Container>
-            <div className="mx-auto max-w-4xl text-center mb-12">
-              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">POST-INJECTION CARE</div>
-              <div className="mt-4 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-5xl">
-                Post-injection Care Precautions
-              </div>
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-                Follow your doctor’s instructions. These are general do’s and don’ts to help protect the treated area and support recovery.
+            <div className="mx-auto max-w-4xl text-center mb-10 sm:mb-12">
+              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80 uppercase">PROCEDURAL OVERVIEW</div>
+              <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
+                CiploStem® Handling & Administration Guide
+              </h2>
+              <p className="mt-3 max-w-2xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base">
+                A comprehensive step-by-step visual overview of storage, preparation, and intra-articular administration.
               </p>
             </div>
 
-            {/* Side-by-Side Timeline Comparison */}
-            <div className="relative">
-              <div className="grid gap-8 lg:grid-cols-2 lg:items-stretch">
-                {/* 0-3 Days */}
-                <div className="flex flex-col rounded-[32px] bg-gradient-to-br from-white to-sky-50/40 p-8 ring-1 ring-sky-200 shadow-[0_10px_40px_rgba(2,132,199,0.08)]">
-                  <div className="inline-flex items-center gap-3 rounded-full bg-sky-600 text-white px-6 py-3 text-sm font-semibold mb-6 shadow-button w-fit">
-                    <div className="h-3 w-3 rounded-full bg-white" />
-                    0–3 Days
-                  </div>
-                  <h3 className="font-display text-2xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-3xl mb-6">
-                    Post-injection
-                  </h3>
+            <div ref={videoContainerRef} className="mx-auto max-w-5xl">
+              <div className="relative overflow-hidden rounded-[28px] sm:rounded-[36px] bg-slate-900/95 shadow-2xl ring-1 ring-sky-200/70 p-2 sm:p-3.5 backdrop-blur-xl">
+                <div className="relative aspect-video w-full overflow-hidden rounded-[20px] sm:rounded-[26px] bg-black">
+                  <video
+                    ref={patientVideoRef}
+                    src={patientVideo}
+                    controls
+                    controlsList="nodownload noplaybackrate"
+                    disablePictureInPicture
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-contain"
+                    onContextMenu={(e) => e.preventDefault()}
+                  >
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
 
-                  <div className="grid gap-4 flex-1">
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="h-3 w-3 rounded-full bg-emerald-500" />
-                        <span className="text-sm font-bold text-slate-900">Do’s</span>
-                      </div>
-                      <div className="space-y-2">
-                        {[
-                          "Rest for 24 hours (except washroom breaks)",
-                          "Use only a cold pack if needed",
-                          "Take a lukewarm bath after 24 hours",
-                          "Stay hydrated and eat healthy",
-                        ].map((x, i) => (
-                          <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                            <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-emerald-600" />
-                            <span>{x}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+        {/* Regulatory Indication & Key Advantages Section */}
+        <section className="relative overflow-hidden py-16 sm:py-24 bg-gradient-to-b from-sky-50/40 via-white to-sky-50/30">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-1/2 -top-24 h-96 w-96 -translate-x-1/2 rounded-full bg-sky-200/20 blur-3xl" />
+          </div>
 
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="h-3 w-3 rounded-full bg-rose-500" />
-                        <span className="text-sm font-bold text-slate-900">Don’ts</span>
-                      </div>
-                      <div className="space-y-2">
-                        {[
-                          "Avoid overstraining or early weight-bearing",
-                          "Do not take medicines unless prescribed",
-                          "Avoid massage or hot pack on the area",
-                          "Avoid very hot baths",
-                          "Avoid self medication with pain killers or NSAIDs for 2-3 days post injection",
-                        ].map((x, i) => (
-                          <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                            <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-rose-600" />
-                            <span>{x}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+          <Container>
+            {/* Header */}
+            <div className="mx-auto max-w-4xl text-center">
+              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
+                Allogeneic Bone Marrow-Derived Mesenchymal Stem Cells
+              </h2>
+              <p className="mt-4 max-w-3xl mx-auto text-base sm:text-lg font-medium leading-relaxed text-slate-700">
+                DCGI/CDSCO Approved stem cell therapy for grade II and grade III Knee Osteoarthritis<sup>8,9</sup>
+              </p>
+            </div>
+
+            {/* 3 Cards */}
+            <div className="mt-14 grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
+              {/* Card 1 */}
+              <div className="group relative rounded-[28px] bg-white/95 p-8 sm:p-9 ring-1 ring-sky-200 shadow-soft-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:ring-sky-400 flex flex-col items-center text-center">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 mb-6 rounded-full overflow-hidden shadow-lg ring-2 ring-sky-200/60 transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-white">
+                  <img
+                    src={gmpImage}
+                    alt="GMP & GLP Compliant Manufacturing"
+                    className="w-full h-full object-cover rounded-full scale-[1.03]"
+                  />
                 </div>
 
-                {/* 3-14 Days */}
-                <div className="flex flex-col rounded-[32px] bg-gradient-to-br from-white to-sky-50/40 p-8 ring-1 ring-sky-200 shadow-[0_10px_40px_rgba(2,132,199,0.08)]">
-                  <div className="inline-flex items-center gap-3 rounded-full bg-sky-600 text-white px-6 py-3 text-sm font-semibold mb-6 shadow-button w-fit">
-                    <div className="h-3 w-3 rounded-full bg-white" />
-                    3–14 Days
+                <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#0b3a66] min-h-[50px] flex items-center justify-center">
+                  GMP & GLP COMPLIANT MANUFACTURING
+                </h3>
+
+                <div className="w-16 h-0.5 bg-sky-400 my-4 relative rounded-full">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-sky-500" />
+                </div>
+
+                <p className="text-sm leading-relaxed text-slate-600 font-medium">
+                  Manufactured under state-of-the-art GMP-compliant conditions in GLP-certified laboratories ensuring the highest standards of quality, safety and consistency.<sup>10</sup>
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="group relative rounded-[28px] bg-white/95 p-8 sm:p-9 ring-1 ring-sky-200 shadow-soft-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:ring-sky-400 flex flex-col items-center text-center">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 mb-6 rounded-full overflow-hidden shadow-lg ring-2 ring-sky-200/60 transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-white">
+                  <img
+                    src={chonImage}
+                    alt="Chondroprotective Action"
+                    className="w-full h-full object-cover rounded-full scale-[1.03]"
+                  />
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#0b3a66] min-h-[50px] flex items-center justify-center">
+                  CHONDROPROTECTIVE ACTION
+                </h3>
+
+                <div className="w-16 h-0.5 bg-sky-400 my-4 relative rounded-full">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-sky-500" />
+                </div>
+
+                <p className="text-sm leading-relaxed text-slate-600 font-medium">
+                  Designed to help preserve cartilage quality and support joint function by acting at the cellular level.<sup>8,9</sup>
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="group relative rounded-[28px] bg-white/95 p-8 sm:p-9 ring-1 ring-sky-200 shadow-soft-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-2xl hover:ring-sky-400 flex flex-col items-center text-center">
+                <div className="w-28 h-28 sm:w-32 sm:h-32 mb-6 rounded-full overflow-hidden shadow-lg ring-2 ring-sky-200/60 transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-white">
+                  <img
+                    src={sinImage}
+                    alt="Sterile Single-Dose Injection"
+                    className="w-full h-full object-cover rounded-full scale-[1.03]"
+                  />
+                </div>
+
+                <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#0b3a66] min-h-[50px] flex items-center justify-center">
+                  STERILE SINGLE-DOSE INJECTION
+                </h3>
+
+                <div className="w-16 h-0.5 bg-sky-400 my-4 relative rounded-full">
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-sky-500" />
+                </div>
+
+                <p className="text-sm leading-relaxed text-slate-600 font-medium">
+                  Administered as a sterile, single intra-articular injection directly into the knee joint for a convenient and precise treatment.<sup>9,10</sup>
+                </p>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* Exercises & Lifestyle Tips Section */}
+        <section className="relative py-16 sm:py-24 bg-gradient-to-b from-sky-50/40 via-white to-sky-50/40">
+          <Container>
+            {/* Header */}
+            <div className="mx-auto max-w-5xl text-center">
+              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80 uppercase">
+                Lifestyle Management
+              </div>
+              <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
+                Exercises & Lifestyle Tips to Manage Knee Osteoarthritis at Home
+              </h2>
+              <p className="mt-5 max-w-3xl mx-auto text-base sm:text-lg font-medium leading-relaxed text-slate-700">
+                Knee osteoarthritis does not mean you have to stop moving.
+              </p>
+
+              {/* Key Strategy Pills */}
+              <div className="mt-7 flex flex-wrap justify-center gap-2.5 sm:gap-3 max-w-4xl mx-auto">
+                {[
+                  "Regular Activity",
+                  "Muscle Strengthening",
+                  "Healthy Weight Management",
+                  "Joint Protection Strategies",
+                ].map((strategy, i) => (
+                  <span
+                    key={strategy}
+                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-white text-[13px] sm:text-sm font-bold text-[#0b3a66] ring-1 ring-sky-200 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:ring-sky-300"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-br from-sky-500 to-[#0b3a66]" />
+                    {strategy}
+                  </span>
+                ))}
+              </div>
+
+              <p className="mt-7 max-w-3xl mx-auto text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
+                These evidence-based strategies can help <span className="font-semibold text-slate-800">reduce pain</span>,{" "}
+                <span className="font-semibold text-slate-800">improve mobility</span>, and{" "}
+                <span className="font-semibold text-slate-800">maintain independence</span>.<sup>11,12</sup>
+              </p>
+
+              {/* Guideline Recommendation Callout */}
+              <div className="mt-8 max-w-3xl mx-auto">
+                <div className="group relative inline-flex items-center gap-3 sm:gap-4 rounded-[20px] bg-gradient-to-r from-emerald-50 via-white to-sky-50 px-5 sm:px-6 py-4 ring-1 ring-emerald-200/70 shadow-soft-xl">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-900/10 transition-transform duration-300 group-hover:scale-105">
+                    <ShieldCheck className="h-6 w-6" />
                   </div>
-                  <h3 className="font-display text-2xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-3xl mb-6">
-                    Continuing Recovery
-                  </h3>
-
-                  <div className="grid gap-4 flex-1">
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="h-3 w-3 rounded-full bg-emerald-500" />
-                        <span className="text-sm font-bold text-slate-900">Do’s</span>
-                      </div>
-                      <div className="space-y-2">
-                        {["Gradually return to normal activities", "Follow the rehab plan recommended by your doctor"].map((x, i) => (
-                          <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                            <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-emerald-600" />
-                            <span>{x}</span>
-                          </div>
-                        ))}
-                      </div>
+                  <div className="text-left">
+                    <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-800 mb-0.5">
+                      Recommended by International Guidelines
                     </div>
-
-                    <div className="rounded-2xl bg-white/70 p-6 ring-1 ring-sky-100 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:ring-sky-300">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="h-3 w-3 rounded-full bg-rose-500" />
-                        <span className="text-sm font-bold text-slate-900">Don’ts</span>
-                      </div>
-                      <div className="space-y-2">
-                        {["Avoid smoking and alcohol for the first 7 days", "Avoid aggressive exercise unless advised by your doctor"].map((x, i) => (
-                          <div key={i} className="flex items-start gap-3 text-sm text-slate-700">
-                            <div className="mt-1.5 h-2 w-2 flex-none rounded-full bg-rose-600" />
-                            <span>{x}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <p className="text-[13px] sm:text-[15px] font-semibold leading-relaxed text-slate-800">
+                      Exercise is recommended as a <span className="text-emerald-700">core treatment</span> for knee osteoarthritis by leading international guidelines.
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Important Note */}
-              <div className="mt-10">
-                <div className="relative mx-auto max-w-4xl">
-                  <div className="absolute -inset-8 rounded-full bg-gradient-to-tr from-sky-300/20 to-sky-400/20 blur-3xl" />
-                  <div className="relative rounded-[32px] bg-gradient-to-br from-sky-50 to-sky-100/50 p-8 ring-1 ring-sky-100 shadow-[0_30px_80px_rgba(2,132,199,0.15)]">
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                      <div className="h-14 w-14 rounded-full bg-sky-600 flex items-center justify-center text-white text-3xl flex-none">
-                        ⚠️
-                      </div>
-                      <div className="flex-1 text-center sm:text-left">
-                        <div className="text-base font-bold text-sky-800 mb-1">Important Note</div>
-                        <div className="text-sm text-slate-600">
-                          If you experience swelling, severe pain, fever or any allergic reactions, contact your doctor immediately.
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 max-w-6xl mx-auto">
+              {lifestyleTips.map((tip, idx) => (
+                <div
+                  key={tip.id}
+                  className={cn(
+                    "group relative flex flex-col lg:flex-row items-stretch rounded-[18px] bg-white ring-1 ring-slate-200 shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-sky-300 overflow-hidden",
+                    idx === lifestyleTips.length - 1 && "md:col-span-2 md:max-w-[30rem] md:mx-auto lg:!max-w-none lg:!mx-0 lg:!col-span-2 lg:flex-row lg:max-w-[38rem] !lg:mx-auto"
+                  )}
+                >
+                  {/* Left: Image Column - narrower on lg (wider content), full-width top on mobile/tablet */}
+                  <div className="w-full lg:w-[34%] lg:shrink-0 min-h-[180px] sm:min-h-[200px] lg:min-h-[240px] bg-gradient-to-br from-slate-50 via-sky-50/60 to-blue-50/60 relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-200 flex items-center">
+                    {tip.image ? (
+                      <>
+                        {/* Premium blurred backdrop fill */}
+                        <img
+                          src={tip.image}
+                          alt=""
+                          aria-hidden="true"
+                          className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-35"
+                        />
+                        {/* Main sharp image - FULLY VISIBLE, never cropped */}
+                        <img
+                          src={tip.image}
+                          alt={tip.title}
+                          className="relative z-10 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                      </>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center p-4 w-full h-full relative z-10">
+                        <div className="w-12 h-12 rounded-2xl bg-white shadow-sm ring-1 ring-sky-200/70 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                          <ImageIcon className="h-6 w-6 text-sky-600" />
                         </div>
                       </div>
+                    )}
+                    {/* Tip number badge */}
+                    <div className="absolute top-0 left-0 z-20">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#0b3a66] to-sky-700 text-white rounded-br-xl shadow-lg">
+                        <span className="text-[10px] font-bold uppercase tracking-wide opacity-90">Tip</span>
+                        <span className="text-sm font-black">{tip.number}</span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Right: Content Column (full-width on mobile/tablet) */}
+                  <div className="p-4 sm:p-[1.05rem] lg:p-4 flex flex-col justify-between flex-1 gap-3 min-w-0">
+                    <div className="space-y-2">
+                      {/* Title */}
+                      <h3 className="text-base sm:text-lg font-bold text-[#0b3a66] leading-snug">
+                        {tip.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-[12px] sm:text-[13px] leading-relaxed text-slate-600 font-medium">
+                        {tip.description}
+                        {tip.citation && <sup>{tip.citation}</sup>}
+                      </p>
+
+                      {/* Optional Items / Benefits / Exercises - ONE-PER-ROW stacked list */}
+                      {tip.items && tip.items.length > 0 && (
+                        <div className="pt-0.5">
+                          {tip.listTitle && (
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-sky-700 mb-2">
+                              {tip.listTitle}
+                            </div>
+                          )}
+                          <div className="flex flex-col gap-[7px] items-stretch">
+                            {tip.items.map((item, i) => (
+                              <span
+                                key={i}
+                                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-sky-50 to-sky-50/60 text-[12px] sm:text-[13px] font-semibold text-slate-700 ring-1 ring-sky-100 w-full"
+                              >
+                                <span className="w-5 h-5 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_1px_2px_rgba(11,58,102,0.12)] ring-1 ring-sky-200/70">
+                                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-600" />
+                                </span>
+                                {item}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Patient Tip Callout */}
+                    {tip.patientTip && (
+                      <div className="rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/60 p-2.5 sm:p-3 border-l-[3px] border-amber-500 ring-1 ring-amber-100 flex items-start gap-2 mt-auto">
+                        <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                        <div className="text-[11px] sm:text-[12px] text-slate-700 leading-relaxed font-medium min-w-0">
+                          <span className="font-bold text-amber-800 mr-1">
+                            Tip:
+                          </span>
+                          {tip.patientTip}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </Container>
         </section>
 
-        <section className="py-14 sm:py-20 bg-sky-50/50">
+        {/* Diet Tips for Managing Knee Osteoarthritis Section */}
+        <section className="relative py-16 sm:py-24 bg-gradient-to-b from-sky-50/50 via-white to-sky-50/40 border-t border-sky-100">
           <Container>
-            <div className="text-center mb-10">
-              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80">CONTACT</div>
-              <div className="mt-5 font-display text-4xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-6xl">
-                Need help? <span className="text-sky-700">We're here</span>.
+            {/* Header */}
+            <div className="mx-auto max-w-5xl text-center">
+              <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80 uppercase">
+                Nutritional Guidance
+              </div>
+              <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
+                Diet Tips for Managing Knee Osteoarthritis at Home
+              </h2>
+              <p className="mt-5 max-w-3xl mx-auto text-base sm:text-lg font-medium leading-relaxed text-slate-700">
+                No single food can cure osteoarthritis.
+              </p>
+
+              {/* Key Benefit Pills */}
+              <div className="mt-7 flex flex-wrap justify-center gap-2.5 sm:gap-3 max-w-4xl mx-auto">
+                {[
+                  "Balanced Diet",
+                  "Healthy Weight",
+                  "Essential Nutrients",
+                  "Joint Health Support",
+                  "Improved Quality of Life",
+                ].map((benefit, i) => (
+                  <span
+                    key={benefit}
+                    className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-white text-[13px] sm:text-sm font-bold text-[#0b3a66] ring-1 ring-sky-200 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:ring-sky-300"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-br from-sky-500 to-[#0b3a66]" />
+                    {benefit}
+                  </span>
+                ))}
+              </div>
+
+              <p className="mt-7 max-w-3xl mx-auto text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
+                A balanced diet that supports a <span className="font-semibold text-slate-800">healthy body weight</span> and provides{" "}
+                <span className="font-semibold text-slate-800">essential nutrients</span> may help maintain{" "}
+                <span className="font-semibold text-slate-800">overall joint health</span> and improve quality of life.<sup>12,13</sup>
+              </p>
+
+              {/* Weight Management Callout */}
+              <div className="mt-8 max-w-3xl mx-auto">
+                <div className="group relative inline-flex items-center gap-3 sm:gap-4 rounded-[20px] bg-gradient-to-r from-amber-50 via-white to-sky-50 px-5 sm:px-6 py-4 ring-1 ring-amber-200/70 shadow-soft-xl">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-md shadow-amber-900/10 transition-transform duration-300 group-hover:scale-105">
+                    <Scale className="h-6 w-6" />
+                  </div>
+                  <div className="text-left">
+                    <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-amber-800 mb-0.5">
+                      Particularly Important
+                    </div>
+                    <p className="text-[13px] sm:text-[15px] font-semibold leading-relaxed text-slate-800">
+                      <span className="text-amber-700">Weight management</span> is particularly important in individuals with knee osteoarthritis.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="grid gap-8 lg:grid-cols-[380px_1fr] max-w-6xl mx-auto">
-              <div className="space-y-5">
-                <div className="rounded-[22px] bg-white/90 p-5 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:shadow-[0_10px_40px_rgba(2,132,199,0.15)] hover:ring-sky-300">
-                  <div className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 ring-1 ring-sky-100 text-sky-700">
-                      <Mail className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-slate-900">Email Us</div>
-                      <a href="mailto:info@cipla.com" className="mt-1 block text-sm text-sky-700 hover:text-sky-800">
-                        info@cipla.com
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[22px] bg-white/90 p-5 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:shadow-[0_10px_40px_rgba(2,132,199,0.15)] hover:ring-sky-300">
-                  <div className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-50 ring-1 ring-sky-100 text-sky-700">
-                      <MapPin className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-slate-900">Cipla Ltd Head Office - Mumbai</div>
-                      <div className="mt-1 text-sm leading-relaxed text-slate-600">
-                        Peninsula Business Park,<br />
-                        Ganpatrao Kadam Marg,<br />
-                        Lower Parel, Mumbai.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-[28px] bg-white/90 p-5 ring-1 ring-sky-200/60 shadow-soft-xl transition-all duration-300 hover:shadow-[0_10px_40px_rgba(2,132,199,0.15)] hover:ring-sky-300 sm:p-6">
-                <div className="text-lg font-semibold text-slate-900">Send us a message</div>
-
-                {contactSent ? (
-                  <div className="mt-6 rounded-2xl bg-sky-50 p-5 ring-1 ring-sky-100">
-                    <div className="text-sm font-semibold text-slate-900">Message sent</div>
-                    <div className="mt-1 text-sm text-slate-600">We’ll get back to you soon.</div>
-                    <div className="mt-5">
-                      <Button
-                        variant="secondary"
-                        onClick={() => {
-                          setContactSent(false);
-                          setContactSubmitError("");
-                        }}
-                      >
-                        Send another
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <form
-                    className="mt-6 space-y-3"
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      setContactSubmitError("");
-                      setContactLoading(true);
-                      try {
-                        const response = await fetch("http://localhost:3001/api/contact", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json"
-                          },
-                          body: JSON.stringify({
-                            full_name: e.currentTarget.fullName.value,
-                            email: e.currentTarget.email.value,
-                            phone: e.currentTarget.phone.value,
-                            subject: e.currentTarget.subject.value,
-                            message: e.currentTarget.message.value
-                          })
-                        });
-
-                        if (response.ok) {
-                          setContactSent(true);
-                          e.currentTarget.reset();
-                        } else {
-                          const msg = await response.json().catch(() => null);
-                          setContactSubmitError(msg?.message || "Failed to send message");
-                        }
-                      } catch (error) {
-                        console.error("Error sending message:", error);
-                        setContactSubmitError("Failed to send message, please try again");
-                      } finally {
-                        setContactLoading(false);
-                      }
-                    }}
+            {/* 6 Cards Grid */}
+            <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7 max-w-7xl mx-auto">
+              {dietTips.map((tip, idx) => {
+                const IconComponent = tip.icon;
+                return (
+                  <div
+                    key={tip.id}
+                    className="group relative flex flex-col items-stretch rounded-[22px] sm:rounded-[26px] bg-white ring-1 ring-slate-200 shadow-soft-xl transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-2xl hover:ring-sky-300 overflow-hidden"
                   >
-                    {contactSubmitError ? (
-                      <div className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700 ring-1 ring-rose-100">
-                        {contactSubmitError}
+                    {/* Top Accent Line */}
+                    <div className="absolute top-0 left-0 right-0 z-20 h-1.5 bg-gradient-to-r from-sky-400 via-sky-500 to-blue-600 opacity-80" />
+
+                    {/* Tip Number Badge (top-left of image) */}
+                    <div className="absolute top-3 left-3 z-20">
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#0b3a66] to-sky-700 text-white rounded-br-xl rounded-tl-xl shadow-lg">
+                        <span className="text-[10px] font-bold uppercase tracking-wide opacity-90">Tip</span>
+                        <span className="text-sm font-black">{tip.number}</span>
                       </div>
-                    ) : null}
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      <input
-                        name="fullName"
-                        placeholder="Full name"
-                        className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
-                        required
-                      />
-                      <input
-                        name="email"
-                        placeholder="Email address"
-                        type="email"
-                        className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
-                        required
-                      />
                     </div>
 
-                    <input
-                      name="phone"
-                      placeholder="Phone number (optional)"
-                      type="tel"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
-                    />
-
-                    <input
-                      name="subject"
-                      placeholder="Subject (optional)"
-                      className="w-full rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
-                    />
-
-                    <textarea
-                      name="message"
-                      placeholder="Your message"
-                      className="min-h-[120px] w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/40 px-4 py-3 text-sm outline-none ring-sky-200 focus:ring-2"
-                      required
-                    />
-
-                    <div className="pt-2">
-                      <Button type="submit" className="w-full" disabled={contactLoading}>
-                        {contactLoading ? "Sending..." : "Send message"} <Send className="h-4 w-4" />
-                      </Button>
+                    {/* Image Area */}
+                    <div className="w-full min-h-[240px] sm:min-h-[270px] bg-gradient-to-br from-slate-50 via-sky-50/60 to-blue-50/60 relative overflow-hidden flex items-center">
+                      {tip.image ? (
+                        <>
+                          {/* Premium blurred backdrop fill - prevents letterboxing */}
+                          <img
+                            src={tip.image}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-35"
+                          />
+                          {/* Main sharp image - FULLY VISIBLE, never cropped */}
+                          <img
+                            src={tip.image}
+                            alt={tip.title}
+                            className="relative z-10 w-full h-full object-contain object-center p-3 sm:p-4 transition-transform duration-500 group-hover:scale-[1.03]"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center p-4 w-full h-full relative z-10">
+                          <div className="w-12 h-12 rounded-2xl bg-white shadow-sm ring-1 ring-sky-200/70 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <ImageIcon className="h-6 w-6 text-sky-600" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </form>
-                )}
-              </div>
+
+                    {/* Content Area */}
+                    <div className="p-[1.1rem] sm:p-5 lg:p-[1.35rem] flex flex-col flex-1 gap-3">
+                      <div className="space-y-2.5">
+                        {/* Title */}
+                        <h3 className="text-base sm:text-lg font-bold text-[#0b3a66] leading-snug">
+                          {tip.title}
+                        </h3>
+
+                        {/* Description & Citations */}
+                        <p className="text-[12px] sm:text-[13px] leading-relaxed text-slate-600 font-medium">
+                          {tip.description}
+                          {tip.citations && tip.citations.length > 0 && (
+                            <sup>{tip.citations.join(",")}</sup>
+                          )}
+                        </p>
+
+                        {/* Food Groups */}
+                        {tip.groups && tip.groups.length > 0 && (
+                          <div className="pt-0.5 space-y-3">
+                            {tip.groups.map((grp, gIdx) => (
+                              <div key={gIdx} className="space-y-2">
+                                <div className="flex items-center gap-1.5">
+                                  {grp.type === "veg" ? (
+                                    <span className="h-2 w-2 rounded-full bg-emerald-500 ring-2 ring-emerald-200" />
+                                  ) : grp.type === "nonveg" ? (
+                                    <span className="h-2 w-2 rounded-full bg-amber-500 ring-2 ring-amber-200" />
+                                  ) : grp.type === "limit" ? (
+                                    <span className="h-2 w-2 rounded-full bg-rose-500 ring-2 ring-rose-200" />
+                                  ) : (
+                                    <span className="h-2 w-2 rounded-full bg-sky-500 ring-2 ring-sky-200" />
+                                  )}
+                                  <h4 className={cn(
+                                    "text-[10px] font-bold uppercase tracking-[0.14em]",
+                                    grp.type === "limit" ? "text-rose-700" : "text-slate-800"
+                                  )}>
+                                    {grp.title}
+                                  </h4>
+                                </div>
+
+                                <div className="flex flex-wrap gap-1.5">
+                                  {grp.items.map((item, iIdx) => (
+                                    <span
+                                      key={iIdx}
+                                      className={cn(
+                                        "inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-[11px] sm:text-xs font-semibold transition-colors",
+                                        grp.type === "veg" && "bg-gradient-to-r from-emerald-50 to-emerald-50/80 text-emerald-900 ring-1 ring-emerald-200/70",
+                                        grp.type === "nonveg" && "bg-gradient-to-br from-amber-50/90 to-amber-50/60 text-amber-950 ring-1 ring-amber-200/70",
+                                        grp.type === "limit" && "bg-gradient-to-r from-rose-50 to-rose-50/70 text-rose-900 ring-1 ring-rose-200/80",
+                                        grp.type === "general" && "bg-gradient-to-r from-sky-50 to-sky-50/70 text-sky-950 ring-1 ring-sky-200/70"
+                                      )}
+                                    >
+                                      {grp.type === "limit" ? (
+                                        <AlertTriangle className="h-3 w-3 text-rose-500 shrink-0" />
+                                      ) : (
+                                        <CheckCircle2 className={cn(
+                                          "h-3 w-3 shrink-0",
+                                          grp.type === "veg" && "text-emerald-600",
+                                          grp.type === "nonveg" && "text-amber-600",
+                                          grp.type === "general" && "text-sky-600"
+                                        )} />
+                                      )}
+                                      {item}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Bottom: Patient Tip & Supporting Reference */}
+                      <div className="mt-auto pt-3 space-y-2.5">
+                        {tip.patientTip && (
+                          <div className="rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/60 p-2.5 sm:p-3 border-l-[3px] border-amber-500 ring-1 ring-amber-100 flex items-start gap-2">
+                            <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                            <div className="text-[11px] sm:text-[12px] text-slate-700 leading-relaxed font-medium min-w-0">
+                              <span className="font-bold text-amber-800 mr-1">Patient Tip:</span>
+                              {tip.patientTip}
+                            </div>
+                          </div>
+                        )}
+
+                        {tip.supportingRef && (
+                          <div className="rounded-xl bg-gradient-to-br from-sky-50/80 to-sky-50/50 p-2.5 sm:p-3 border-l-[3px] border-sky-500 ring-1 ring-sky-100">
+                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-sky-900 mb-0.5">
+                              Supporting Reference
+                            </div>
+                            <p className="text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+                              {tip.supportingRef}
+                              {tip.supportingCitations && tip.supportingCitations.length > 0 && (
+                                <span className="ml-1 font-semibold text-sky-700">
+                                  {tip.supportingCitations.join(", ")}
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </Container>
         </section>
+
       </main>
       <ReferencesSection />
       <Footer />

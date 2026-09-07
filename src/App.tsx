@@ -1,9 +1,6 @@
 import React, { Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import Privacy from "@/pages/Privacy";
 import About from "@/pages/About";
-import Contact from "@/pages/Contact";
-import Admin from "@/pages/Admin";
 import Home from "@/pages/Home";
 import Patient from "@/pages/Patient";
 import Disclaimer from "@/pages/Disclaimer";
@@ -50,9 +47,6 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/patient" element={<Patient />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
         </Routes>
       </Suspense>

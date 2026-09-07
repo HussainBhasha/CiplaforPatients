@@ -8,13 +8,11 @@ import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 
 const defaultNav = [
   { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
   { label: "Disclaimer", href: "/disclaimer" },
 ] as const;
 
 const patientNav = [
   { label: "Home", href: "/patient" },
-  { label: "Contact", href: "/contact" },
   { label: "Disclaimer", href: "/disclaimer" },
 ] as const;
 
@@ -129,7 +127,7 @@ export default function MarketingNavbar() {
               <img
                 src={ciplaLogo}
                 alt="Cipla"
-                className="h-8 sm:h-10 w-auto object-contain contrast-125"
+                className="h-9 sm:h-10 w-auto object-contain contrast-125"
                 decoding="async"
                 loading="eager"
               />
@@ -142,14 +140,14 @@ export default function MarketingNavbar() {
                 <img
                   src={ciplaLogo}
                   alt="Cipla"
-                  className="h-12 w-auto object-contain contrast-125"
+                  className="h-11 sm:h-12 lg:h-14 w-auto object-contain contrast-125"
                   decoding="async"
                   loading="eager"
                 />
               </div>
               <button
                 type="button"
-                className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-800 backdrop-blur transition active:scale-95 ml-2"
+                className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/80 ring-1 ring-sky-200/70 text-slate-800 backdrop-blur transition active:scale-95 ml-2"
                 aria-label={open ? "Close menu" : "Open menu"}
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}

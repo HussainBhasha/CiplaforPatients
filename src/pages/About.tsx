@@ -6,7 +6,6 @@ import ciplobottleImage from "@/assets/Ciplobottle2.png";
 import brandLogo from "@/assets/logo.png";
 import { useInView } from "@/hooks/useInView";
 import { Award, Globe, Lightbulb, Users } from "lucide-react";
-import { RoadmapSection } from '@/components/RoadmapSection';
 
 const features = [
   { label: "CELL TYPE", value: "Allogeneic MSCs" },
@@ -73,7 +72,7 @@ export default function About() {
   return (
     <div className="min-h-dvh bg-sky-100">
       <MarketingNavbar />
-      <main className="pt-20">
+      <main className="pt-16 sm:pt-20">
         <section
           ref={(node) => { heroRef.current = node; }}
           className="relative overflow-hidden bg-sky-100"
@@ -189,17 +188,17 @@ export default function About() {
               `}</style>
 
               <div className="space-y-4">
-                <div className="text-sm font-bold tracking-[0.3em] text-blue-600 uppercase">
+                <div className="text-xs font-semibold tracking-[0.25em] text-blue-600 uppercase">
                   • OUR VALUES •
                 </div>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-slate-900">
                   The principles that <span className="text-blue-600">drive our mission</span>
                 </h2>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-medium tracking-tight text-slate-800">
                   and innovation in regenerative medicine
                 </h3>
-                <div className="flex justify-center mt-4">
-                  <div className="w-20 h-1 bg-blue-600 rounded-full" />
+                <div className="flex justify-center mt-3">
+                  <div className="w-16 h-1 bg-blue-600 rounded-full" />
                 </div>
               </div>
             </div>
@@ -273,10 +272,6 @@ export default function About() {
               }
             }
           `}</style>
-        </section>
-
-        <section className="bg-sky-100 pt-10 pb-0 sm:pt-16 sm:pb-0">
-          <RoadmapSection />
         </section>
       </main>
       <Footer />
