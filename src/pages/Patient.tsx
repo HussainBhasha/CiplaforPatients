@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import ReferencesSection from "@/components/ReferencesSection";
 import patientLandingBg from "@/assets/patient landing.png";
 import patientLandingMobileBg from "@/assets/patient 2.png";
-import oaComparisonImage from "@/assets/OA.png";
+import oaComparisonImage from "@/assets/OA.jpeg";
 import symptomsImage from "@/assets/symptoms.png";
 import gradeStage1Image from "@/assets/stage 1.png";
 import gradeStage2Image from "@/assets/stage 2.png";
@@ -103,25 +103,25 @@ const oaSymptomHighlights = [
 const grades = [
   {
     k: "Grade I",
-    title: "Mild changes",
+    title: "Mild / Early Changes",
     text: "Early cartilage irritation with minimal pain.",
     image: gradeStage1Image,
   },
   {
     k: "Grade II",
-    title: "Moderate changes",
+    title: "Mild to Moderate Changes",
     text: "Cartilage damage begins; pain may increase with activity.",
     image: gradeStage2Image,
   },
   {
     k: "Grade III",
-    title: "Advanced changes",
+    title: "Moderate to Severe Changes",
     text: "Noticeable cartilage loss and inflammation; mobility reduces.",
     image: gradeStage3Image,
   },
   {
     k: "Grade IV",
-    title: "Severe changes",
+    title: "Severe/ End-stage",
     text: "Joint-space narrowing; significant pain and stiffness.",
     image: gradeStage4Image,
   },
@@ -632,11 +632,11 @@ export default function Patient() {
 
               <div
                 className={cn(
-                  "hidden md:block transition-all duration-700 ease-out delay-100",
+                  "block mt-8 md:mt-0 transition-all duration-700 ease-out delay-100",
                   oaInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
                 )}
               >
-                <div className="relative md:h-[360px] lg:h-[520px]">
+                <div className="relative h-[280px] sm:h-[340px] md:h-[360px] lg:h-[520px]">
                   <img
                     src={oaComparisonImage}
                     alt="Healthy knee vs osteoarthritis comparison"
@@ -750,7 +750,7 @@ export default function Patient() {
               </div>
             </div>
 
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-10 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-6">
               {grades.map((g, idx) => (
                 <div
                   key={g.k}
@@ -774,9 +774,9 @@ export default function Patient() {
                       loading="lazy"
                     />
                   </div>
-                  <div className="p-7 flex flex-col flex-1">
-                    <div className="text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">{g.k}</div>
-                    <div className="mt-2 text-lg font-semibold text-slate-900">{g.title}</div>
+                  <div className="p-5 xl:p-6 flex flex-col flex-1">
+                    <div className="text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-sky-700">{g.k}</div>
+                    <div className="mt-2 text-[14.5px] sm:text-[15px] xl:text-[17px] font-semibold text-slate-900 whitespace-nowrap tracking-tight">{g.title}</div>
                     <div className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">{g.text}</div>
                   </div>
                 </div>
@@ -1117,7 +1117,7 @@ export default function Patient() {
             <div className="mx-auto max-w-4xl text-center mb-10 sm:mb-12">
               <div className="text-[11px] font-semibold tracking-[0.32em] text-sky-700/80 uppercase">PROCEDURAL OVERVIEW</div>
               <h2 className="mt-3 font-display text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-[#0b3a66]">
-                CiploStem® Handling & Administration Guide
+                Allogeneic Bone Marrow-Derived Mesenchymal Stem Cells
               </h2>
               <p className="mt-3 max-w-2xl mx-auto text-sm leading-relaxed text-slate-600 sm:text-base">
                 A comprehensive step-by-step visual overview of storage, preparation, and intra-articular administration.
@@ -1170,13 +1170,13 @@ export default function Patient() {
                 <div className="w-28 h-28 sm:w-32 sm:h-32 mb-6 rounded-full overflow-hidden shadow-lg ring-2 ring-sky-200/60 transition-transform duration-300 group-hover:scale-105 flex items-center justify-center bg-white">
                   <img
                     src={gmpImage}
-                    alt="GMP & GLP Compliant Manufacturing"
+                    alt="GMP Compliant Manufacturing"
                     className="w-full h-full object-cover rounded-full scale-[1.03]"
                   />
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-[#0b3a66] min-h-[50px] flex items-center justify-center">
-                  GMP & GLP COMPLIANT MANUFACTURING
+                  GMP COMPLIANT MANUFACTURING
                 </h3>
 
                 <div className="w-16 h-0.5 bg-sky-400 my-4 relative rounded-full">
@@ -1184,7 +1184,7 @@ export default function Patient() {
                 </div>
 
                 <p className="text-sm leading-relaxed text-slate-600 font-medium">
-                  Manufactured under state-of-the-art GMP-compliant conditions in GLP-certified laboratories ensuring the highest standards of quality, safety and consistency.<sup>10</sup>
+                  Manufactured under state-of-the-art GMP-compliant conditions ensuring the highest standards of quality, safety and consistency.<sup>10</sup>
                 </p>
               </div>
 
@@ -1232,6 +1232,40 @@ export default function Patient() {
                 <p className="text-sm leading-relaxed text-slate-600 font-medium">
                   Administered as a sterile, single intra-articular injection directly into the knee joint for a convenient and precise treatment.<sup>9,10</sup>
                 </p>
+              </div>
+            </div>
+
+            {/* Regulatory & Quality Abbreviations */}
+            <div className="mt-10 max-w-4xl mx-auto">
+              <div className="rounded-2xl bg-white/90 p-4 sm:p-5 ring-1 ring-sky-200/70 shadow-soft-md backdrop-blur-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="group flex items-center gap-3 px-4 py-3.5 rounded-xl bg-sky-50/70 ring-1 ring-sky-200/70 shadow-sm cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.03] hover:bg-white hover:shadow-xl hover:shadow-sky-900/10 hover:ring-2 hover:ring-sky-400">
+                    <span className="shrink-0 px-2.5 py-1 rounded-md bg-[#0b3a66] text-white font-bold text-xs tracking-wider shadow-sm transition-all duration-300 group-hover:bg-[#0284c7] group-hover:scale-105">
+                      DCGI
+                    </span>
+                    <span className="text-xs sm:text-[13px] font-semibold text-slate-700 leading-snug transition-colors duration-300 group-hover:text-[#0b3a66]">
+                      Drugs Controller General of India
+                    </span>
+                  </div>
+
+                  <div className="group flex items-center gap-3 px-4 py-3.5 rounded-xl bg-sky-50/70 ring-1 ring-sky-200/70 shadow-sm cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.03] hover:bg-white hover:shadow-xl hover:shadow-sky-900/10 hover:ring-2 hover:ring-sky-400">
+                    <span className="shrink-0 px-2.5 py-1 rounded-md bg-[#0b3a66] text-white font-bold text-xs tracking-wider shadow-sm transition-all duration-300 group-hover:bg-[#0284c7] group-hover:scale-105">
+                      CDSCO
+                    </span>
+                    <span className="text-xs sm:text-[13px] font-semibold text-slate-700 leading-snug transition-colors duration-300 group-hover:text-[#0b3a66]">
+                      Central Drugs Standard Control Organisation
+                    </span>
+                  </div>
+
+                  <div className="group flex items-center gap-3 px-4 py-3.5 rounded-xl bg-sky-50/70 ring-1 ring-sky-200/70 shadow-sm cursor-pointer transition-all duration-300 ease-out hover:-translate-y-1.5 hover:scale-[1.03] hover:bg-white hover:shadow-xl hover:shadow-sky-900/10 hover:ring-2 hover:ring-sky-400">
+                    <span className="shrink-0 px-2.5 py-1 rounded-md bg-[#0b3a66] text-white font-bold text-xs tracking-wider shadow-sm transition-all duration-300 group-hover:bg-[#0284c7] group-hover:scale-105">
+                      GMP
+                    </span>
+                    <span className="text-xs sm:text-[13px] font-semibold text-slate-700 leading-snug transition-colors duration-300 group-hover:text-[#0b3a66]">
+                      Good Manufacturing Practices
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </Container>
