@@ -18,7 +18,7 @@ import advanceStemCellImage from "@/assets/Advance stem cell.png";
 import mscImage from "@/assets/newstemcell.png";
 import walkingImage from "@/assets/walking image.png";
 import climbingImage from "@/assets/climbing.png";
-import sittingImage from "@/assets/sitting.png";
+import sittingImage from "@/assets/sitting.jpeg";
 import img1 from "@/assets/img1.png";
 import img2 from "@/assets/img2.png";
 import img3 from "@/assets/img3.png";
@@ -32,10 +32,8 @@ import sinImage from "@/assets/SIN.png";
 import walkImage from "@/assets/walk.png";
 import exeImage from "@/assets/exe.png";
 import strImage from "@/assets/str.png";
-import sitImage from "@/assets/sit.png";
 import helImage from "@/assets/hel.png";
 import jointImage from "@/assets/joint.png";
-import sleepImage from "@/assets/sleep.png";
 import proteinImage from "@/assets/protein.png";
 import calciumImage from "@/assets/calcium.png";
 import vitaminDImage from "@/assets/vitamin D.png";
@@ -137,6 +135,7 @@ type LifestyleTip = {
   items?: string[];
   patientTip?: string | null;
   image?: string;
+  imageFit?: "contain" | "cover";
 };
 
 const lifestyleTips: LifestyleTip[] = [
@@ -154,6 +153,7 @@ const lifestyleTips: LifestyleTip[] = [
     ],
     patientTip: "Start with 10-15 minutes and gradually build to 30 minutes most days of the week. Walk at a comfortable pace.",
     image: walkImage,
+    imageFit: "contain",
   },
   {
     id: 2,
@@ -170,6 +170,7 @@ const lifestyleTips: LifestyleTip[] = [
     ],
     patientTip: "Perform 8-12 repetitions and progress gradually under healthcare guidance.",
     image: exeImage,
+    imageFit: "cover",
   },
   {
     id: 3,
@@ -185,6 +186,7 @@ const lifestyleTips: LifestyleTip[] = [
     ],
     patientTip: "Stretch slowly and never force a painful movement.",
     image: strImage,
+    imageFit: "cover",
   },
   {
     id: 4,
@@ -200,25 +202,11 @@ const lifestyleTips: LifestyleTip[] = [
     ],
     patientTip: "Even modest weight loss can help reduce pressure on the knees.",
     image: helImage,
+    imageFit: "contain",
   },
   {
     id: 5,
     number: "05",
-    title: "Avoid Long Periods of Sitting",
-    description: "Extended sitting may increase joint stiffness and discomfort. Regular movement throughout the day helps keep joints mobile.",
-    citation: "11",
-    listTitle: "Helpful Habits",
-    items: [
-      "Stand up every 30 to 60 mins",
-      "Take short walking breaks",
-      "Perform gentle knee stretches",
-    ],
-    patientTip: "Stand up, stretch, or walk around every 30 to 60 minutes.",
-    image: sitImage,
-  },
-  {
-    id: 6,
-    number: "06",
     title: "Choose Joint-Friendly Activities",
     description: "Low-impact activities can improve fitness while minimizing stress on the knees.",
     citation: "11,12",
@@ -231,21 +219,7 @@ const lifestyleTips: LifestyleTip[] = [
     ],
     patientTip: "Choose low-impact activities that feel comfortable and avoid sudden twisting.",
     image: jointImage,
-  },
-  {
-    id: 7,
-    number: "07",
-    title: "Sleep Well",
-    description: "Good sleep supports overall health and may help with pain management and daily functioning.",
-    citation: "16",
-    listTitle: "Healthy Habits",
-    items: [
-      "Regular sleep timings",
-      "Supportive knee pillow",
-      "Minimize bedtime screen time",
-    ],
-    patientTip: "Aim for regular sleep timings and minimize screen exposure before bedtime.",
-    image: sleepImage,
+    imageFit: "contain",
   },
 ];
 
@@ -280,7 +254,7 @@ const dietTips = [
     title: "Eat Calcium-Rich Foods",
     icon: Bone,
     description: "Calcium supports bone health. Adequate intake is important for maintaining bone strength.",
-    citations: ["17", "18"],
+    citations: ["16", "17"],
     groups: [
       {
         title: "Vegetarian Sources",
@@ -304,7 +278,7 @@ const dietTips = [
     title: "Get Enough Vitamin D",
     icon: Sun,
     description: "Vitamin D helps the body absorb calcium and supports bone health.",
-    citations: ["19", "20"],
+    citations: ["18", "19"],
     groups: [
       {
         title: "Sources",
@@ -323,7 +297,7 @@ const dietTips = [
     title: "Fill Half Your Plate with Vegetables",
     icon: Salad,
     description: "Vegetables provide vitamins, minerals, and fiber while helping support healthy weight management.",
-    citations: ["21"],
+    citations: ["12", "13"],
     groups: [
       {
         title: "Good Indian Options",
@@ -342,7 +316,7 @@ const dietTips = [
     title: "Choose Healthy Fats",
     icon: Heart,
     description: "Replacing fried foods with healthier fat sources may support overall cardiovascular and metabolic health.",
-    citations: ["21", "22", "23"],
+    citations: ["12", "21"],
     groups: [
       {
         title: "Better Choices",
@@ -366,7 +340,7 @@ const dietTips = [
     title: "Limit Foods That Promote Weight Gain",
     icon: Scale,
     description: "Maintaining a healthy weight is one of the most important lifestyle measures for knee OA.",
-    citations: ["21", "22"],
+    citations: ["12", "13", "21"],
     groups: [
       {
         title: "Limit",
@@ -1329,102 +1303,139 @@ export default function Patient() {
             </div>
 
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 max-w-6xl mx-auto">
-              {lifestyleTips.map((tip, idx) => (
-                <div
-                  key={tip.id}
-                  className={cn(
-                    "group relative flex flex-col lg:flex-row items-stretch rounded-[18px] bg-white ring-1 ring-slate-200 shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-sky-300 overflow-hidden",
-                    idx === lifestyleTips.length - 1 && "md:col-span-2 md:max-w-[30rem] md:mx-auto lg:!max-w-none lg:!mx-0 lg:!col-span-2 lg:flex-row lg:max-w-[38rem] !lg:mx-auto"
-                  )}
-                >
-                  {/* Left: Image Column - narrower on lg (wider content), full-width top on mobile/tablet */}
-                  <div className="w-full lg:w-[34%] lg:shrink-0 min-h-[180px] sm:min-h-[200px] lg:min-h-[240px] bg-gradient-to-br from-slate-50 via-sky-50/60 to-blue-50/60 relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-200 flex items-center">
-                    {tip.image ? (
-                      <>
-                        {/* Premium blurred backdrop fill */}
-                        <img
-                          src={tip.image}
-                          alt=""
-                          aria-hidden="true"
-                          className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-35"
-                        />
-                        {/* Main sharp image - FULLY VISIBLE, never cropped */}
-                        <img
-                          src={tip.image}
-                          alt={tip.title}
-                          className="relative z-10 w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.03]"
-                        />
-                      </>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center p-4 w-full h-full relative z-10">
-                        <div className="w-12 h-12 rounded-2xl bg-white shadow-sm ring-1 ring-sky-200/70 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-                          <ImageIcon className="h-6 w-6 text-sky-600" />
+              {lifestyleTips.map((tip, idx) => {
+                const isLastOdd = lifestyleTips.length % 2 !== 0 && idx === lifestyleTips.length - 1;
+
+                return (
+                  <div
+                    key={tip.id}
+                    className={cn(
+                      "group relative flex flex-col lg:flex-row items-stretch rounded-[18px] bg-white ring-1 ring-slate-200 shadow-md transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:ring-sky-300 overflow-hidden",
+                      isLastOdd && "md:col-span-2 max-w-4xl w-full mx-auto"
+                    )}
+                  >
+                    {/* Left: Image Column */}
+                    <div
+                      className={cn(
+                        "bg-gradient-to-br from-slate-50 via-sky-50/60 to-blue-50/60 relative overflow-hidden border-b lg:border-b-0 lg:border-r border-slate-200 flex items-center justify-center shrink-0",
+                        isLastOdd
+                          ? "w-full lg:w-[26%] xl:w-[24%] min-h-[180px] sm:min-h-[200px]"
+                          : "w-full lg:w-[36%] min-h-[180px] sm:min-h-[200px]"
+                      )}
+                    >
+                      {tip.image ? (
+                        <>
+                          {/* Premium blurred backdrop fill */}
+                          <img
+                            src={tip.image}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover scale-125 blur-xl opacity-60"
+                          />
+                          {/* Main sharp image */}
+                          <img
+                            src={tip.image}
+                            alt={tip.title}
+                            className={cn(
+                              "relative z-10 w-full h-full object-center transition-transform duration-500 group-hover:scale-105",
+                              tip.imageFit === "contain"
+                                ? "object-contain"
+                                : "object-cover"
+                            )}
+                          />
+                        </>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center p-4 w-full h-full relative z-10">
+                          <div className="w-12 h-12 rounded-2xl bg-white shadow-sm ring-1 ring-sky-200/70 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            <ImageIcon className="h-6 w-6 text-sky-600" />
+                          </div>
+                        </div>
+                      )}
+                      {/* Tip number badge */}
+                      <div className="absolute top-0 left-0 z-20">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#0b3a66] to-sky-700 text-white rounded-br-xl shadow-lg">
+                          <span className="text-[10px] font-bold uppercase tracking-wide opacity-90">Tip</span>
+                          <span className="text-sm font-black">{tip.number}</span>
                         </div>
                       </div>
-                    )}
-                    {/* Tip number badge */}
-                    <div className="absolute top-0 left-0 z-20">
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#0b3a66] to-sky-700 text-white rounded-br-xl shadow-lg">
-                        <span className="text-[10px] font-bold uppercase tracking-wide opacity-90">Tip</span>
-                        <span className="text-sm font-black">{tip.number}</span>
-                      </div>
                     </div>
-                  </div>
 
-                  {/* Right: Content Column (full-width on mobile/tablet) */}
-                  <div className="p-4 sm:p-[1.05rem] lg:p-4 flex flex-col justify-between flex-1 gap-3 min-w-0">
-                    <div className="space-y-2">
-                      {/* Title */}
-                      <h3 className="text-base sm:text-lg font-bold text-[#0b3a66] leading-snug">
-                        {tip.title}
-                      </h3>
+                    {/* Right: Content Column */}
+                    <div
+                      className={cn(
+                        "p-4 sm:p-[1.1rem] lg:p-5 flex flex-col justify-between flex-1 gap-3 min-w-0",
+                        isLastOdd && "lg:py-4 lg:px-5"
+                      )}
+                    >
+                      <div className="space-y-2">
+                        {/* Title */}
+                        <h3 className="text-base sm:text-lg font-bold text-[#0b3a66] leading-snug">
+                          {tip.title}
+                        </h3>
 
-                      {/* Description */}
-                      <p className="text-[12px] sm:text-[13px] leading-relaxed text-slate-600 font-medium">
-                        {tip.description}
-                        {tip.citation && <sup>{tip.citation}</sup>}
-                      </p>
+                        {/* Description */}
+                        <p className="text-[12px] sm:text-[13px] leading-relaxed text-slate-600 font-medium">
+                          {tip.description}
+                          {tip.citation && <sup>{tip.citation}</sup>}
+                        </p>
 
-                      {/* Optional Items / Benefits / Exercises - ONE-PER-ROW stacked list */}
-                      {tip.items && tip.items.length > 0 && (
-                        <div className="pt-0.5">
-                          {tip.listTitle && (
-                            <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-sky-700 mb-2">
-                              {tip.listTitle}
-                            </div>
-                          )}
-                          <div className="flex flex-col gap-[7px] items-stretch">
-                            {tip.items.map((item, i) => (
-                              <span
-                                key={i}
-                                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gradient-to-r from-sky-50 to-sky-50/60 text-[12px] sm:text-[13px] font-semibold text-slate-700 ring-1 ring-sky-100 w-full"
-                              >
-                                <span className="w-5 h-5 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_1px_2px_rgba(11,58,102,0.12)] ring-1 ring-sky-200/70">
-                                  <CheckCircle2 className="h-3.5 w-3.5 text-sky-600" />
+                        {/* Optional Items / Benefits / Exercises */}
+                        {tip.items && tip.items.length > 0 && (
+                          <div className="pt-0.5">
+                            {tip.listTitle && (
+                              <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-sky-700 mb-1.5">
+                                {tip.listTitle}
+                              </div>
+                            )}
+                            <div
+                              className={cn(
+                                isLastOdd
+                                  ? "grid grid-cols-2 sm:grid-cols-4 gap-2 items-stretch"
+                                  : "flex flex-col gap-[7px] items-stretch"
+                              )}
+                            >
+                              {tip.items.map((item, i) => (
+                                <span
+                                  key={i}
+                                  className={cn(
+                                    "inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-sky-50 to-sky-50/60 font-semibold text-slate-700 ring-1 ring-sky-100 w-full",
+                                    isLastOdd
+                                      ? "px-2.5 py-1.5 text-[11px] sm:text-[12px]"
+                                      : "px-3 py-2 text-[12px] sm:text-[13px]"
+                                  )}
+                                >
+                                  <span className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 rounded-full bg-white flex items-center justify-center shadow-[0_1px_2px_rgba(11,58,102,0.12)] ring-1 ring-sky-200/70">
+                                    <CheckCircle2 className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-sky-600" />
+                                  </span>
+                                  <span className="truncate">{item}</span>
                                 </span>
-                                {item}
-                              </span>
-                            ))}
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Patient Tip Callout */}
+                      {tip.patientTip && (
+                        <div
+                          className={cn(
+                            "rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/60 border-l-[3px] border-amber-500 ring-1 ring-amber-100 flex items-start gap-2 mt-3",
+                            isLastOdd ? "p-2 sm:p-2.5" : "p-2.5 sm:p-3"
+                          )}
+                        >
+                          <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
+                          <div className="text-[11px] sm:text-[12px] text-slate-700 leading-relaxed font-medium min-w-0">
+                            <span className="font-bold text-amber-800 mr-1">
+                              Tip:
+                            </span>
+                            {tip.patientTip}
                           </div>
                         </div>
                       )}
                     </div>
-
-                    {/* Patient Tip Callout */}
-                    {tip.patientTip && (
-                      <div className="rounded-xl bg-gradient-to-br from-amber-50 to-orange-50/60 p-2.5 sm:p-3 border-l-[3px] border-amber-500 ring-1 ring-amber-100 flex items-start gap-2 mt-auto">
-                        <Lightbulb className="h-3.5 w-3.5 text-amber-600 shrink-0 mt-0.5" />
-                        <div className="text-[11px] sm:text-[12px] text-slate-700 leading-relaxed font-medium min-w-0">
-                          <span className="font-bold text-amber-800 mr-1">
-                            Tip:
-                          </span>
-                          {tip.patientTip}
-                        </div>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </Container>
         </section>
