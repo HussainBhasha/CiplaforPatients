@@ -6,12 +6,7 @@ import { cn } from "@/lib/utils";
 import brandLogo from "@/assets/ciplostem-logo.png";
 import ciplaLogo from "@/assets/Cipla_logo.svg.png";
 
-const defaultNav = [
-  { label: "About", href: "/about" },
-  { label: "Disclaimer", href: "/disclaimer" },
-] as const;
-
-const patientNav = [
+const nav = [
   { label: "Home", href: "/patient" },
   { label: "Disclaimer", href: "/disclaimer" },
 ] as const;
@@ -28,17 +23,6 @@ export default function MarketingNavbar() {
       void 0;
     }
   };
-  const portal = (() => {
-    if (location.pathname.startsWith("/patient")) return "patient" as const;
-    try {
-      const v = sessionStorage.getItem("ciplostem:portal");
-      if (v === "patient") return v;
-    } catch {
-      void 0;
-    }
-    return null;
-  })();
-  const nav = portal === "patient" ? patientNav : defaultNav;
 
   useEffect(() => {
     if (location.pathname.startsWith("/patient")) setPortal("patient");
@@ -90,7 +74,8 @@ export default function MarketingNavbar() {
               {nav.map((item) => {
                 const [path, hash] = item.href.split("#");
                 const normalizedPath = path || "/";
-                const active = location.pathname === normalizedPath && (!hash || location.hash === `#${hash}`);
+                const isHomeMatch = item.href === "/patient" && (location.pathname === "/patient" || location.pathname === "/");
+                const active = (location.pathname === normalizedPath || isHomeMatch) && (!hash || location.hash === `#${hash}`);
 
                 return (
                   <Link
@@ -110,7 +95,7 @@ export default function MarketingNavbar() {
                         window.history.replaceState(null, "", `${normalizedPath}#${hash}`);
                         return;
                       }
-                      if (!hash && location.pathname === normalizedPath) {
+                      if (!hash && (location.pathname === normalizedPath || isHomeMatch)) {
                         e.preventDefault();
                         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
                       }

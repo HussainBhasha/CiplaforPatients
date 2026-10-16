@@ -1281,7 +1281,7 @@ export default function Patient() {
               <p className="mt-7 max-w-3xl mx-auto text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
                 These evidence-based strategies can help <span className="font-semibold text-slate-800">reduce pain</span>,{" "}
                 <span className="font-semibold text-slate-800">improve mobility</span>, and{" "}
-                <span className="font-semibold text-slate-800">maintain independence</span>.<sup>11,12</sup>
+                <span className="font-semibold text-slate-800">maintain independence</span>.
               </p>
 
               {/* Guideline Recommendation Callout */}
@@ -1295,7 +1295,7 @@ export default function Patient() {
                       Recommended by International Guidelines
                     </div>
                     <p className="text-[13px] sm:text-[15px] font-semibold leading-relaxed text-slate-800">
-                      Exercise is recommended as a <span className="text-emerald-700">core treatment</span> for knee osteoarthritis by leading international guidelines.
+                      Exercise is recommended as a <span className="text-emerald-700">core treatment</span> for knee osteoarthritis by leading international guidelines.<sup>11,12</sup>
                     </p>
                   </div>
                 </div>
@@ -1477,7 +1477,7 @@ export default function Patient() {
               <p className="mt-7 max-w-3xl mx-auto text-sm sm:text-base leading-relaxed text-slate-600 font-medium">
                 A balanced diet that supports a <span className="font-semibold text-slate-800">healthy body weight</span> and provides{" "}
                 <span className="font-semibold text-slate-800">essential nutrients</span> may help maintain{" "}
-                <span className="font-semibold text-slate-800">overall joint health</span> and improve quality of life.<sup>12,13</sup>
+                <span className="font-semibold text-slate-800">overall joint health</span> and improve quality of life.
               </p>
 
               {/* Weight Management Callout */}
@@ -1491,7 +1491,7 @@ export default function Patient() {
                       Particularly Important
                     </div>
                     <p className="text-[13px] sm:text-[15px] font-semibold leading-relaxed text-slate-800">
-                      <span className="text-amber-700">Weight management</span> is particularly important in individuals with knee osteoarthritis.
+                      <span className="text-amber-700">Weight management</span> is particularly important in individuals with knee osteoarthritis.<sup>12,13</sup>
                     </p>
                   </div>
                 </div>

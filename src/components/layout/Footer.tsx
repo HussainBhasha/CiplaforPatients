@@ -6,22 +6,11 @@ import { Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
   const location = useLocation();
-  const portal = (() => {
-    if (location.pathname.startsWith("/patient")) return "patient" as const;
-    try {
-      const v = sessionStorage.getItem("ciplostem:portal");
-      if (v === "patient") return v;
-    } catch {
-      void 0;
-    }
-    return null;
-  })();
-  const nav =
-    portal === "patient"
-      ? ([] as const)
-      : ([
-          { label: "About", href: "/about" },
-        ] as const);
+  const portal = "patient" as const;
+  const nav = [
+    { label: "Home", href: "/patient" },
+    { label: "Disclaimer", href: "/disclaimer" },
+  ] as const;
 
   return (
     <footer className="bg-white text-slate-900">
